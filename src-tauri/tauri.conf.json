@@ -12,7 +12,17 @@
   },
   "tauri": {
     "allowlist": {
-      "all": true
+      "fs": {
+				"all": true,
+				"scope": ["$APP/*", "$DESKTOP/*"]
+			},
+			"path": {
+				"all": true
+			},
+			"protocol": {
+				"all": true,
+				"assetScope": ["$APP/*", "$DESKTOP/*"]
+			}
     },
     "bundle": {
       "active": true,
@@ -29,7 +39,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "medical-sound",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -48,7 +58,7 @@
       }
     },
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost"
     },
     "updater": {
       "active": false
