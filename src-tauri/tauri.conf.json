@@ -3,7 +3,7 @@
   "build": {
     "beforeBuildCommand": "yarn build",
     "beforeDevCommand": "yarn dev",
-    "devPath": "http://localhost:3000",
+    "devPath": "http://localhost:5000",
     "distDir": "../public"
   },
   "package": {
@@ -55,11 +55,12 @@
     },
     "windows": [
       {
+        "center": true,
         "fullscreen": false,
-        "height": 600,
-        "resizable": true,
+        "height": 300,
+        "resizable": false,
         "title": "Medical Sound",
-        "width": 800
+        "width": 1280
       }
     ]
   }
