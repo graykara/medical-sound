@@ -1,10 +1,14 @@
 <script>
+  import '../public/global.css';
+
   import logo from './assets/svelte.png'
   import Counter from './lib/Counter.svelte'
 </script>
 
-<main>
-  <img src={logo} alt="Svelte Logo" />
+<main data-theme="dark">
+  <div class="flex justify-center items-center">
+    <img src={logo} alt="Svelte Logo" />
+  </div>
   <h1>Hello world!</h1>
 
   <Counter />
