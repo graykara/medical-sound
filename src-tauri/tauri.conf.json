@@ -70,7 +70,16 @@
         "height": 300,
         "resizable": false,
         "title": "Medical Sound",
+        "visible": false,
         "width": 1280
+      },
+      {
+        "center": true,
+        "decorations": false,
+        "label": "splashscreen",
+        "url": "splashscreen.html",
+        "width": 400,
+        "height": 200
       }
     ]
   }
