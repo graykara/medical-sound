@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^1.0.0-rc.6",
+    "hotkeys-js": "^3.9.4",
     "nanoid": "^3.3.4",
     "svelte-spa-router": "^3.2.0"
   }

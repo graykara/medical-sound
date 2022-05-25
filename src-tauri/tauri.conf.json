@@ -22,7 +22,14 @@
 			"protocol": {
 				"all": true,
 				"assetScope": ["$APP/*", "$DESKTOP/*"]
-			}
+			},
+      "window": {
+        "center": true,
+        "setAlwaysOnTop": true,
+        "setFocus": true,
+        "setPosition": true,
+        "setSize": true
+      }
     },
     "bundle": {
       "active": true,
