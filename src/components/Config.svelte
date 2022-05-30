@@ -26,6 +26,12 @@
 
   let oldValue;
 
+  const onChangePublished = e => {
+    let val = e.target.checked;
+    let idx = Number(e.target.id.split("_")[1]);
+    $lists["buttons"][idx - 1].published = val;
+  }
+
   const onHotKeyFocusIn = e => {
     oldValue = e.target.value;
     e.target.value = null;
@@ -143,6 +149,7 @@
       <thead>
         <tr>
           <th class="w-20 text-center">순서</th>
+          <th class="w-20 text-center">사용</th>
           <th class="w-20 text-center">키</th>
           <th class="text-center w-36">이미지</th>
           <th class="text-center w-36">음성</th>
@@ -155,7 +162,15 @@
           <td class="text-center">{list.id}</td>
           <td class="text-center">
             <input
-              type="text" name="number" id="hotkey_{(index+1)}"
+              type="checkbox"
+              checked={list.published}
+              on:click={onChangePublished}
+              id="published_{list.id}"
+              class="checkbox" />
+          </td>
+          <td class="text-center">
+            <input
+              type="text" name="number" id="hotkey_{index+1}"
               class="flex items-center w-full h-8 font-semibold text-center text-gray-700 bg-white outline-none focus:outline-none text-md hover:text-black focus:text-black md:text-basecursor-default"
               maxlength="2"
               value={list.key}
