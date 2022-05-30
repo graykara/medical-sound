@@ -3,23 +3,34 @@
   import { convertFileSrc } from '@tauri-apps/api/tauri'
   import {} from '@tauri-apps/api/window'
 
-  import { lists } from '../lib/store';
+  import hotkeys from "hotkeys-js";
+  import { onMount, onDestroy } from "svelte";
+
+  import { langCode, lists } from '../lib/store';
 
   // let obj = $lists["buttons"];
   // let _lists;
 
   let obj = $lists["buttons"];
+  $lists["test"] = "test";
   let _lists;
   let _images = [];
-  let img_1;
-  let img_2;
-  let img_3;
-  let img_4;
-  let img_5;
-  let img_6;
-  let img_7;
-  let img_8;
-  let img_9;
+
+  let langValue;
+
+  let TOGGLE_HOTKEY_1 = String($lists["buttons"][0].key);
+  let TOGGLE_HOTKEY_2 = String($lists["buttons"][1].key);
+  let TOGGLE_HOTKEY_3 = String($lists["buttons"][2].key);
+  let TOGGLE_HOTKEY_4 = String($lists["buttons"][3].key);
+  let TOGGLE_HOTKEY_5 = String($lists["buttons"][4].key);
+  let TOGGLE_HOTKEY_6 = String($lists["buttons"][5].key);
+  let TOGGLE_HOTKEY_7 = String($lists["buttons"][6].key);
+  let TOGGLE_HOTKEY_8 = String($lists["buttons"][7].key);
+  let TOGGLE_HOTKEY_9 = String($lists["buttons"][8].key);
+
+  const unsubscribe = langCode.subscribe(value => {
+    langValue = value;
+  });
 
   if(obj == undefined) {
     console.log('default');
@@ -107,10 +118,35 @@
       }
     ];
   } else {
+    console.log("@#@#");
     _lists = Object.keys(obj).map((key) => [Number(key), obj[key]][1]);
   }
 
   let audio = new Audio();
+
+  onMount(() => {
+    hotkeys(TOGGLE_HOTKEY_1, () => { handleClick(1) });
+    hotkeys(TOGGLE_HOTKEY_2, () => { handleClick(2) });
+    hotkeys(TOGGLE_HOTKEY_3, () => { handleClick(3) });
+    hotkeys(TOGGLE_HOTKEY_4, () => { handleClick(4) });
+    hotkeys(TOGGLE_HOTKEY_5, () => { handleClick(5) });
+    hotkeys(TOGGLE_HOTKEY_6, () => { handleClick(6) });
+    hotkeys(TOGGLE_HOTKEY_7, () => { handleClick(7) });
+    hotkeys(TOGGLE_HOTKEY_8, () => { handleClick(8) });
+    hotkeys(TOGGLE_HOTKEY_9, () => { handleClick(9) });
+  });
+
+  onDestroy(() => {
+    hotkeys.unbind(TOGGLE_HOTKEY_1);
+    hotkeys.unbind(TOGGLE_HOTKEY_2);
+    hotkeys.unbind(TOGGLE_HOTKEY_3);
+    hotkeys.unbind(TOGGLE_HOTKEY_4);
+    hotkeys.unbind(TOGGLE_HOTKEY_5);
+    hotkeys.unbind(TOGGLE_HOTKEY_6);
+    hotkeys.unbind(TOGGLE_HOTKEY_7);
+    hotkeys.unbind(TOGGLE_HOTKEY_8);
+    hotkeys.unbind(TOGGLE_HOTKEY_9);
+  })
 
   const getSoundFile = async (fileName) => {
     try {
@@ -145,163 +181,40 @@
 
         if(audio.canPlayType('audio/mpeg')) {
           audio.setAttribute("src", _src)
-          console.log(_src);
-          console.log(img_1);
-          // audio.pause();
-          // audio.currentTime = 0;
-          // audio.play();
+          audio.pause();
+          audio.currentTime = 0;
+          audio.play();
         }
       });
     }
   }
 
-  setImageFile("img_1.png").then(res => { let _src = convertFileSrc(res.toString()); img_1 = _src; });
-  setImageFile("img_2.png").then(res => { let _src = convertFileSrc(res.toString()); img_2 = _src; });
-  setImageFile("img_3.png").then(res => { let _src = convertFileSrc(res.toString()); img_3 = _src; });
-  setImageFile("img_4.png").then(res => { let _src = convertFileSrc(res.toString()); img_4 = _src; });
-  setImageFile("img_5.png").then(res => { let _src = convertFileSrc(res.toString()); img_5 = _src; });
-  setImageFile("img_6.png").then(res => { let _src = convertFileSrc(res.toString()); img_6 = _src; });
-  setImageFile("img_7.png").then(res => { let _src = convertFileSrc(res.toString()); img_7 = _src; });
-  setImageFile("img_8.png").then(res => { let _src = convertFileSrc(res.toString()); img_8 = _src; });
-  setImageFile("img_9.png").then(res => { let _src = convertFileSrc(res.toString()); img_9 = _src; });
-
   for(let i = 1; i <= 9; i++) {
-    setImageFile("img_" + i + ".png").then(res => {
+    let ext = $lists["buttons"][i - 1]["image"].split('.')[1];
+    setImageFile("img_" + i + "." + ext).then(res => {
       let _src = convertFileSrc(res.toString());
       _images.push(_src);
-      console.log(_images.length)
+      document.getElementById('img_' + i).setAttribute('src', _src);
     });
-
   }
-
-  // function init() {
-  //   console.log('INIT', document.getElementsByTagName("img"));
-  //   for(var i = 1; i <= 9; i++) {
-  //     setImageFile("img_" + i + ".png").then(res => {
-  //       let _src = convertFileSrc(res.toString());
-  //       _images.push(_src);
-  //       // console.log("SRC", _src);
-  //       // sleep(1000);
-  //       // console.log('IMG', document.getElementById("img_" + i));
-  //       // document.getElementById("img_" + i).setAttribute("src", _src);
-  //     });
-  //   }
-
-
-
-  //   console.log('END', document.getElementsByTagName("img"));
-  // }
-
-  // console.log("GG");
-
-  // init();
-
-  // init().then((res) => {
-  //   console.log(document.getElementsByName("img"))
-  //   console.log(_images);
-  // });
 </script>
 
 <div id="main-contents" class="flex px-8 py-8 bg-sky-100">
 
-  <!-- {#await init then } -->
-    <!-- {#each _lists as list, index}
-    <div class="relative">
-      <span class="absolute z-20 text-red-900 left-4 top-2">{list.id}</span>
-      <div class="tooltip tooltip-bottom" data-tip="{list.message_ko}">
-        <div id="btn_{list.id}" class="z-10 btn-info main_btn" on:click={() => handleClick(list.id)}>
-          <Image list={list} image={_images[index]}>
-          </Image>
-        </div>
-      </div>
-    </div>
-    {/each} -->
-  <!-- {/await} -->
-
+  {#each {length: 9} as _, index}
   <div class="relative">
-    <span class="absolute z-20 text-red-900 left-4 top-2">{_lists[0].id}</span>
-    <div class="tooltip tooltip-bottom" data-tip="{_lists[0].message_ko}">
-      <div id="btn_{_lists[0].id}" class="z-10 btn-info main_btn" on:click={() => handleClick(_lists[0].id)}>
-        <img id="img_{_lists[0].id}" class="object-cover rounded-2xl shadow-xl" src={img_1} alt="{_lists[0].id}" />
+    <span class="absolute z-20 text-red-900 left-4 top-2">{_lists[index].id}</span>
+    <div class="tooltip tooltip-bottom" data-tip="{_lists[index]["message_" + langValue]}">
+      <div id="btn_{_lists[index].id}" class="z-10 btn-info main_btn" on:click={() => handleClick(_lists[index].id)}>
+        <img id="img_{_lists[index].id}" class="object-cover shadow-xl rounded-2xl" src="" alt="{_lists[index].id}" />
       </div>
     </div>
   </div>
-
-  <div class="relative">
-    <span class="absolute z-20 text-red-900 left-4 top-2">{_lists[1].id}</span>
-    <div class="tooltip tooltip-bottom" data-tip="{_lists[1].message_ko}">
-      <div id="btn_{_lists[1].id}" class="z-10 btn-info main_btn" on:click={() => handleClick(_lists[1].id)}>
-        <img id="img_{_lists[1].id}" class="object-cover rounded-2xl shadow-xl" src={img_2} alt="{_lists[1].id}" />
-      </div>
-    </div>
-  </div>
-
-  <div class="relative">
-    <span class="absolute z-20 text-red-900 left-4 top-2">{_lists[2].id}</span>
-    <div class="tooltip tooltip-bottom" data-tip="{_lists[2].message_ko}">
-      <div id="btn_{_lists[2].id}" class="z-10 btn-info main_btn" on:click={() => handleClick(_lists[2].id)}>
-        <img id="img_{_lists[2].id}" class="object-cover rounded-2xl shadow-xl" src={img_3} alt="{_lists[2].id}" />
-      </div>
-    </div>
-  </div>
-
-  <div class="relative">
-    <span class="absolute z-20 text-red-900 left-4 top-2">{_lists[3].id}</span>
-    <div class="tooltip tooltip-bottom" data-tip="{_lists[3].message_ko}">
-      <div id="btn_{_lists[3].id}" class="z-10 btn-info main_btn" on:click={() => handleClick(_lists[3].id)}>
-        <img id="img_{_lists[3].id}" class="object-cover rounded-2xl shadow-xl" src={img_4} alt="{_lists[3].id}" />
-      </div>
-    </div>
-  </div>
-
-  <div class="relative">
-    <span class="absolute z-20 text-red-900 left-4 top-2">{_lists[4].id}</span>
-    <div class="tooltip tooltip-bottom" data-tip="{_lists[4].message_ko}">
-      <div id="btn_{_lists[4].id}" class="z-10 btn-info main_btn" on:click={() => handleClick(_lists[4].id)}>
-        <img id="img_{_lists[4].id}" class="object-cover rounded-2xl shadow-xl" src={img_5} alt="{_lists[4].id}" />
-      </div>
-    </div>
-  </div>
-
-  <div class="relative">
-    <span class="absolute z-20 text-red-900 left-4 top-2">{_lists[5].id}</span>
-    <div class="tooltip tooltip-bottom" data-tip="{_lists[5].message_ko}">
-      <div id="btn_{_lists[5].id}" class="z-10 btn-info main_btn" on:click={() => handleClick(_lists[5].id)}>
-        <img id="img_{_lists[5].id}" class="object-cover rounded-2xl shadow-xl" src={img_6} alt="{_lists[5].id}" />
-      </div>
-    </div>
-  </div>
-
-  <div class="relative">
-    <span class="absolute z-20 text-red-900 left-4 top-2">{_lists[6].id}</span>
-    <div class="tooltip tooltip-bottom" data-tip="{_lists[6].message_ko}">
-      <div id="btn_{_lists[6].id}" class="z-10 btn-info main_btn" on:click={() => handleClick(_lists[6].id)}>
-        <img id="img_{_lists[6].id}" class="object-cover rounded-2xl shadow-xl" src={img_7} alt="{_lists[6].id}" />
-      </div>
-    </div>
-  </div>
-
-  <div class="relative">
-    <span class="absolute z-20 text-red-900 left-4 top-2">{_lists[7].id}</span>
-    <div class="tooltip tooltip-bottom" data-tip="{_lists[7].message_ko}">
-      <div id="btn_{_lists[7].id}" class="z-10 btn-info main_btn" on:click={() => handleClick(_lists[7].id)}>
-        <img id="img_{_lists[7].id}" class="object-cover rounded-2xl shadow-xl" src={img_8} alt="{_lists[7].id}" />
-      </div>
-    </div>
-  </div>
-
-  <div class="relative">
-    <span class="absolute z-20 text-red-900 left-4 top-2">{_lists[8].id}</span>
-    <div class="tooltip tooltip-bottom" data-tip="{_lists[8].message_ko}">
-      <div id="btn_{_lists[8].id}" class="z-10 btn-info main_btn" on:click={() => handleClick(_lists[8].id)}>
-        <img id="img_{_lists[8].id}" class="object-cover rounded-2xl shadow-xl" src={img_9} alt="{_lists[8].id}" />
-      </div>
-    </div>
-  </div>
+  {/each}
 </div>
 
 <style lang="postcss">
   .main_btn {
-		@apply btn btn-outline w-32 h-32 mx-1 p-1 rounded-2xl bg-white;
-	}
+    @apply btn btn-outline w-32 h-32 mx-1 p-1 rounded-2xl bg-white;
+  }
 </style>

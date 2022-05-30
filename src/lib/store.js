@@ -2,6 +2,7 @@ import { writable } from 'svelte/store';
 import { getStoredPosts, saveState } from './storage';
 
 export const lists = writable([]);
+export let langCode = writable('ko');
 
 getStoredPosts().then((res) => {
   console.log('# RES', res["buttons"])

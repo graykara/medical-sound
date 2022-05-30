@@ -1,13 +1,23 @@
 <script>
 
   import hotkeys from "hotkeys-js";
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import { push } from 'svelte-spa-router';
 
   import {
     appWindow,
     LogicalSize,
   } from '@tauri-apps/api/window';
+
+  import { langCode, lists } from '../lib/store';
+
+  let langValue;
+
+  const unsubscribe = langCode.subscribe(value => {
+    langValue = value;
+  });
+
+  let obj = $lists["buttons"];
 
   // 윈도 설정
   let selectedWindow = appWindow.label
@@ -18,9 +28,9 @@
   }
 
   // 활성화 단축키
-  const INIT_TOGGLE_HOTKEY = 'shift+0';
-  const MAIN_TOGGLE_HOTKEY = 'shift+1';
-  const LANG_TOGGLE_HOTKEY = 'ctrl+tab';
+  let INIT_TOGGLE_HOTKEY = 'shift+0';
+  let MAIN_TOGGLE_HOTKEY = 'shift+1';
+  let LANG_TOGGLE_HOTKEY = 'ctrl+tab';
 
   // 언어설정
   let _language = "한국어";
@@ -55,6 +65,12 @@
     });
   });
 
+  onDestroy(() => {
+    hotkeys.unbind(INIT_TOGGLE_HOTKEY);
+    hotkeys.unbind(MAIN_TOGGLE_HOTKEY);
+    hotkeys.unbind(LANG_TOGGLE_HOTKEY);
+  });
+
   function select(arg) {
 
     switch (arg) {
@@ -85,6 +101,9 @@
   function changeLanguage(lang) {
     let humanLanguage;
     _langCode = lang;
+
+    langCode.set(lang);
+
     if (_langCode == "ko") {
       humanLanguage = "한국어";
     } else if (_langCode == "th") {
