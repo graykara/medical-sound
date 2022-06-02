@@ -31,6 +31,9 @@
         "renameFile": true,
 				"scope": ["**", "$APP/*", "$DESKTOP/*"]
 			},
+      "globalShortcut": {
+        "all": true
+      },
 			"path": {
 				"all": true
 			},
@@ -103,14 +106,19 @@
     "security": {
       "csp": "default-src: 'self'; media-src 'self' asset: blob: data: filesystem: ws: wss: http: https: https://asset.localhost tauri: 'unsafe-eval' 'unsafe-inline' 'self'"
     },
+    "systemTray": {
+      "iconPath": "icons/icon.png",
+      "iconAsTemplate": true
+    },
     "updater": {
       "active": false
     },
     "windows": [
       {
+        "theme": "Dark",
         "center": true,
         "fullscreen": false,
-        "height": 300,
+        "height": 278,
         "resizable": false,
         "title": "Medical Sound",
         "visible": false,

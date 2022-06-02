@@ -1,22 +1,30 @@
 <script>
   import { desktopDir, join } from '@tauri-apps/api/path';
-  import { convertFileSrc } from '@tauri-apps/api/tauri'
-  import {} from '@tauri-apps/api/window'
+  import { convertFileSrc, invoke } from '@tauri-apps/api/tauri';
+  import { appWindow } from '@tauri-apps/api/window';
 
   import hotkeys from "hotkeys-js";
   import { onMount, onDestroy } from "svelte";
 
-  import { langCode, lists } from '../lib/store';
+  import { langCode, volumeEnable, lists, audio } from '../lib/store';
+
+  import {
+    register as registerShortcut,
+    unregisterAll as unregisterAllShortcuts,
+  } from "@tauri-apps/api/globalShortcut";
+
+  let shortcut = $lists["invoke_key"];
 
   // let obj = $lists["buttons"];
   // let _lists;
 
   let obj = $lists["buttons"];
-  $lists["test"] = "test";
+
   let _lists;
   let _images = [];
 
   let langValue;
+  let volumeValue;
 
   let TOGGLE_HOTKEY_1 = String($lists["buttons"][0].key);
   let TOGGLE_HOTKEY_2 = String($lists["buttons"][1].key);
@@ -28,8 +36,12 @@
   let TOGGLE_HOTKEY_8 = String($lists["buttons"][7].key);
   let TOGGLE_HOTKEY_9 = String($lists["buttons"][8].key);
 
-  const unsubscribe = langCode.subscribe(value => {
+  langCode.subscribe(value => {
     langValue = value;
+  });
+
+  volumeEnable.subscribe(value => {
+    volumeValue = value;
   });
 
   if(obj == undefined) {
@@ -131,21 +143,31 @@
     _lists = Object.keys(obj).map((key) => [Number(key), obj[key]][1]);
   }
 
-  let audio = new Audio();
+  function register() {
+    const shortcut_ = shortcut;
+    registerShortcut(shortcut_, () => {
+      console.log(`Shortcut ${shortcut_} triggered`);
+      invoke("handle_short_key");
 
-  onMount(() => {
-    hotkeys(TOGGLE_HOTKEY_1, () => { handleClick(1) });
-    hotkeys(TOGGLE_HOTKEY_2, () => { handleClick(2) });
-    hotkeys(TOGGLE_HOTKEY_3, () => { handleClick(3) });
-    hotkeys(TOGGLE_HOTKEY_4, () => { handleClick(4) });
-    hotkeys(TOGGLE_HOTKEY_5, () => { handleClick(5) });
-    hotkeys(TOGGLE_HOTKEY_6, () => { handleClick(6) });
-    hotkeys(TOGGLE_HOTKEY_7, () => { handleClick(7) });
-    hotkeys(TOGGLE_HOTKEY_8, () => { handleClick(8) });
-    hotkeys(TOGGLE_HOTKEY_9, () => { handleClick(9) });
-  });
+      hotkeys(TOGGLE_HOTKEY_1, () => { handleClick(1) });
+      hotkeys(TOGGLE_HOTKEY_2, () => { handleClick(2) });
+      hotkeys(TOGGLE_HOTKEY_3, () => { handleClick(3) });
+      hotkeys(TOGGLE_HOTKEY_4, () => { handleClick(4) });
+      hotkeys(TOGGLE_HOTKEY_5, () => { handleClick(5) });
+      hotkeys(TOGGLE_HOTKEY_6, () => { handleClick(6) });
+      hotkeys(TOGGLE_HOTKEY_7, () => { handleClick(7) });
+      hotkeys(TOGGLE_HOTKEY_8, () => { handleClick(8) });
+      hotkeys(TOGGLE_HOTKEY_9, () => { handleClick(9) });
+    })
+      .then(() => {
 
-  onDestroy(() => {
+        console.log(`Shortcut ${shortcut_} registered successfully`);
+      })
+      .catch();
+  }
+
+  function unregisterAll() {
+    unregisterAllShortcuts();
     hotkeys.unbind(TOGGLE_HOTKEY_1);
     hotkeys.unbind(TOGGLE_HOTKEY_2);
     hotkeys.unbind(TOGGLE_HOTKEY_3);
@@ -155,6 +177,17 @@
     hotkeys.unbind(TOGGLE_HOTKEY_7);
     hotkeys.unbind(TOGGLE_HOTKEY_8);
     hotkeys.unbind(TOGGLE_HOTKEY_9);
+  }
+
+  onMount(() => {
+    unregisterAll();
+    register();
+    console.log("mount")
+
+  });
+
+  onDestroy(() => {
+    unregisterAll();
   })
 
   const getSoundFile = async (fileName) => {
@@ -180,16 +213,24 @@
 
   function handleClick(id) {
     let _id = document.getElementById("btn_" + id);
+
+    if(!volumeValue) {
+      audio.volume = 0;
+    } else {
+      audio.volume = 1;
+    }
+
     if(!_id.classList.contains("grayscale")) {
       _id.classList.add("grayscale");
 
-      let file = "ko_"+id+".mp3";
+      let file = langValue + "_" + id + ".mp3";
 
       getSoundFile(file).then(res => {
         let _src = convertFileSrc(res.toString());
 
         if(audio.canPlayType('audio/mpeg')) {
-          audio.setAttribute("src", _src)
+          audio.getElementsByTagName("source")[0].src = _src;
+          audio.load();
           audio.pause();
           audio.currentTime = 0;
           audio.play();

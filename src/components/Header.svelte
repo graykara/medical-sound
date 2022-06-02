@@ -9,12 +9,17 @@
     LogicalSize,
   } from '@tauri-apps/api/window';
 
-  import { langCode, lists } from '../lib/store';
+  import { langCode, volumeEnable, lists, audio } from '../lib/store';
 
   let langValue;
+  let volumeValue;
 
-  const unsubscribe = langCode.subscribe(value => {
+  langCode.subscribe(value => {
     langValue = value;
+  });
+
+  volumeEnable.subscribe(value => {
+    volumeValue = value;
   });
 
   let obj = $lists["buttons"];
@@ -28,32 +33,27 @@
   }
 
   // 활성화 단축키
-  let INIT_TOGGLE_HOTKEY = 'shift+0';
-  let MAIN_TOGGLE_HOTKEY = 'shift+1';
-  let LANG_TOGGLE_HOTKEY = 'ctrl+tab';
+  let LANG_TOGGLE_HOTKEY = $lists["lang_change_key"];
+  console.log('toggle init', LANG_TOGGLE_HOTKEY);
 
   // 언어설정
   let _language = "한국어";
   let _langCode = "ko";
-  let _init = true;
+  let _init = false;
 
   // 언어 드랍메뉴 보기
   let _show = false;
 
+  // 볼륨 활성화 여부
+  let _isVolume = true;
+
   // 설정화면 여부
   let _isSetting = false;
 
-  onMount(() => {
-    // appWindow.setPosition( new LogicalPosition(0, 0) );
-    windowMap[selectedWindow].center();
-    hotkeys(INIT_TOGGLE_HOTKEY, () => {
-      _init = true;
-      select(0);
-    });
-    hotkeys(MAIN_TOGGLE_HOTKEY, () => {
-      _init = false;
-      select(1);
-    });
+  function handleLangHotKey() {
+    hotkeys.unbind(LANG_TOGGLE_HOTKEY);
+    LANG_TOGGLE_HOTKEY = $lists["lang_change_key"];
+    console.log("TOGGLE", LANG_TOGGLE_HOTKEY);
     hotkeys(LANG_TOGGLE_HOTKEY, () => {
       let _target;
       if(_langCode == "ko") {
@@ -63,11 +63,26 @@
       }
       changeLanguage(_target);
     });
+  }
+
+  onMount(() => {
+    // appWindow.setPosition( new LogicalPosition(0, 0) );
+    windowMap[selectedWindow].center();
+    windowMap[selectedWindow].setAlwaysOnTop(true);
+    // hotkeys(INIT_TOGGLE_HOTKEY, () => {
+    //   _init = true;
+    //   select(0);
+    // });
+    // hotkeys(MAIN_TOGGLE_HOTKEY, () => {
+    //   _init = false;
+    //   select(1);
+    // });
+    handleLangHotKey();
   });
 
   onDestroy(() => {
-    hotkeys.unbind(INIT_TOGGLE_HOTKEY);
-    hotkeys.unbind(MAIN_TOGGLE_HOTKEY);
+    // hotkeys.unbind(INIT_TOGGLE_HOTKEY);
+    // hotkeys.unbind(MAIN_TOGGLE_HOTKEY);
     hotkeys.unbind(LANG_TOGGLE_HOTKEY);
   });
 
@@ -83,18 +98,15 @@
         _isSetting = false;
         windowMap[selectedWindow].setSize(new LogicalSize(1280, 290));
         push("/main");
+        handleLangHotKey();
         break;
       case 2:
         _isSetting = true;
         windowMap[selectedWindow].setSize(new LogicalSize(1280, 720));
         push("/config");
+        hotkeys.unbind(LANG_TOGGLE_HOTKEY);
         break;
     }
-
-
-    // if(arg == 0) replace("/");
-    // if(arg == 1) replace("/main");
-    // if(arg == 2) replace("/config");
   }
 
   // 언어 변경
@@ -111,6 +123,17 @@
     }
     _language = humanLanguage;
     _show = !_show;
+  }
+
+  // 볼륨 조절
+  function handleVolume() {
+    _isVolume = !_isVolume;
+    volumeEnable.set(_isVolume);
+    if(_isVolume) {
+      audio.volume = 1;
+    } else {
+      audio.volume = 0;
+    }
   }
 
   // 설정 진입
@@ -138,7 +161,7 @@
           <!-- svelte-ignore a11y-label-has-associated-control -->
           <label
             id="menu-button"
-            class="m-0 text-xl font-bold text-white normal-case bg-transparent justify-items-center btn btn-ghost"
+            class="m-0 text-xl font-bold text-white normal-case bg-transparent justify-items-center btn btn-ghost outline-disable "
             tabindex="0"
             on:click={() => (_show = !_show) }
             aria-expanded="false" aria-haspopup="false">{_language}</label>
@@ -160,7 +183,7 @@
     <div class="flex items-end justify-end flex-none w-40">
       <label class="swap">
 
-        <input type="checkbox" />
+        <input type="checkbox" class="outline-disable" on:click={() => handleVolume()} />
 
         <!-- volume on icon -->
         <svg class="fill-white swap-on" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
@@ -176,7 +199,7 @@
 
       <label class="ml-4 swap swap-rotate">
 
-        <input type="checkbox" on:click={() => handleConfig()} />
+        <input type="checkbox" class="outline-disable" on:click={() => handleConfig()} />
 
         <!-- setting on icon -->
         <svg class="fill-white swap-on" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 21.33 21.33">
@@ -194,6 +217,9 @@
   {/if}
 </div>
 
-<style>
+<style lang="postcss">
+  .outline-disable {
+    outline: none;
+  }
 
 </style>

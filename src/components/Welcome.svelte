@@ -1,5 +1,12 @@
+<script>
+  import { push } from 'svelte-spa-router';
+  setTimeout(function() {
+    push('/Main');
+  }, 1000);
+</script>
+
 <div>
-  <div class="min-h-screen bg-slate-700">
+  <div class="hidden min-h-screen bg-slate-700">
     <div class="py-6 text-center">
       <h2 class="py-10 text-3xl font-bold text-white select-none">
         <span class="block">활성화 키를 입력하여 실행해 주세요.</span>

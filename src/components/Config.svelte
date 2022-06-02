@@ -15,6 +15,9 @@
 
   let langValue;
 
+  let invokeKey = $lists["invoke_key"];
+  let langKey = $lists["lang_change_key"];
+
   const unsubscribe = langCode.subscribe(value => {
     langValue = value;
   });
@@ -26,10 +29,74 @@
 
   let oldValue;
 
+  let key_of_invoke;
+  let key_of_lang;
+
   const onChangePublished = e => {
     let val = e.target.checked;
     let idx = Number(e.target.id.split("_")[1]);
     $lists["buttons"][idx - 1].published = val;
+  }
+
+  const onInvokeKeyUp = event => {
+    event.target.value = key_of_invoke;
+    $lists["invoke_key"] = key_of_invoke;
+  }
+
+  const onIKnvokeKey = event => {
+    let metaKey;
+    let codeKey;
+
+    if(event.alt) metaKey = "Alt";
+    if(event.shiftKey) metaKey = "Shift";
+    if(event.ctrlKey) metaKey = "Ctrl";
+    if(event.altKey) metaKey = "Alt";
+    if(event.metaKey) metaKey = "Meta";
+    if(event.tabKeu) metaKey = "Tab";
+
+    // console.log(event.code);
+
+    if(event.code.length > 0) {
+      if(event.code.split('Digit')[1] != undefined) {
+        codeKey = event.code.split('Digit')[1];
+      } else if(event.code.split('Key')[1] != undefined) {
+        codeKey = event.code.split('Key')[1];
+      } else {
+        codeKey = event.code;
+      }
+    }
+    key_of_invoke = metaKey + "+"+String(codeKey);
+    event.target.value = "";
+  }
+
+  const onLangKeyUp = event => {
+    event.target.value = key_of_lang;
+    $lists["lang_change_key"] = key_of_lang;
+  }
+
+  const onLangKey = event => {
+    let metaKey;
+    let codeKey;
+
+    if(event.alt) metaKey = "Alt";
+    if(event.shiftKey) metaKey = "Shift";
+    if(event.ctrlKey) metaKey = "Ctrl";
+    if(event.altKey) metaKey = "Alt";
+    if(event.metaKey) metaKey = "Meta";
+
+    // console.log(event.code);
+
+    if(event.code.length > 0) {
+      if(event.code.split('Digit')[1] != undefined) {
+        codeKey = event.code.split('Digit')[1];
+      } else if(event.code.split('Key')[1] != undefined) {
+        codeKey = event.code.split('Key')[1];
+      } else {
+        codeKey = event.code;
+      }
+    }
+    key_of_lang = metaKey + "+" + codeKey;
+    event.target.value = "";
   }
 
   const onHotKeyFocusIn = e => {
@@ -144,6 +211,31 @@
 
 <div>
   <div class="px-4 py-4 overflow-x-auto">
+    <h3 class="text-lg leading-6 mb-4 font-medium text-white">설정</h3>
+
+    <table class="table w-full mb-8 table-zebra table-compact">
+      <thead>
+        <tr>
+          <th class="w-40 text-center">기능</th>
+          <th class="text-center">단축키</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="h-14">
+          <td class="text-center">앱 활성화키</td>
+          <td>
+            <input class="kbd kbd-md bg-white text-gray-900 w-auto text-center" on:keyup={onInvokeKeyUp} on:keypress={onIKnvokeKey} value={invokeKey} />
+          </td>
+        </tr>
+        <tr class="h-14">
+          <td class="text-center">언어 변경키</td>
+          <td>
+            <input class="kbd kbd-md bg-white text-gray-900 w-auto text-center" on:keyup={onLangKeyUp} on:keypress={onLangKey} value={langKey} />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
     <table class="table w-full table-zebra table-compact">
       <!-- head -->
       <thead>

@@ -27,6 +27,7 @@ const initData = {
   buttons: [
     {
       id: "1",
+      published: true,
       key: "1",
       image: "1.png",
       sound_ko: "ko_1.mp4",
@@ -36,6 +37,7 @@ const initData = {
     },
     {
       id: "2",
+      published: true,
       key: "2",
       image: "2.png",
       sound_ko: "ko_2.mp4",
@@ -45,6 +47,7 @@ const initData = {
     },
     {
       id: "3",
+      published: true,
       key: "3",
       image: "3.png",
       sound_ko: "ko_3.mp4",
@@ -54,6 +57,7 @@ const initData = {
     },
     {
       id: "4",
+      published: true,
       key: "4",
       image: "4.png",
       sound_ko: "ko_4.mp4",
@@ -63,6 +67,7 @@ const initData = {
     },
     {
       id: "5",
+      published: true,
       key: "5",
       image: "5.png",
       sound_ko: "ko_5.mp4",
@@ -72,6 +77,7 @@ const initData = {
     },
     {
       id: "6",
+      published: true,
       key: "6",
       image: "6.png",
       sound_ko: "ko_6.mp4",
@@ -81,6 +87,7 @@ const initData = {
     },
     {
       id: "7",
+      published: true,
       key: "7",
       image: "7.png",
       sound_ko: "ko_7.mp4",
@@ -90,6 +97,7 @@ const initData = {
     },
     {
       id: "8",
+      published: true,
       key: "8",
       image: "8.png",
       sound_ko: "ko_8.mp4",
@@ -99,6 +107,7 @@ const initData = {
     },
     {
       id: "9",
+      published: true,
       key: "9",
       image: "9.png",
       sound_ko: "ko_9.mp4",
