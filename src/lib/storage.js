@@ -15,6 +15,8 @@ import { blobToBinary } from './utils';
 const dataFileName = 'data.json';
 const dir = BaseDirectory.Desktop;
 
+console.log("## STORAGE ##");
+
 let srcPath;
 
 resolve().then(res => {
@@ -115,7 +117,9 @@ const initData = {
       message_ko: "메시지를 읽으세요 - 9",
       message_th: "메시지를 읽으세요 - 9"
     }
-  ]
+  ],
+  invoke_key: "Shift+1",
+  lang_change_key: "Shift+l"
 };
 
 const _checkDataFolder = async () => {
@@ -194,10 +198,6 @@ const _createDatabase = async () => {
         }
       );
     }
-
-    // const desktopPath = await desktopDir();
-    // lists.path = desktopPath;
-    // console.log(lists.path);
 	} catch (e) {
 		console.log(e);
 	}
@@ -208,9 +208,8 @@ export const initStorage = async () => {
 
 	if (!hasDataFolder) {
 		await _createDatabase();
-    await _writePath();
 	} else {
-    await _writePath();
+    // await _writePath();
   }
 };
 

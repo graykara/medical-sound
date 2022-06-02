@@ -26,6 +26,9 @@ fn main() {
   #[allow(unused_mut)]
   let mut app = tauri::Builder::default()
     .setup(|app| {
+      #[cfg(debug_assertions)]
+      app.get_window("main").unwrap().open_devtools();
+
       let splashscreen_window = app.get_window("splashscreen").unwrap();
       let main_window = app.get_window("main").unwrap();
       // we perform the initialization code on a new task so the app doesn't freeze

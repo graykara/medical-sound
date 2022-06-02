@@ -1,5 +1,6 @@
 <script>
-  import { lists, langCode } from '../lib/store';
+  import { langCode } from '../lib/store';
+  import { lists } from '../lib/Lists';
 
   import { open } from "@tauri-apps/api/dialog";
 
@@ -38,9 +39,23 @@
     $lists["buttons"][idx - 1].published = val;
   }
 
+  let invokeUp = false;
+  let oldInvokeVal = $lists["invoke_key"];
+
   const onInvokeKeyUp = event => {
-    event.target.value = key_of_invoke;
-    $lists["invoke_key"] = key_of_invoke;
+    if((key_of_invoke == undefined || key_of_invoke == langKey) && invokeUp == false) {
+      document.getElementById("modal-open-btn").click();
+      invokeUp = true;
+      setTimeout(function() {
+        langUp = false;
+        event.target.value = oldInvokeVal;
+        key_of_invoke = oldInvokeVal;
+        $lists["invoke_key"] = key_of_invoke;
+      }, 1000);
+    } else {
+      event.target.value = key_of_invoke;
+      $lists["invoke_key"] = key_of_invoke;
+    }
   }
 
   const onIKnvokeKey = event => {
@@ -69,9 +84,23 @@
     event.target.value = "";
   }
 
+  let langUp = false;
+  let oldLangVal = $lists["lang_change_key"];
+
   const onLangKeyUp = event => {
-    event.target.value = key_of_lang;
-    $lists["lang_change_key"] = key_of_lang;
+    if((key_of_lang == undefined || key_of_lang == invokeKey) && langUp == false) {
+      document.getElementById("modal-open-btn").click();
+      langUp = true;
+      setTimeout(function() {
+        langUp = false;
+        event.target.value = oldLangVal;
+        key_of_lang = oldLangVal;
+        $lists["lang_change_key"] = key_of_lang;
+      }, 1000);
+    } else {
+      event.target.value = key_of_lang;
+      $lists["lang_change_key"] = key_of_lang;
+    }
   }
 
   const onLangKey = event => {

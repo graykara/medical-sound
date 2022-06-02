@@ -9,10 +9,13 @@
     LogicalSize,
   } from '@tauri-apps/api/window';
 
-  import { langCode, volumeEnable, lists, audio } from '../lib/store';
+  import { langCode, volumeEnable, audio } from '../lib/store';
+  import { lists } from '../lib/Lists';
 
   let langValue;
   let volumeValue;
+
+  console.log("## HEADER");
 
   langCode.subscribe(value => {
     langValue = value;
@@ -21,8 +24,6 @@
   volumeEnable.subscribe(value => {
     volumeValue = value;
   });
-
-  let obj = $lists["buttons"];
 
   // 윈도 설정
   let selectedWindow = appWindow.label
@@ -33,8 +34,7 @@
   }
 
   // 활성화 단축키
-  let LANG_TOGGLE_HOTKEY = $lists["lang_change_key"];
-  console.log('toggle init', LANG_TOGGLE_HOTKEY);
+  let LANG_TOGGLE_HOTKEY;
 
   // 언어설정
   let _language = "한국어";
@@ -66,28 +66,18 @@
   }
 
   onMount(() => {
-    // appWindow.setPosition( new LogicalPosition(0, 0) );
     windowMap[selectedWindow].center();
     windowMap[selectedWindow].setAlwaysOnTop(true);
-    // hotkeys(INIT_TOGGLE_HOTKEY, () => {
-    //   _init = true;
-    //   select(0);
-    // });
-    // hotkeys(MAIN_TOGGLE_HOTKEY, () => {
-    //   _init = false;
-    //   select(1);
-    // });
-    handleLangHotKey();
+    setTimeout(() => {
+      handleLangHotKey();
+    }, 500);
   });
 
   onDestroy(() => {
-    // hotkeys.unbind(INIT_TOGGLE_HOTKEY);
-    // hotkeys.unbind(MAIN_TOGGLE_HOTKEY);
     hotkeys.unbind(LANG_TOGGLE_HOTKEY);
   });
 
   function select(arg) {
-
     switch (arg) {
       case 0:
         _isSetting = false;
@@ -104,7 +94,7 @@
         _isSetting = true;
         windowMap[selectedWindow].setSize(new LogicalSize(1280, 720));
         push("/config");
-        hotkeys.unbind(LANG_TOGGLE_HOTKEY);
+        handleLangHotKey();
         break;
     }
   }
@@ -141,9 +131,22 @@
     _isSetting = !_isSetting;
     if(_isSetting) {
       select(2);
-
+      if(!document.getElementById("btn-reset").classList.contains("hidden")) {
+        document.getElementById("btn-reset").classList.add("hidden");
+      }
     } else {
       select(1);
+    }
+  }
+
+  function handleReest() {
+    setTimeout(() => {
+      document.getElementById("btn-reset").classList.add("hidden");
+    }, 200);
+
+    for(let i = 1; i <= 9; i++) {
+      let _id = document.getElementById("btn_" + i);
+      _id.classList.remove("grayscale");
     }
   }
 </script>
@@ -181,6 +184,22 @@
     </div>
 
     <div class="flex items-end justify-end flex-none w-40">
+
+      <label id="btn-reset" class="mr-4 swap swap-rotate hidden">
+
+        <input type="checkbox" class="outline-disable" on:click={() => handleReest()} />
+
+        <!-- reset on icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -3.2 28 28" stroke="white" width="32" height="32" stroke-width="2" class="swap-on transform transition-transform duration-200 ease-in-out">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+
+        <!-- reset off icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -3.2 28 28" stroke="white" width="32" height="32" stroke-width="2" class="swap-off transform transition-transform duration-200 ease-in-out">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+      </label>
+
       <label class="swap">
 
         <input type="checkbox" class="outline-disable" on:click={() => handleVolume()} />
@@ -202,12 +221,12 @@
         <input type="checkbox" class="outline-disable" on:click={() => handleConfig()} />
 
         <!-- setting on icon -->
-        <svg class="fill-white swap-on" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 21.33 21.33">
+        <svg class="fill-white swap-on" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 -1.2 21.33 21.33">
           <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
         </svg>
 
         <!-- setting off icon -->
-        <svg class="fill-white swap-off" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 21.33 21.33">
+        <svg class="fill-white swap-off" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 -1.2 21.33 21.33">
           <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
         </svg>
       </label>
