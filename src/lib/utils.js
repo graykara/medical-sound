@@ -1,4 +1,4 @@
-import { desktopDir, join } from "@tauri-apps/api/path";
+import { dataDir, join } from "@tauri-apps/api/path";
 
 export const blobToBinary = async (blob) => {
 	const buffer = await blob.arrayBuffer();
@@ -6,12 +6,12 @@ export const blobToBinary = async (blob) => {
 	return new Uint8Array(buffer);
 };
 
-export const getDesktopPath = async () => {
-  const desktopPath = await desktopDir();
-  return desktopPath;
+export const getDataPath = async () => {
+  const dataPath = await dataDir();
+  return dataPath;
 }
 
 export const getSoundFile = async (fileName) => {
-  const desktopPath = await desktopDir();
-  return await join(desktopPath, 'medical-sound-data', 'sounds', fileName)
+  const dataPath = await dataDir();
+  return await join(dataPath, 'medical-sound-data', 'sounds', fileName)
 }

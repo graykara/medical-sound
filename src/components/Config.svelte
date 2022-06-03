@@ -7,7 +7,7 @@
   import { BaseDirectory, copyFile, readBinaryFile } from "@tauri-apps/api/fs";
   import { sep } from '@tauri-apps/api/path';
 
-  const dir = BaseDirectory.Desktop;
+  const dir = BaseDirectory.Data;
 
   let defaultPath = null;
   let filter = null;

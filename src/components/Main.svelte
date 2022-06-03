@@ -1,5 +1,5 @@
 <script>
-  import { desktopDir, join } from '@tauri-apps/api/path';
+  import { dataDir, join } from '@tauri-apps/api/path';
   import { convertFileSrc, invoke } from '@tauri-apps/api/tauri';
   import { appWindow } from '@tauri-apps/api/window';
 
@@ -127,8 +127,8 @@
 
   const getSoundFile = async (fileName) => {
     try {
-      const desktopPath = await desktopDir();
-      let res = join(desktopPath, 'medical-sound-data', 'sounds', fileName);
+      const dataPath = await dataDir();
+      let res = join(dataPath, 'medical-sound-data', 'sounds', fileName);
       return res;
     } catch(e) {
       console.log(e);
@@ -138,8 +138,8 @@
 
   const setImageFile = async (fileName) => {
     try {
-      const desktopPath = await desktopDir();
-      let res = join(desktopPath, 'medical-sound-data', 'images', fileName);
+      const dataPath = await dataDir();
+      let res = join(dataPath, 'medical-sound-data', 'images', fileName);
       return res;
     } catch(e) {
       return false;

@@ -29,7 +29,7 @@
         "removeDir": true,
         "removeFile": true,
         "renameFile": true,
-				"scope": ["**", "$APP/*", "$DESKTOP/*"]
+				"scope": ["**", "$APP/*", "$DATA/*"]
 			},
       "globalShortcut": {
         "all": true
@@ -40,7 +40,7 @@
 			"protocol": {
 				"all": true,
         "asset": true,
-				"assetScope": ["*", "$APP/*", "$DESKTOP/*"]
+				"assetScope": ["*", "$APP/*", "$DATA/*"]
 			},
       "window": {
         "all": true,

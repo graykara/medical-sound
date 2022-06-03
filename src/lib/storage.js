@@ -7,13 +7,13 @@ import {
 	writeBinaryFile,
   copyFile,
 } from '@tauri-apps/api/fs';
-import { desktopDir, join, resolve } from '@tauri-apps/api/path';
+import { dataDir, join, resolve } from '@tauri-apps/api/path';
 import { convertFileSrc } from '@tauri-apps/api/tauri';
 import { nanoid } from 'nanoid';
 import { blobToBinary } from './utils';
 
 const dataFileName = 'data.json';
-const dir = BaseDirectory.Desktop;
+const dir = BaseDirectory.Data;
 
 console.log("## STORAGE ##");
 
@@ -137,12 +137,12 @@ const _checkDataFolder = async () => {
 };
 
 const _writePath = async () => {
-  const desktopPath = await desktopDir();
-  join(desktopPath, 'medical-sound-data', 'sounds').then(res => {
+  const dataPath = await dataDir();
+  join(dataPath, 'medical-sound-data', 'sounds').then(res => {
     console.log("WRITE = ", res)
   });
 
-  join(desktopPath, 'medical-sound-data', 'images').then(res => {
+  join(dataPath, 'medical-sound-data', 'images').then(res => {
     console.log("WRITE = ", res)
   });
 
@@ -225,7 +225,7 @@ export const getStoredPosts = async () => {
 };
 
 export const saveImage = async (blob, extension) => {
-	const desktopPath = await desktopDir();
+	const dataPath = await dataDir();
 	const bin = await blobToBinary(blob);
 
 	const fileName = `${nanoid()}.${extension}`;
@@ -240,11 +240,11 @@ export const saveImage = async (blob, extension) => {
 		}
 	);
 
-	return convertFileSrc(await join(desktopPath, 'medical-sound-data', fileName));
+	return convertFileSrc(await join(dataPath, 'medical-sound-data', fileName));
 };
 
 export const saveSound = async (blob, extension) => {
-	const desktopPath = await desktopDir();
+	const dataPath = await dataDir();
 	const bin = await blobToBinary(blob);
 
 	const fileName = `${nanoid()}.${extension}`;
@@ -259,7 +259,7 @@ export const saveSound = async (blob, extension) => {
 		}
 	);
 
-	return convertFileSrc(await join(desktopPath, 'medical-sound-data', 'sounds', fileName));
+	return convertFileSrc(await join(dataPath, 'medical-sound-data', 'sounds', fileName));
 };
 
 export const saveState = async (data) => {

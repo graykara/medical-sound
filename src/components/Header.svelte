@@ -81,18 +81,18 @@
     switch (arg) {
       case 0:
         _isSetting = false;
-        windowMap[selectedWindow].setSize(new LogicalSize(1280, 290));
+        windowMap[selectedWindow].setSize(new LogicalSize(1280, 278));
         push("/");
         break;
       case 1:
         _isSetting = false;
-        windowMap[selectedWindow].setSize(new LogicalSize(1280, 290));
+        windowMap[selectedWindow].setSize(new LogicalSize(1280, 278));
         push("/main");
         handleLangHotKey();
         break;
       case 2:
         _isSetting = true;
-        windowMap[selectedWindow].setSize(new LogicalSize(1280, 720));
+        windowMap[selectedWindow].setSize(new LogicalSize(1280, 880));
         push("/config");
         handleLangHotKey();
         break;
