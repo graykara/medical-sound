@@ -4,13 +4,9 @@ import {
 	createDir,
 	writeFile,
 	readTextFile,
-	writeBinaryFile,
   copyFile,
 } from '@tauri-apps/api/fs';
 import { dataDir, join, resolve } from '@tauri-apps/api/path';
-import { convertFileSrc } from '@tauri-apps/api/tauri';
-import { nanoid } from 'nanoid';
-import { blobToBinary } from './utils';
 
 const dataFileName = 'data.json';
 const dir = BaseDirectory.Data;
@@ -119,7 +115,7 @@ const initData = {
     }
   ],
   invoke_key: "Shift+1",
-  lang_change_key: "Shift+l"
+  lang_change_key: "Shift+L"
 };
 
 const _checkDataFolder = async () => {
@@ -208,9 +204,7 @@ export const initStorage = async () => {
 
 	if (!hasDataFolder) {
 		await _createDatabase();
-	} else {
-    // await _writePath();
-  }
+	}
 };
 
 export const getStoredPosts = async () => {
@@ -224,46 +218,7 @@ export const getStoredPosts = async () => {
 	}
 };
 
-export const saveImage = async (blob, extension) => {
-	const dataPath = await dataDir();
-	const bin = await blobToBinary(blob);
-
-	const fileName = `${nanoid()}.${extension}`;
-
-	await writeBinaryFile(
-		{
-			contents: bin,
-			path: `./medical-sound-data/images/${fileName}`
-		},
-		{
-			dir: dir
-		}
-	);
-
-	return convertFileSrc(await join(dataPath, 'medical-sound-data', fileName));
-};
-
-export const saveSound = async (blob, extension) => {
-	const dataPath = await dataDir();
-	const bin = await blobToBinary(blob);
-
-	const fileName = `${nanoid()}.${extension}`;
-
-	await writeBinaryFile(
-		{
-			contents: bin,
-			path: `./medical-sound-data/sounds/${fileName}`
-		},
-		{
-			dir: dir
-		}
-	);
-
-	return convertFileSrc(await join(dataPath, 'medical-sound-data', 'sounds', fileName));
-};
-
 export const saveState = async (data) => {
-
 	await writeFile(
 		{
 			contents: data,
