@@ -1,4 +1,4 @@
-import { path } from '@tauri-apps/api';
+import { path, os } from '@tauri-apps/api';
 import {
 	readDir,
 	BaseDirectory,
@@ -23,8 +23,19 @@ let srcPath;
 // });
 
 path.resourceDir().then(res => {
-  join(res, "_up_", "src").then(realRes => {
-    srcPath = realRes;
+  let platform;
+  os.platform().then(os_platform => {
+    platform = os_platform;
+
+    let tmp = res;
+
+    if(platform == "win32") {
+      tmp = tmp.split("\\\\?\\")[1];
+    }
+
+    join(tmp, "_up_", "src").then(realRes => {
+      srcPath = realRes;
+    });
   });
 });
 

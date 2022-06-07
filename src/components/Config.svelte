@@ -11,6 +11,7 @@
 
   import {
     register as registerShortcut,
+    unregister,
     unregisterAll as unregisterAllShortcuts,
   } from "@tauri-apps/api/globalShortcut";
 
@@ -74,10 +75,11 @@
         $lists["invoke_key"] = key_of_invoke;
       }, 1000);
     } else {
-      unregisterAllShortcuts();
+      // unregisterAllShortcuts();
       event.target.value = key_of_invoke;
       $lists["invoke_key"] = key_of_invoke;
       shortcut = $lists["invoke_key"];
+      unregister($lists["invoke_key"]);
       register();
     }
   }

@@ -2,8 +2,6 @@
   import { dataDir, join } from '@tauri-apps/api/path';
   import { convertFileSrc, invoke } from '@tauri-apps/api/tauri';
   import { appWindow } from '@tauri-apps/api/window';
-
-  import hotkeys from "hotkeys-js";
   import { onMount, onDestroy } from "svelte";
 
   import { langCode, volumeEnable, audio } from '../lib/store';
@@ -11,6 +9,7 @@
 
   import {
     register as registerShortcut,
+    unregister,
     unregisterAll as unregisterAllShortcuts,
   } from "@tauri-apps/api/globalShortcut";
 
@@ -46,6 +45,7 @@
 
   function register() {
     const shortcut_ = shortcut;
+
     registerShortcut(shortcut_, () => {
       console.log(`Shortcut ${shortcut_} triggered`);
       invoke("handle_short_key");
@@ -54,19 +54,45 @@
         console.log(`Shortcut ${shortcut_} registered successfully`);
       })
       .catch();
+
+    registerShortcut(TOGGLE_HOTKEY_1, () => { handleClick(1) });
+    registerShortcut(TOGGLE_HOTKEY_2, () => { handleClick(2) });
+    registerShortcut(TOGGLE_HOTKEY_3, () => { handleClick(3) });
+    registerShortcut(TOGGLE_HOTKEY_4, () => { handleClick(4) });
+    registerShortcut(TOGGLE_HOTKEY_5, () => { handleClick(5) });
+    registerShortcut(TOGGLE_HOTKEY_6, () => { handleClick(6) });
+    registerShortcut(TOGGLE_HOTKEY_7, () => { handleClick(7) });
+    registerShortcut(TOGGLE_HOTKEY_8, () => { handleClick(8) });
+    registerShortcut(TOGGLE_HOTKEY_9, () => { handleClick(9) });
+
+
+  //   unregister(TOGGLE_HOTKEY_1);
+  //   unregister(TOGGLE_HOTKEY_2);
+  //   unregister(TOGGLE_HOTKEY_3);
+  //   unregister(TOGGLE_HOTKEY_4);
+  //   unregister(TOGGLE_HOTKEY_5);
+  //   unregister(TOGGLE_HOTKEY_6);
+  //   unregister(TOGGLE_HOTKEY_7);
+  //   unregister(TOGGLE_HOTKEY_8);
+  //   unregister(TOGGLE_HOTKEY_9);
+  //   appWindow.isVisible().then(isView => {
+  //     console.log(isView);
+  //     if(!isView) {
+  //       registerShortcut(TOGGLE_HOTKEY_1, () => { handleClick(1) });
+  //       registerShortcut(TOGGLE_HOTKEY_2, () => { handleClick(2) });
+  //       registerShortcut(TOGGLE_HOTKEY_3, () => { handleClick(3) });
+  //       registerShortcut(TOGGLE_HOTKEY_4, () => { handleClick(4) });
+  //       registerShortcut(TOGGLE_HOTKEY_5, () => { handleClick(5) });
+  //       registerShortcut(TOGGLE_HOTKEY_6, () => { handleClick(6) });
+  //       registerShortcut(TOGGLE_HOTKEY_7, () => { handleClick(7) });
+  //       registerShortcut(TOGGLE_HOTKEY_8, () => { handleClick(8) });
+  //       registerShortcut(TOGGLE_HOTKEY_9, () => { handleClick(9) });
+  //     }
+  //   });
   }
 
   function unregisterAll() {
     unregisterAllShortcuts();
-    hotkeys.unbind(TOGGLE_HOTKEY_1);
-    hotkeys.unbind(TOGGLE_HOTKEY_2);
-    hotkeys.unbind(TOGGLE_HOTKEY_3);
-    hotkeys.unbind(TOGGLE_HOTKEY_4);
-    hotkeys.unbind(TOGGLE_HOTKEY_5);
-    hotkeys.unbind(TOGGLE_HOTKEY_6);
-    hotkeys.unbind(TOGGLE_HOTKEY_7);
-    hotkeys.unbind(TOGGLE_HOTKEY_8);
-    hotkeys.unbind(TOGGLE_HOTKEY_9);
   }
 
   onMount(() => {
@@ -89,20 +115,8 @@
       TOGGLE_HOTKEY_7 = String($lists["buttons"][6].key);
       TOGGLE_HOTKEY_8 = String($lists["buttons"][7].key);
       TOGGLE_HOTKEY_9 = String($lists["buttons"][8].key);
-
       unregisterAll();
       register();
-
-      hotkeys(TOGGLE_HOTKEY_1, () => { handleClick(1) });
-      hotkeys(TOGGLE_HOTKEY_2, () => { handleClick(2) });
-      hotkeys(TOGGLE_HOTKEY_3, () => { handleClick(3) });
-      hotkeys(TOGGLE_HOTKEY_4, () => { handleClick(4) });
-      hotkeys(TOGGLE_HOTKEY_5, () => { handleClick(5) });
-      hotkeys(TOGGLE_HOTKEY_6, () => { handleClick(6) });
-      hotkeys(TOGGLE_HOTKEY_7, () => { handleClick(7) });
-      hotkeys(TOGGLE_HOTKEY_8, () => { handleClick(8) });
-      hotkeys(TOGGLE_HOTKEY_9, () => { handleClick(9) });
-
       console.log("mount");
       possible = true;
     }, 10);
