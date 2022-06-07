@@ -26,10 +26,8 @@
         "readDir": true,
         "copyFile": true,
         "createDir": true,
-        "removeDir": true,
-        "removeFile": true,
         "renameFile": true,
-				"scope": ["**", "$APP/*", "$DATA/*"]
+				"scope": ["**", "$APP/*", "$DATA/*", "$DATA/images/*", "$DATA/souds/*"]
 			},
       "globalShortcut": {
         "all": true
@@ -40,7 +38,7 @@
 			"protocol": {
 				"all": true,
         "asset": true,
-				"assetScope": ["*", "$APP/*", "$DATA/*"]
+				"assetScope": ["*", "$APP/*", "$DATA/*", "$DATA/images/*", "$DATA/souds/*"]
 			},
       "window": {
         "all": true,
@@ -94,7 +92,10 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
+      "resources": [
+        "../src/assets/images",
+        "../src/assets/sounds"
+      ],
       "shortDescription": "",
       "targets": "all",
       "windows": {
@@ -104,7 +105,7 @@
       }
     },
     "security": {
-      "csp": "default-src: 'self'; media-src 'self' asset: blob: data: filesystem: ws: wss: http: https: https://asset.localhost tauri: 'unsafe-eval' 'unsafe-inline' 'self'"
+      "csp": "default-src: 'self'; img-src 'self' media-src 'self' asset: blob: data: filesystem: ws: wss: http: https: https://asset.localhost tauri: 'unsafe-eval' 'unsafe-inline' 'self'"
     },
     "systemTray": {
       "iconPath": "icons/icon.png",

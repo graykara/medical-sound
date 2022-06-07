@@ -7,6 +7,13 @@
   import { BaseDirectory, copyFile, readBinaryFile } from "@tauri-apps/api/fs";
   import { sep } from '@tauri-apps/api/path';
 
+  import { invoke } from '@tauri-apps/api/tauri';
+
+  import {
+    register as registerShortcut,
+    unregisterAll as unregisterAllShortcuts,
+  } from "@tauri-apps/api/globalShortcut";
+
   const dir = BaseDirectory.Data;
 
   let defaultPath = null;
@@ -33,6 +40,20 @@
   let key_of_invoke;
   let key_of_lang;
 
+  let shortcut = $lists["invoke_key"];
+
+  function register() {
+    const shortcut_ = shortcut;
+    registerShortcut(shortcut_, () => {
+      console.log(`Shortcut ${shortcut_} triggered`);
+      invoke("handle_short_key");
+    })
+      .then(() => {
+        console.log(`Shortcut ${shortcut_} registered successfully`);
+      })
+      .catch();
+  }
+
   const onChangePublished = e => {
     let val = e.target.checked;
     let idx = Number(e.target.id.split("_")[1]);
@@ -53,8 +74,11 @@
         $lists["invoke_key"] = key_of_invoke;
       }, 1000);
     } else {
+      unregisterAllShortcuts();
       event.target.value = key_of_invoke;
       $lists["invoke_key"] = key_of_invoke;
+      shortcut = $lists["invoke_key"];
+      register();
     }
   }
 

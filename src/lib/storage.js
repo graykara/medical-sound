@@ -1,3 +1,4 @@
+import { path } from '@tauri-apps/api';
 import {
 	readDir,
 	BaseDirectory,
@@ -6,7 +7,7 @@ import {
 	readTextFile,
   copyFile,
 } from '@tauri-apps/api/fs';
-import { dataDir, join, resolve } from '@tauri-apps/api/path';
+import { appDir, dataDir, join, resolve } from '@tauri-apps/api/path';
 
 const dataFileName = 'data.json';
 const dir = BaseDirectory.Data;
@@ -15,8 +16,14 @@ console.log("## STORAGE ##");
 
 let srcPath;
 
-resolve().then(res => {
-  join(res, "..", "src").then(realRes => {
+// resolve().then(res => {
+//   join(res, "..", "src").then(realRes => {
+//     srcPath = realRes;
+//   });
+// });
+
+path.resourceDir().then(res => {
+  join(res, "_up_", "src").then(realRes => {
     srcPath = realRes;
   });
 });
@@ -31,7 +38,7 @@ const initData = {
       sound_ko: "ko_1.mp4",
       sound_th: "th_1.mp4",
       message_ko: "메시지를 읽으세요 - 1",
-      message_th: "메시지를 읽으세요 - 1"
+      message_th: "메시지를 읽으세요 태국어 - 1"
     },
     {
       id: "2",
@@ -41,7 +48,7 @@ const initData = {
       sound_ko: "ko_2.mp4",
       sound_th: "th_2.mp4",
       message_ko: "메시지를 읽으세요 - 2",
-      message_th: "메시지를 읽으세요 - 2"
+      message_th: "메시지를 읽으세요 태국어 - 2"
     },
     {
       id: "3",
@@ -51,7 +58,7 @@ const initData = {
       sound_ko: "ko_3.mp4",
       sound_th: "th_3.mp4",
       message_ko: "메시지를 읽으세요 - 3",
-      message_th: "메시지를 읽으세요 - 3"
+      message_th: "메시지를 읽으세요 태국어 - 3"
     },
     {
       id: "4",
@@ -61,7 +68,7 @@ const initData = {
       sound_ko: "ko_4.mp4",
       sound_th: "th_4.mp4",
       message_ko: "메시지를 읽으세요 - 4",
-      message_th: "메시지를 읽으세요 - 4"
+      message_th: "메시지를 읽으세요 태국어 - 4"
     },
     {
       id: "5",
@@ -71,7 +78,7 @@ const initData = {
       sound_ko: "ko_5.mp4",
       sound_th: "th_5.mp4",
       message_ko: "메시지를 읽으세요 - 5",
-      message_th: "메시지를 읽으세요 - 5"
+      message_th: "메시지를 읽으세요 태국어 - 5"
     },
     {
       id: "6",
@@ -81,7 +88,7 @@ const initData = {
       sound_ko: "ko_6.mp4",
       sound_th: "th_6.mp4",
       message_ko: "메시지를 읽으세요 - 6",
-      message_th: "메시지를 읽으세요 - 6"
+      message_th: "메시지를 읽으세요 태국어 - 6"
     },
     {
       id: "7",
@@ -91,7 +98,7 @@ const initData = {
       sound_ko: "ko_7.mp4",
       sound_th: "th_7.mp4",
       message_ko: "메시지를 읽으세요 - 7",
-      message_th: "메시지를 읽으세요 - 7"
+      message_th: "메시지를 읽으세요 태국어 - 7"
     },
     {
       id: "8",
@@ -101,7 +108,7 @@ const initData = {
       sound_ko: "ko_8.mp4",
       sound_th: "th_8.mp4",
       message_ko: "메시지를 읽으세요 - 8",
-      message_th: "메시지를 읽으세요 - 8"
+      message_th: "메시지를 읽으세요 태국어 - 8"
     },
     {
       id: "9",
@@ -111,7 +118,7 @@ const initData = {
       sound_ko: "ko_9.mp4",
       sound_th: "th_9.mp4",
       message_ko: "메시지를 읽으세요 - 9",
-      message_th: "메시지를 읽으세요 - 9"
+      message_th: "메시지를 읽으세요 태국어 - 9"
     }
   ],
   invoke_key: "Shift+1",
@@ -131,18 +138,6 @@ const _checkDataFolder = async () => {
 		return false;
 	}
 };
-
-const _writePath = async () => {
-  const dataPath = await dataDir();
-  join(dataPath, 'medical-sound-data', 'sounds').then(res => {
-    console.log("WRITE = ", res)
-  });
-
-  join(dataPath, 'medical-sound-data', 'images').then(res => {
-    console.log("WRITE = ", res)
-  });
-
-}
 
 const _createDatabase = async () => {
 	try {
@@ -172,6 +167,7 @@ const _createDatabase = async () => {
 		);
 
     for(var i = 1; i <= 9; i++) {
+      console.log(dir);
       await copyFile(
         srcPath + "/assets/sounds/ko_"+i+".mp3",
         "medical-sound-data/sounds/ko_"+i+".mp3",
@@ -194,6 +190,12 @@ const _createDatabase = async () => {
         }
       );
     }
+    console.log("DIR", dir);
+    console.log("SOURCE PATH", srcPath);
+    console.log("APP DIR", appDir.name);
+    console.log("Base", BaseDirectory);
+    console.log("Base DATA", BaseDirectory.Data);
+
 	} catch (e) {
 		console.log(e);
 	}
