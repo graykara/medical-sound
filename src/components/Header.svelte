@@ -1,5 +1,6 @@
 <script>
 
+  import { dataDir, join } from '@tauri-apps/api/path';
   import hotkeys from "hotkeys-js";
   import { onMount, onDestroy } from "svelte";
   import { push } from 'svelte-spa-router';
@@ -8,6 +9,14 @@
     appWindow,
     LogicalSize,
   } from '@tauri-apps/api/window';
+
+  import { convertFileSrc, invoke } from '@tauri-apps/api/tauri';
+
+  import {
+    register as registerShortcut,
+    unregister,
+    unregisterAll as unregisterAllShortcuts,
+  } from "@tauri-apps/api/globalShortcut";
 
   import { langCode, volumeEnable, audio } from '../lib/store';
   import { lists } from '../lib/Lists';
@@ -50,6 +59,109 @@
   // 설정화면 여부
   let _isSetting = false;
 
+  let TOGGLE_HOTKEY_1;
+  let TOGGLE_HOTKEY_2;
+  let TOGGLE_HOTKEY_3;
+  let TOGGLE_HOTKEY_4;
+  let TOGGLE_HOTKEY_5;
+  let TOGGLE_HOTKEY_6;
+  let TOGGLE_HOTKEY_7;
+  let TOGGLE_HOTKEY_8;
+  let TOGGLE_HOTKEY_9;
+
+  let shortcut;
+
+  function register() {
+    console.log(shortcut);
+    let shortcut_ = shortcut;
+
+    registerShortcut(shortcut_, () => {
+      console.log(`Shortcut ${shortcut_} triggered`);
+      invoke("handle_short_key");
+
+    })
+      .then(() => {
+        console.log(`Shortcut ${shortcut_} registered successfully`);
+      })
+      .catch();
+
+      appWindow.isVisible().then(res => {
+
+        if(res == true) {
+          console.log("VISIBLE", res);
+          unregisterAll();
+          registerShortcut(TOGGLE_HOTKEY_1, () => { handleClick(1) });
+          registerShortcut(TOGGLE_HOTKEY_2, () => { handleClick(2) });
+          registerShortcut(TOGGLE_HOTKEY_3, () => { handleClick(3) });
+          registerShortcut(TOGGLE_HOTKEY_4, () => { handleClick(4) });
+          registerShortcut(TOGGLE_HOTKEY_5, () => { handleClick(5) });
+          registerShortcut(TOGGLE_HOTKEY_6, () => { handleClick(6) });
+          registerShortcut(TOGGLE_HOTKEY_7, () => { handleClick(7) });
+          registerShortcut(TOGGLE_HOTKEY_8, () => { handleClick(8) });
+          registerShortcut(TOGGLE_HOTKEY_9, () => { handleClick(9) });
+
+        } else  {
+          console.log("REGIST")
+          unregisterAll();
+        }
+        });
+  }
+
+  function unregisterAll() {
+    unregister(TOGGLE_HOTKEY_1);
+    unregister(TOGGLE_HOTKEY_2);
+    unregister(TOGGLE_HOTKEY_3);
+    unregister(TOGGLE_HOTKEY_4);
+    unregister(TOGGLE_HOTKEY_5);
+    unregister(TOGGLE_HOTKEY_6);
+    unregister(TOGGLE_HOTKEY_7);
+    unregister(TOGGLE_HOTKEY_8);
+    unregister(TOGGLE_HOTKEY_9);
+  }
+
+  const getSoundFile = async (fileName) => {
+    try {
+      const dataPath = await dataDir();
+      let res = join(dataPath, 'medical-sound-data', 'sounds', fileName);
+      return res;
+    } catch(e) {
+      console.log(e);
+      return false;
+    }
+  }
+
+  function handleClick(id) {
+    let _id = document.getElementById("btn_" + id);
+
+    if(!volumeValue) {
+      audio.volume = 0;
+    } else {
+      audio.volume = 1;
+    }
+
+    if(!_id.classList.contains("grayscale")) {
+      _id.classList.add("grayscale");
+
+      let file = langValue + "_" + id + ".mp3";
+
+      getSoundFile(file).then(res => {
+        let _src = convertFileSrc(res.toString());
+
+        if(audio.canPlayType('audio/mpeg')) {
+          audio.getElementsByTagName("source")[0].src = _src;
+          audio.load();
+          audio.pause();
+          audio.currentTime = 0;
+          audio.play();
+        }
+      });
+    }
+
+    if(document.getElementById("btn-reset").classList.contains("hidden")) {
+      document.getElementById("btn-reset").classList.remove("hidden");
+    }
+  }
+
   function handleLangHotKey() {
     hotkeys.unbind(LANG_TOGGLE_HOTKEY);
     LANG_TOGGLE_HOTKEY = $lists["lang_change_key"];
@@ -68,9 +180,30 @@
   onMount(() => {
     windowMap[selectedWindow].center();
     windowMap[selectedWindow].setAlwaysOnTop(true);
+
     setTimeout(() => {
+      console.log("$LISTS", $lists)
+      shortcut = $lists["invoke_key"];
+      TOGGLE_HOTKEY_1 = String($lists["buttons"][0].key);
+      TOGGLE_HOTKEY_2 = String($lists["buttons"][1].key);
+      TOGGLE_HOTKEY_3 = String($lists["buttons"][2].key);
+      TOGGLE_HOTKEY_4 = String($lists["buttons"][3].key);
+      TOGGLE_HOTKEY_5 = String($lists["buttons"][4].key);
+      TOGGLE_HOTKEY_6 = String($lists["buttons"][5].key);
+      TOGGLE_HOTKEY_7 = String($lists["buttons"][6].key);
+      TOGGLE_HOTKEY_8 = String($lists["buttons"][7].key);
+      TOGGLE_HOTKEY_9 = String($lists["buttons"][8].key);
+      unregisterAll();
+      register();
       handleLangHotKey();
-    }, 500);
+    }, 100);
+
+    document
+      .getElementById('titlebar-close')
+      .addEventListener('click', () => {
+        unregisterAll();
+        invoke("handle_short_key");
+      });
   });
 
   onDestroy(() => {
@@ -88,12 +221,21 @@
         _isSetting = false;
         windowMap[selectedWindow].setSize(new LogicalSize(1280, 278));
         push("/main");
-        handleLangHotKey();
+        unregister(shortcut);
+        unregisterAll();
+        shortcut = $lists["invoke_key"];
+        setTimeout(() => {
+          console.log("REGISTER")
+          register();
+          handleLangHotKey();
+        }, 500);
         break;
       case 2:
         _isSetting = true;
         windowMap[selectedWindow].setSize(new LogicalSize(1280, 880));
         push("/config");
+        // unregister(shortcut);
+        unregisterAll();
         handleLangHotKey();
         break;
     }
@@ -151,7 +293,15 @@
   }
 </script>
 
-<div>
+<div id="windowMenu" data-tauri-drag-region class="titlebar bg-black flex">
+  <div id="titlebar-close" class="titlebar-button items-end" >
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </div>
+</div>
+
+<div class="with-title-bar">
   {#if !_init}
   <div id="nav" class="flex min-h-0 px-10 py-1 m-0 navbar bg-sky-500">
     <div class="flex items-start justify-start flex-none w-40 cursor-default">
@@ -239,6 +389,37 @@
 <style lang="postcss">
   .outline-disable {
     outline: none;
+  }
+
+  .with-title-bar {
+    margin-top: 30px;
+  }
+
+  .titlebar {
+    width: 100%;
+    height: 30px;
+    user-select: none;
+    display: flex;
+    justify-content: flex-end;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    cursor: move;
+    -webkit-app-region: no-drag;
+  }
+  .titlebar-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    color: #fff;
+    cursor: pointer;
+    -webkit-app-region: no-drag;
+  }
+  .titlebar-button:hover {
+    @apply bg-red-600;
   }
 
 </style>

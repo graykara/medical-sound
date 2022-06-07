@@ -118,7 +118,7 @@
       {
         "theme": "Dark",
         "center": true,
-        "decorations": true,
+        "decorations": false,
         "fullscreen": false,
         "height": 278,
         "resizable": false,

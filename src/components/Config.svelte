@@ -65,6 +65,7 @@
   let oldInvokeVal = $lists["invoke_key"];
 
   const onInvokeKeyUp = event => {
+    unregister(shortcut);
     if((key_of_invoke == undefined || key_of_invoke == langKey) && invokeUp == false) {
       document.getElementById("modal-open-btn").click();
       invokeUp = true;
@@ -76,10 +77,12 @@
       }, 1000);
     } else {
       // unregisterAllShortcuts();
-      event.target.value = key_of_invoke;
-      $lists["invoke_key"] = key_of_invoke;
-      shortcut = $lists["invoke_key"];
-      unregister($lists["invoke_key"]);
+      console.log("#####", shortcut);
+      shortcut = key_of_invoke;
+      console.log("#####", shortcut);
+
+      event.target.value = shortcut;
+      $lists["invoke_key"] = shortcut;
       register();
     }
   }

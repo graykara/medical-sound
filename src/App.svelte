@@ -9,7 +9,7 @@
   import Main from './components/Main.svelte';
   import Config from './components/Config.svelte';
 
-  import { list_store } from './lib/Lists';
+  import { lists, list_store } from './lib/Lists';
 
   const routes = {
     '/': Welcome,
@@ -19,8 +19,11 @@
 
   let promise;
 
+  list_store.init();
   onMount(() => {
-    promise = list_store.init();
+    setTimeout(() => {
+      promise = $lists;
+    }, 100);
   });
 </script>
 

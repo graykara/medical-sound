@@ -1,19 +1,10 @@
 <script>
   import { dataDir, join } from '@tauri-apps/api/path';
-  import { convertFileSrc, invoke } from '@tauri-apps/api/tauri';
-  import { appWindow } from '@tauri-apps/api/window';
+  import { convertFileSrc } from '@tauri-apps/api/tauri';
   import { onMount, onDestroy } from "svelte";
 
   import { langCode, volumeEnable, audio } from '../lib/store';
   import { lists } from '../lib/Lists';
-
-  import {
-    register as registerShortcut,
-    unregister,
-    unregisterAll as unregisterAllShortcuts,
-  } from "@tauri-apps/api/globalShortcut";
-
-  let shortcut = $lists["invoke_key"];
 
   let obj;
 
@@ -25,16 +16,6 @@
   let langValue;
   let volumeValue;
 
-  let TOGGLE_HOTKEY_1;
-  let TOGGLE_HOTKEY_2;
-  let TOGGLE_HOTKEY_3;
-  let TOGGLE_HOTKEY_4;
-  let TOGGLE_HOTKEY_5;
-  let TOGGLE_HOTKEY_6;
-  let TOGGLE_HOTKEY_7;
-  let TOGGLE_HOTKEY_8;
-  let TOGGLE_HOTKEY_9;
-
   langCode.subscribe(value => {
     langValue = value;
   });
@@ -42,58 +23,6 @@
   volumeEnable.subscribe(value => {
     volumeValue = value;
   });
-
-  function register() {
-    const shortcut_ = shortcut;
-
-    registerShortcut(shortcut_, () => {
-      console.log(`Shortcut ${shortcut_} triggered`);
-      invoke("handle_short_key");
-    })
-      .then(() => {
-        console.log(`Shortcut ${shortcut_} registered successfully`);
-      })
-      .catch();
-
-    registerShortcut(TOGGLE_HOTKEY_1, () => { handleClick(1) });
-    registerShortcut(TOGGLE_HOTKEY_2, () => { handleClick(2) });
-    registerShortcut(TOGGLE_HOTKEY_3, () => { handleClick(3) });
-    registerShortcut(TOGGLE_HOTKEY_4, () => { handleClick(4) });
-    registerShortcut(TOGGLE_HOTKEY_5, () => { handleClick(5) });
-    registerShortcut(TOGGLE_HOTKEY_6, () => { handleClick(6) });
-    registerShortcut(TOGGLE_HOTKEY_7, () => { handleClick(7) });
-    registerShortcut(TOGGLE_HOTKEY_8, () => { handleClick(8) });
-    registerShortcut(TOGGLE_HOTKEY_9, () => { handleClick(9) });
-
-
-  //   unregister(TOGGLE_HOTKEY_1);
-  //   unregister(TOGGLE_HOTKEY_2);
-  //   unregister(TOGGLE_HOTKEY_3);
-  //   unregister(TOGGLE_HOTKEY_4);
-  //   unregister(TOGGLE_HOTKEY_5);
-  //   unregister(TOGGLE_HOTKEY_6);
-  //   unregister(TOGGLE_HOTKEY_7);
-  //   unregister(TOGGLE_HOTKEY_8);
-  //   unregister(TOGGLE_HOTKEY_9);
-  //   appWindow.isVisible().then(isView => {
-  //     console.log(isView);
-  //     if(!isView) {
-  //       registerShortcut(TOGGLE_HOTKEY_1, () => { handleClick(1) });
-  //       registerShortcut(TOGGLE_HOTKEY_2, () => { handleClick(2) });
-  //       registerShortcut(TOGGLE_HOTKEY_3, () => { handleClick(3) });
-  //       registerShortcut(TOGGLE_HOTKEY_4, () => { handleClick(4) });
-  //       registerShortcut(TOGGLE_HOTKEY_5, () => { handleClick(5) });
-  //       registerShortcut(TOGGLE_HOTKEY_6, () => { handleClick(6) });
-  //       registerShortcut(TOGGLE_HOTKEY_7, () => { handleClick(7) });
-  //       registerShortcut(TOGGLE_HOTKEY_8, () => { handleClick(8) });
-  //       registerShortcut(TOGGLE_HOTKEY_9, () => { handleClick(9) });
-  //     }
-  //   });
-  }
-
-  function unregisterAll() {
-    unregisterAllShortcuts();
-  }
 
   onMount(() => {
     obj = $lists["buttons"];
@@ -106,17 +35,6 @@
     }, 1);
 
     setTimeout(() => {
-      TOGGLE_HOTKEY_1 = String($lists["buttons"][0].key);
-      TOGGLE_HOTKEY_2 = String($lists["buttons"][1].key);
-      TOGGLE_HOTKEY_3 = String($lists["buttons"][2].key);
-      TOGGLE_HOTKEY_4 = String($lists["buttons"][3].key);
-      TOGGLE_HOTKEY_5 = String($lists["buttons"][4].key);
-      TOGGLE_HOTKEY_6 = String($lists["buttons"][5].key);
-      TOGGLE_HOTKEY_7 = String($lists["buttons"][6].key);
-      TOGGLE_HOTKEY_8 = String($lists["buttons"][7].key);
-      TOGGLE_HOTKEY_9 = String($lists["buttons"][8].key);
-      unregisterAll();
-      register();
       console.log("mount");
       possible = true;
     }, 10);
@@ -134,9 +52,7 @@
   });
 
   onDestroy(() => {
-    setTimeout(() => {
-      unregisterAll();
-    }, 200);
+
   })
 
   const getSoundFile = async (fileName) => {
