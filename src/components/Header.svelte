@@ -14,8 +14,8 @@
 
   import {
     register as registerShortcut,
-    unregister,
-    unregisterAll as unregisterAllShortcuts,
+    registerAll,
+    unregister
   } from "@tauri-apps/api/globalShortcut";
 
   import { langCode, volumeEnable, audio } from '../lib/store';
@@ -24,7 +24,7 @@
   let langValue;
   let volumeValue;
 
-  console.log("## HEADER");
+  // console.log("## HEADER");
 
   langCode.subscribe(value => {
     langValue = value;
@@ -76,38 +76,49 @@
     let shortcut_ = shortcut;
 
     registerShortcut(shortcut_, () => {
-      console.log(`Shortcut ${shortcut_} triggered`);
-      invoke("handle_short_key");
-
+      // console.log(`Shortcut ${shortcut_} triggered`);
+      invoke("handle_short_key").then(res => {
+        if(res == "show") {
+          unregisterAllHotKeys();
+          if(!_isSetting) registerAllHotKeys();
+        } else {
+          unregisterAllHotKeys();
+        }
+      });
     })
       .then(() => {
-        console.log(`Shortcut ${shortcut_} registered successfully`);
+        // console.log(`Shortcut ${shortcut_} registered successfully`);
+        unregisterAllHotKeys();
+        if(!_isSetting) registerAllHotKeys();
       })
       .catch();
-
-      appWindow.isVisible().then(res => {
-
-        if(res == true) {
-          console.log("VISIBLE", res);
-          unregisterAll();
-          registerShortcut(TOGGLE_HOTKEY_1, () => { handleClick(1) });
-          registerShortcut(TOGGLE_HOTKEY_2, () => { handleClick(2) });
-          registerShortcut(TOGGLE_HOTKEY_3, () => { handleClick(3) });
-          registerShortcut(TOGGLE_HOTKEY_4, () => { handleClick(4) });
-          registerShortcut(TOGGLE_HOTKEY_5, () => { handleClick(5) });
-          registerShortcut(TOGGLE_HOTKEY_6, () => { handleClick(6) });
-          registerShortcut(TOGGLE_HOTKEY_7, () => { handleClick(7) });
-          registerShortcut(TOGGLE_HOTKEY_8, () => { handleClick(8) });
-          registerShortcut(TOGGLE_HOTKEY_9, () => { handleClick(9) });
-
-        } else  {
-          console.log("REGIST")
-          unregisterAll();
-        }
-        });
   }
 
-  function unregisterAll() {
+  function reloadHotkeys() {
+    TOGGLE_HOTKEY_1 = String($lists["buttons"][0].key);
+    TOGGLE_HOTKEY_2 = String($lists["buttons"][1].key);
+    TOGGLE_HOTKEY_3 = String($lists["buttons"][2].key);
+    TOGGLE_HOTKEY_4 = String($lists["buttons"][3].key);
+    TOGGLE_HOTKEY_5 = String($lists["buttons"][4].key);
+    TOGGLE_HOTKEY_6 = String($lists["buttons"][5].key);
+    TOGGLE_HOTKEY_7 = String($lists["buttons"][6].key);
+    TOGGLE_HOTKEY_8 = String($lists["buttons"][7].key);
+    TOGGLE_HOTKEY_9 = String($lists["buttons"][8].key);
+  }
+
+  function registerAllHotKeys() {
+    registerShortcut(TOGGLE_HOTKEY_1, () => { handleClick(1) });
+    registerShortcut(TOGGLE_HOTKEY_2, () => { handleClick(2) });
+    registerShortcut(TOGGLE_HOTKEY_3, () => { handleClick(3) });
+    registerShortcut(TOGGLE_HOTKEY_4, () => { handleClick(4) });
+    registerShortcut(TOGGLE_HOTKEY_5, () => { handleClick(5) });
+    registerShortcut(TOGGLE_HOTKEY_6, () => { handleClick(6) });
+    registerShortcut(TOGGLE_HOTKEY_7, () => { handleClick(7) });
+    registerShortcut(TOGGLE_HOTKEY_8, () => { handleClick(8) });
+    registerShortcut(TOGGLE_HOTKEY_9, () => { handleClick(9) });
+  }
+
+  function unregisterAllHotKeys() {
     unregister(TOGGLE_HOTKEY_1);
     unregister(TOGGLE_HOTKEY_2);
     unregister(TOGGLE_HOTKEY_3);
@@ -165,7 +176,7 @@
   function handleLangHotKey() {
     hotkeys.unbind(LANG_TOGGLE_HOTKEY);
     LANG_TOGGLE_HOTKEY = $lists["lang_change_key"];
-    console.log("TOGGLE", LANG_TOGGLE_HOTKEY);
+
     hotkeys(LANG_TOGGLE_HOTKEY, () => {
       let _target;
       if(_langCode == "ko") {
@@ -182,18 +193,11 @@
     windowMap[selectedWindow].setAlwaysOnTop(true);
 
     setTimeout(() => {
-      console.log("$LISTS", $lists)
+      // console.log("$LISTS", $lists)
+      console.log("MAIN MOUNTED");
       shortcut = $lists["invoke_key"];
-      TOGGLE_HOTKEY_1 = String($lists["buttons"][0].key);
-      TOGGLE_HOTKEY_2 = String($lists["buttons"][1].key);
-      TOGGLE_HOTKEY_3 = String($lists["buttons"][2].key);
-      TOGGLE_HOTKEY_4 = String($lists["buttons"][3].key);
-      TOGGLE_HOTKEY_5 = String($lists["buttons"][4].key);
-      TOGGLE_HOTKEY_6 = String($lists["buttons"][5].key);
-      TOGGLE_HOTKEY_7 = String($lists["buttons"][6].key);
-      TOGGLE_HOTKEY_8 = String($lists["buttons"][7].key);
-      TOGGLE_HOTKEY_9 = String($lists["buttons"][8].key);
-      unregisterAll();
+      reloadHotkeys();
+      unregisterAllHotKeys();
       register();
       handleLangHotKey();
     }, 100);
@@ -201,7 +205,7 @@
     document
       .getElementById('titlebar-close')
       .addEventListener('click', () => {
-        unregisterAll();
+        unregisterAllHotKeys();
         invoke("handle_short_key");
       });
   });
@@ -222,11 +226,13 @@
         windowMap[selectedWindow].setSize(new LogicalSize(1280, 278));
         push("/main");
         unregister(shortcut);
-        unregisterAll();
+        unregisterAllHotKeys();
         shortcut = $lists["invoke_key"];
+        reloadHotkeys();
         setTimeout(() => {
           console.log("REGISTER")
           register();
+          registerAllHotKeys();
           handleLangHotKey();
         }, 500);
         break;
@@ -235,7 +241,7 @@
         windowMap[selectedWindow].setSize(new LogicalSize(1280, 880));
         push("/config");
         // unregister(shortcut);
-        unregisterAll();
+        unregisterAllHotKeys();
         handleLangHotKey();
         break;
     }

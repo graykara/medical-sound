@@ -29,13 +29,13 @@
 
     setTimeout(() => {
       if(obj != undefined) {
-        console.log("## MAIN INIT ##");
+        // console.log("## MAIN INIT ##");
         _lists = Object.keys(obj).map((key) => [Number(key), obj[key]][1]);
       }
     }, 1);
 
     setTimeout(() => {
-      console.log("mount");
+      // console.log("mount");
       possible = true;
     }, 10);
 

@@ -269,9 +269,9 @@
 
 <div>
   <div class="px-4 py-4 overflow-x-auto">
-    <h3 class="text-lg leading-6 mb-4 font-medium text-white">설정</h3>
+    <h3 class="text-lg leading-6 mb-4 px-2 font-medium text-white">설정</h3>
 
-    <table class="table w-full mb-8 table-zebra table-compact">
+    <table class="table w-full mb-8 table-compact">
       <thead>
         <tr>
           <th class="w-40 text-center">기능</th>
@@ -283,12 +283,14 @@
           <td class="text-center">앱 활성화키</td>
           <td>
             <input class="kbd kbd-md bg-white text-gray-900 w-auto text-center" on:keyup={onInvokeKeyUp} on:keypress={onIKnvokeKey} value={invokeKey} />
+            <span class="ml-4"><kbd class="kbd">Shift</kbd> 또는 <kbd class="kbd">Ctrl</kbd> 키와 숫자(<kbd class="kbd">0</kbd>~<kbd class="kbd">9</kbd>) 또는 영문(<kbd class="kbd">a</kbd>~<kbd class="kbd">z</kbd>) 조합으로 사용 가능합니다.</span>
           </td>
         </tr>
         <tr class="h-14">
           <td class="text-center">언어 변경키</td>
           <td>
             <input class="kbd kbd-md bg-white text-gray-900 w-auto text-center" on:keyup={onLangKeyUp} on:keypress={onLangKey} value={langKey} />
+            <span class="ml-4"><kbd class="kbd">Shift</kbd> 또는 <kbd class="kbd">Ctrl</kbd> 키와 숫자(<kbd class="kbd">0</kbd>~<kbd class="kbd">9</kbd>) 또는 영문(<kbd class="kbd">a</kbd>~<kbd class="kbd">z</kbd>) 조합으로 사용 가능합니다.</span>
           </td>
         </tr>
       </tbody>
