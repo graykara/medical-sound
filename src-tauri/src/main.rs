@@ -123,19 +123,17 @@ fn main() {
 }
 
 #[tauri::command]
-fn handle_short_key(window: tauri::Window) -> String {
+fn handle_short_key(window: tauri::Window) {
   let app_handle = window.app_handle();
-  // std::thread::spawn(move || {
-  if window.is_visible().unwrap() {
-    window.hide().unwrap();
-    app_handle.tray_handle().get_item("show_hide").set_title("보이기").unwrap();
-    // window.eval("window['detectState']()");
-    return "hide".to_string();
-  } else {
-    window.show().unwrap();
-    app_handle.tray_handle().get_item("show_hide").set_title("숨기기").unwrap();
-    // window.eval("window['detectState']()");
-    return "show".to_string();
-  }
-  // });
+  std::thread::spawn(move || {
+    if window.is_visible().unwrap() {
+      window.hide().unwrap();
+      app_handle.tray_handle().get_item("show_hide").set_title("보이기").unwrap();
+      window.eval("window['detectState']('hide')");
+    } else {
+      window.show().unwrap();
+      app_handle.tray_handle().get_item("show_hide").set_title("숨기기").unwrap();
+      window.eval("window['detectState']('show')");
+    }
+  });
 }

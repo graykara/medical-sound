@@ -69,23 +69,25 @@
 
   let shortcut;
 
+  globalThis.detectState = function(arg) {
+    if(arg == 'show') {
+      unregisterAllHotKeys();
+      if(!_isSetting) {
+        registerLangKLey();
+        registerAllHotKeys();
+      }
+    } else {
+      unregister(LANG_TOGGLE_HOTKEY);
+      unregisterAllHotKeys();
+    }
+  }
+
   function register() {
     console.log(shortcut);
     let shortcut_ = shortcut;
 
     registerShortcut(shortcut_, () => {
-      invoke("handle_short_key").then(res => {
-        if(res == "show") {
-          unregisterAllHotKeys();
-          if(!_isSetting) {
-            registerLangKLey();
-            registerAllHotKeys();
-          }
-        } else {
-          unregister(LANG_TOGGLE_HOTKEY);
-          unregisterAllHotKeys();
-        }
-      });
+      invoke("handle_short_key");
     })
       .then(() => {
         unregisterAllHotKeys();
@@ -204,7 +206,7 @@
       unregisterAllHotKeys();
       register();
       registerAllHotKeys();
-    }, 100);
+    }, 500);
 
     document
       .getElementById('titlebar-close')
