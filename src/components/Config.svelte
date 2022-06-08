@@ -15,14 +15,20 @@
     unregisterAll as unregisterAllShortcuts,
   } from "@tauri-apps/api/globalShortcut";
 
+  let langValue;
+
+  // console.log("## HEADER");
+
+  langCode.subscribe(value => {
+    langValue = value;
+  });
+
   const dir = BaseDirectory.Data;
 
   let defaultPath = null;
   let filter = null;
   let multiple = false;
   let directory = false;
-
-  let langValue;
 
   let invokeKey = $lists["invoke_key"];
   let langKey = $lists["lang_change_key"];
@@ -42,6 +48,27 @@
   let key_of_lang;
 
   let shortcut = $lists["invoke_key"];
+
+  // 언어설정
+  let _language = "한국어";
+  let _langCode = "ko";
+  let _show = false;
+
+  function changeLanguage(lang) {
+    let humanLanguage;
+    _langCode = lang;
+
+    langCode.set(lang);
+
+    if (_langCode == "ko") {
+      humanLanguage = "한국어";
+    } else if (_langCode == "th") {
+      humanLanguage = "태국어";
+    }
+    _language = humanLanguage;
+    _show = !_show;
+    console.log(_show);
+  }
 
   function register() {
     const shortcut_ = shortcut;
@@ -117,6 +144,7 @@
   let oldLangVal = $lists["lang_change_key"];
 
   const onLangKeyUp = event => {
+    console.log(key_of_lang);
     if((key_of_lang == undefined || key_of_lang == invokeKey) && langUp == false) {
       document.getElementById("modal-open-btn").click();
       langUp = true;
@@ -127,8 +155,20 @@
         $lists["lang_change_key"] = key_of_lang;
       }, 1000);
     } else {
+      console.log("CHANGE", key_of_lang);
       event.target.value = key_of_lang;
       $lists["lang_change_key"] = key_of_lang;
+      // unregister(key_of_lang);
+      // registerShortcut(key_of_lang, () => {
+      //   let _target;
+      //   if(_langCode == "ko") {
+      //     _target = "th";
+      //   } else {
+      //     _target = "ko";
+      //   }
+      //   console.log("TARGET", _target);
+      //   changeLanguage(_target);
+      // });
     }
   }
 
@@ -269,28 +309,28 @@
 
 <div>
   <div class="px-4 py-4 overflow-x-auto">
-    <h3 class="text-lg leading-6 mb-4 px-2 font-medium text-white">설정</h3>
+    <h3 class="px-2 mb-4 text-lg font-medium leading-6 text-white">설정</h3>
 
     <table class="table w-full mb-8 table-compact">
       <thead>
         <tr>
-          <th class="w-40 text-center">기능</th>
-          <th class="text-center">단축키</th>
+          <th class="w-40 text-center text-white">기능</th>
+          <th class="text-center text-white">단축키</th>
         </tr>
       </thead>
       <tbody>
         <tr class="h-14">
-          <td class="text-center">앱 활성화키</td>
+          <td class="text-center text-white">앱 활성화키</td>
           <td>
-            <input class="kbd kbd-md bg-white text-gray-900 w-auto text-center" on:keyup={onInvokeKeyUp} on:keypress={onIKnvokeKey} value={invokeKey} />
-            <span class="ml-4"><kbd class="kbd">Shift</kbd> 또는 <kbd class="kbd">Ctrl</kbd> 키와 숫자(<kbd class="kbd">0</kbd>~<kbd class="kbd">9</kbd>) 또는 영문(<kbd class="kbd">a</kbd>~<kbd class="kbd">z</kbd>) 조합으로 사용 가능합니다.</span>
+            <input class="w-auto text-center text-gray-900 bg-white kbd kbd-md" on:keyup={onInvokeKeyUp} on:keypress={onIKnvokeKey} value={invokeKey} />
+            <span class="ml-4 text-white"><kbd class="kbd">Shift</kbd> 또는 <kbd class="kbd">Ctrl</kbd> 키 <kbd class="kbd">+</kbd> 숫자(<kbd class="kbd">0</kbd>~<kbd class="kbd">9</kbd>) 또는 영문(<kbd class="kbd">a</kbd>~<kbd class="kbd">z</kbd>) 조합으로 사용 가능합니다.</span>
           </td>
         </tr>
         <tr class="h-14">
-          <td class="text-center">언어 변경키</td>
+          <td class="text-center text-white">언어 변경키</td>
           <td>
-            <input class="kbd kbd-md bg-white text-gray-900 w-auto text-center" on:keyup={onLangKeyUp} on:keypress={onLangKey} value={langKey} />
-            <span class="ml-4"><kbd class="kbd">Shift</kbd> 또는 <kbd class="kbd">Ctrl</kbd> 키와 숫자(<kbd class="kbd">0</kbd>~<kbd class="kbd">9</kbd>) 또는 영문(<kbd class="kbd">a</kbd>~<kbd class="kbd">z</kbd>) 조합으로 사용 가능합니다.</span>
+            <input class="w-auto text-center text-gray-900 bg-white kbd kbd-md" on:keyup={onLangKeyUp} on:keypress={onLangKey} value={langKey} />
+            <span class="ml-4 text-white"><kbd class="kbd">Shift</kbd> 또는 <kbd class="kbd">Ctrl</kbd> 키 <kbd class="kbd">+</kbd> 숫자(<kbd class="kbd">0</kbd>~<kbd class="kbd">9</kbd>) 또는 영문(<kbd class="kbd">a</kbd>~<kbd class="kbd">z</kbd>) 조합으로 사용 가능합니다.</span>
           </td>
         </tr>
       </tbody>
@@ -300,18 +340,18 @@
       <!-- head -->
       <thead>
         <tr>
-          <th class="w-20 text-center">순서</th>
-          <th class="w-20 text-center">사용</th>
-          <th class="w-20 text-center">키</th>
-          <th class="text-center w-36">이미지</th>
-          <th class="text-center w-36">음성</th>
-          <th class="text-center">메시지</th>
+          <th class="w-20 text-center text-white ">순서</th>
+          <th class="w-20 text-center text-white ">사용</th>
+          <th class="w-20 text-center text-white ">키</th>
+          <th class="text-center text-white w-36">이미지</th>
+          <th class="text-center text-white w-36">음성</th>
+          <th class="text-center text-white ">메시지</th>
         </tr>
       </thead>
       <tbody>
         {#each _lists as list, index }
         <tr class="h-14">
-          <td class="text-center">{list.id}</td>
+          <td class="text-center text-white">{list.id}</td>
           <td class="text-center">
             <input
               type="checkbox"
@@ -331,50 +371,42 @@
               on:input={onHotKey}
               placeholder={list.key}>
           </td>
-          <!-- <td>{list.key}</td> -->
           <td class="text-center">
-            <span id="imgname_{index + 1}">{list.image}</span>
+            <span id="imgname_{index + 1}" class="text-white ">{list.image}</span>
             <button
-              class="h-4 btn btn-xs btn-outline"
+              class="h-4 text-white btn btn-xs btn-outline"
               id="img_list_{list.id}"
               on:click={(e) => openDialog('img', e)}>변경</button>
           </td>
 
           {#if langValue == "ko"}
-            <td class="text-center">
+            <td class="text-center text-white">
               {list.sound_ko}
               <button
-              class="h-4 btn btn-xs btn-outline"
+              class="h-4 text-white btn btn-xs btn-outline"
               id="sound_list_{list.id}"
               on:click={(e) => openDialog('sound', e)}>변경</button>
-            </td>
-            <td class="text-center">
-              <input
-                type="text" name="message_ko" id="message_{index + 1}"
-                class="flex items-center w-full h-8 px-2 text-left text-gray-700 bg-white outline-none fon2-semibold focus:outline-none text-md hover:text-black focus:text-black md:text-basecursor-default"
-                value={list.message_ko}
-                on:blur={onChangeMessage}
-                placeholder={list.message_ko}>
             </td>
           {/if}
 
           {#if langValue == "th"}
-            <td class="text-center">
+            <td class="text-center text-white">
               {list.sound_th}
               <button
-              class="h-4 btn btn-xs btn-outline"
+              class="h-4 text-white btn btn-xs btn-outline"
               id="sound_list_{list.id}"
               on:click={(e) => openDialog('sound', e)}>변경</button>
             </td>
-            <td class="text-center">
-              <input
-                type="text" name="message_th" id="message_{index + 1}"
-                class="flex items-center w-full h-8 px-2 text-left text-gray-700 bg-white outline-none fon2-semibold focus:outline-none text-md hover:text-black focus:text-black md:text-basecursor-default"
-                value={list.message_th}
-                on:blur={onChangeMessage}
-                placeholder={list.message_th}>
-            </td>
           {/if}
+
+          <td class="text-center">
+            <input
+              type="text" name="message_ko" id="message_{index + 1}"
+              class="flex items-center w-full h-8 px-2 text-left text-gray-700 bg-white outline-none fon2-semibold focus:outline-none text-md hover:text-black focus:text-black md:text-basecursor-default"
+              value={list.message_ko}
+              on:blur={onChangeMessage}
+              placeholder={list.message_ko}>
+          </td>
 
         </tr>
         {/each}

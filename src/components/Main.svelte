@@ -78,6 +78,7 @@
 
   function handleClick(id) {
     let _id = document.getElementById("btn_" + id);
+    let _tooltip = document.getElementById("tooltip_" + id);
 
     if(!volumeValue) {
       audio.volume = 0;
@@ -86,7 +87,12 @@
     }
 
     if(!_id.classList.contains("grayscale")) {
-      _id.classList.add("grayscale");
+
+      _tooltip.classList.add("tooltip-open");
+      setTimeout(() => {
+        _id.classList.add("grayscale");
+        _tooltip.classList.remove("tooltip-open");
+      }, 1000);1
 
       let file = langValue + "_" + id + ".mp3";
 
@@ -115,7 +121,7 @@
     {#if _lists[index].published}
       <div class="relative">
         <span class="absolute z-20 text-red-900 left-4 top-2">{_lists[index].key}</span>
-        <div class="tooltip tooltip-bottom" data-tip="{_lists[index]["message_" + langValue]}">
+        <div id="tooltip_{_lists[index].id}" class="tooltip tooltip-bottom" data-tip="{_lists[index]["message_ko"]}">
           <div id="btn_{_lists[index].id}" class="z-10 btn-info main_btn" on:click={() => handleClick(_lists[index].id)}>
             <img id="img_{_lists[index].id}" class="object-cover shadow-xl rounded-2xl" src="" alt="{_lists[index].id}" />
           </div>

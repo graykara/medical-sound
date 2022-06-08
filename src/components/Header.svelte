@@ -1,7 +1,6 @@
 <script>
 
   import { dataDir, join } from '@tauri-apps/api/path';
-  import hotkeys from "hotkeys-js";
   import { onMount, onDestroy } from "svelte";
   import { push } from 'svelte-spa-router';
 
@@ -14,7 +13,6 @@
 
   import {
     register as registerShortcut,
-    registerAll,
     unregister
   } from "@tauri-apps/api/globalShortcut";
 
@@ -76,25 +74,41 @@
     let shortcut_ = shortcut;
 
     registerShortcut(shortcut_, () => {
-      // console.log(`Shortcut ${shortcut_} triggered`);
       invoke("handle_short_key").then(res => {
         if(res == "show") {
           unregisterAllHotKeys();
-          if(!_isSetting) registerAllHotKeys();
+          if(!_isSetting) {
+            registerLangKLey();
+            registerAllHotKeys();
+          }
         } else {
+          unregister(LANG_TOGGLE_HOTKEY);
           unregisterAllHotKeys();
         }
       });
     })
       .then(() => {
-        // console.log(`Shortcut ${shortcut_} registered successfully`);
         unregisterAllHotKeys();
         if(!_isSetting) registerAllHotKeys();
       })
       .catch();
   }
 
+  function registerLangKLey() {
+    registerShortcut(LANG_TOGGLE_HOTKEY, () => {
+      let _target;
+      if(_langCode == "ko") {
+        _target = "th";
+      } else {
+        _target = "ko";
+      }
+      console.log("TARGET", _target, _language);
+      changeLanguage(_target);
+    });
+  }
+
   function reloadHotkeys() {
+    LANG_TOGGLE_HOTKEY = $lists["lang_change_key"];
     TOGGLE_HOTKEY_1 = String($lists["buttons"][0].key);
     TOGGLE_HOTKEY_2 = String($lists["buttons"][1].key);
     TOGGLE_HOTKEY_3 = String($lists["buttons"][2].key);
@@ -143,6 +157,7 @@
 
   function handleClick(id) {
     let _id = document.getElementById("btn_" + id);
+    let _tooltip = document.getElementById("tooltip_" + id);
 
     if(!volumeValue) {
       audio.volume = 0;
@@ -151,7 +166,12 @@
     }
 
     if(!_id.classList.contains("grayscale")) {
-      _id.classList.add("grayscale");
+
+      _tooltip.classList.add("tooltip-open");
+      setTimeout(() => {
+        _id.classList.add("grayscale");
+        _tooltip.classList.remove("tooltip-open");
+      }, 1000);
 
       let file = langValue + "_" + id + ".mp3";
 
@@ -173,33 +193,17 @@
     }
   }
 
-  function handleLangHotKey() {
-    hotkeys.unbind(LANG_TOGGLE_HOTKEY);
-    LANG_TOGGLE_HOTKEY = $lists["lang_change_key"];
-
-    hotkeys(LANG_TOGGLE_HOTKEY, () => {
-      let _target;
-      if(_langCode == "ko") {
-        _target = "th";
-      } else {
-        _target = "ko";
-      }
-      changeLanguage(_target);
-    });
-  }
-
   onMount(() => {
     windowMap[selectedWindow].center();
     windowMap[selectedWindow].setAlwaysOnTop(true);
 
     setTimeout(() => {
-      // console.log("$LISTS", $lists)
       console.log("MAIN MOUNTED");
       shortcut = $lists["invoke_key"];
       reloadHotkeys();
       unregisterAllHotKeys();
       register();
-      handleLangHotKey();
+      registerAllHotKeys();
     }, 100);
 
     document
@@ -211,7 +215,7 @@
   });
 
   onDestroy(() => {
-    hotkeys.unbind(LANG_TOGGLE_HOTKEY);
+    // hotkeys.unbind(LANG_TOGGLE_HOTKEY);
   });
 
   function select(arg) {
@@ -226,23 +230,34 @@
         windowMap[selectedWindow].setSize(new LogicalSize(1280, 278));
         push("/main");
         unregister(shortcut);
+        unregister(LANG_TOGGLE_HOTKEY);
         unregisterAllHotKeys();
         shortcut = $lists["invoke_key"];
         reloadHotkeys();
         setTimeout(() => {
           console.log("REGISTER")
           register();
+          registerLangKLey();
           registerAllHotKeys();
-          handleLangHotKey();
-        }, 500);
+        }, 100);
+        windowMap[selectedWindow].center();
+        windowMap[selectedWindow].setAlwaysOnTop(true);
         break;
       case 2:
         _isSetting = true;
         windowMap[selectedWindow].setSize(new LogicalSize(1280, 880));
         push("/config");
         // unregister(shortcut);
+        unregister(shortcut);
+        unregister(LANG_TOGGLE_HOTKEY);
         unregisterAllHotKeys();
-        handleLangHotKey();
+        reloadHotkeys();
+        setTimeout(() => {
+          register();
+          registerLangKLey();
+        }, 100);
+        windowMap[selectedWindow].center();
+        windowMap[selectedWindow].setAlwaysOnTop(true);
         break;
     }
   }
@@ -261,6 +276,7 @@
     }
     _language = humanLanguage;
     _show = !_show;
+    console.log("VIEW", _show);
   }
 
   // 볼륨 조절
@@ -299,9 +315,9 @@
   }
 </script>
 
-<div id="windowMenu" data-tauri-drag-region class="titlebar bg-black flex">
-  <div id="titlebar-close" class="titlebar-button items-end" >
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+<div id="windowMenu" data-tauri-drag-region class="flex bg-black titlebar">
+  <div id="titlebar-close" class="items-end titlebar-button" >
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
     </svg>
   </div>
@@ -309,7 +325,7 @@
 
 <div class="with-title-bar">
   {#if !_init}
-  <div id="nav" class="flex min-h-0 px-10 py-1 m-0 navbar bg-sky-500">
+  <div id="nav" class="flex min-h-0 px-10 py-1 m-0 navbar bg-gradient-to-b from-sky-700 to-sky-400">
     <div class="flex items-start justify-start flex-none w-40 cursor-default">
       <p class="text-xl font-bold text-white normal-case">Medical Sound</p>
     </div>
@@ -329,9 +345,9 @@
         {#if _show}
           <div class="absolute mt-2 rounded-md shadow-lg" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
             <div class="py-1" role="none">
-              <ul tabindex="0" class="w-32 p-2 bg-white shadow dropdown-content menu rounded-box">
-                <li><button id="menu-item-0" role="menuitem" class="justify-center font-bold text-gray-900" on:click={() => changeLanguage("ko") }>한국어</button></li>
-                <li><button id="menu-item-1" role="menuitem" class="justify-center font-bold text-gray-900" on:click={() => changeLanguage("th") }>태국어</button></li>
+              <ul tabindex="0" class="w-32 p-2 bg-white rounded-sm shadow dropdown-content menu">
+                <li><button id="menu-item-0" role="menuitem" class="justify-center font-bold text-gray-900 bg-transparent hover:bg-slate-200" on:click={() => changeLanguage("ko") }>한국어</button></li>
+                <li><button id="menu-item-1" role="menuitem" class="justify-center font-bold text-gray-900 bg-transparent hover:bg-slate-200" on:click={() => changeLanguage("th") }>태국어</button></li>
               </ul>
             </div>
           </div>
@@ -341,17 +357,17 @@
 
     <div class="flex items-end justify-end flex-none w-40">
 
-      <label id="btn-reset" class="mr-4 swap swap-rotate hidden">
+      <label id="btn-reset" class="hidden mr-4 swap swap-rotate">
 
         <input type="checkbox" class="outline-disable" on:click={() => handleReest()} />
 
         <!-- reset on icon -->
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -3.2 28 28" stroke="white" width="32" height="32" stroke-width="2" class="swap-on transform transition-transform duration-200 ease-in-out">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -3.2 28 28" stroke="white" width="32" height="32" stroke-width="2" class="transition-transform duration-200 ease-in-out transform swap-on">
           <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
         </svg>
 
         <!-- reset off icon -->
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -3.2 28 28" stroke="white" width="32" height="32" stroke-width="2" class="swap-off transform transition-transform duration-200 ease-in-out">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -3.2 28 28" stroke="white" width="32" height="32" stroke-width="2" class="transition-transform duration-200 ease-in-out transform swap-off">
           <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
         </svg>
       </label>
