@@ -34,23 +34,7 @@
         <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
         <UI>
             <!-- ADDED -->
-            <!-- <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" /> -->
-            <!-- <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" /> -->
-            <!-- <TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" /> -->
-            <!-- <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" /> -->
-            <!-- <Property Id="WixUI_Mode" Value="FeatureTree" /> -->
             <Property Id="LicenseCode" />
-            <!-- <DialogRef Id="WelcomeDlg" /> -->
-            <!-- <DialogRef Id="ErrorDlg" /> -->
-            <!-- <DialogRef Id="FatalError" /> -->
-            <!-- <DialogRef Id="FilesInUse" /> -->
-            <!-- <DialogRef Id="MsiRMFilesInUse" /> -->
-            <!-- <DialogRef Id="PrepareDlg" /> -->
-            <!-- <DialogRef Id="ProgressDlg" /> -->
-            <!-- <DialogRef Id="ResumeDlg" /> -->
-            <!-- <DialogRef Id="UserExit" /> -->
-            <!-- <DialogRef Id="CancelDlg" /> -->
-            <!-- <DialogRef Id="InstallDirDlg" /> -->
             <!-- ADDED -->
             <!-- launch app checkbox -->
             <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
@@ -159,33 +143,6 @@
                             <Component Id="I730de02bd52e4fc59358db2334c738bf" Guid="f31d094b-5932-4d32-b409-8c4d7782d3c5" Win64="$(var.Win64)" KeyPath="yes">
                                 <File Id="PathFile_I730de02bd52e4fc59358db2334c738bf" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_9.mp3" />
                             </Component>
-                            <Component Id="Icda04314e7b54d8fb1fd0ea0fa8878a1" Guid="d8538e05-cb93-4574-ba98-4bfa4f1e0138" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_Icda04314e7b54d8fb1fd0ea0fa8878a1" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_1.mp3" />
-                            </Component>
-                            <Component Id="I7c8fa03f01194003b88c3c6bc4331fd2" Guid="5aee6b95-0a65-4436-9f3b-0a4266163aa1" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I7c8fa03f01194003b88c3c6bc4331fd2" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_2.mp3" />
-                            </Component>
-                            <Component Id="I1a23332715f3429b805f4e81df2e3766" Guid="2c2c47d9-4d69-48d5-8e08-f7b5dcefe92f" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I1a23332715f3429b805f4e81df2e3766" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_3.mp3" />
-                            </Component>
-                            <Component Id="I917b598a69ba48a8b8850ed88a253e09" Guid="ff71c253-998d-489b-9eb1-0c32b749e610" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I917b598a69ba48a8b8850ed88a253e09" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_4.mp3" />
-                            </Component>
-                            <Component Id="I6ccfdcf2fa374e8ebf96e04fb62756ca" Guid="2aca2f84-b2c7-4a80-8758-585982670782" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I6ccfdcf2fa374e8ebf96e04fb62756ca" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_5.mp3" />
-                            </Component>
-                            <Component Id="I1338517878794bc3a8fbe75698fad5bd" Guid="6d154309-dfe3-434d-8155-5bd280935a92" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I1338517878794bc3a8fbe75698fad5bd" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_6.mp3" />
-                            </Component>
-                            <Component Id="Ic334cf4d66544da68f51092977438169" Guid="0c2b8dd8-2de8-4128-9e6d-6f802f8d2ddf" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_Ic334cf4d66544da68f51092977438169" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_7.mp3" />
-                            </Component>
-                            <Component Id="If37aadff7fff4402b7727968fa3028aa" Guid="a7ab7a88-8ca6-4b9a-865b-aef7f81602f8" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_If37aadff7fff4402b7727968fa3028aa" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_8.mp3" />
-                            </Component>
-                            <Component Id="I12b31af5c50e4cfa97a2ce398ca72b3e" Guid="6eba3502-6709-4b7f-92e3-982f22c232d3" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I12b31af5c50e4cfa97a2ce398ca72b3e" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_9.mp3" />
-                            </Component>
                         </Directory>
                     </Directory>
                 </Directory>
@@ -225,15 +182,6 @@
             <ComponentRef Id="I2a6fa661cb454c95abd40a641cfd6962" />
             <ComponentRef Id="I18a86819b7924da5abc6ad9c918e0422" />
             <ComponentRef Id="I730de02bd52e4fc59358db2334c738bf" />
-            <ComponentRef Id="Icda04314e7b54d8fb1fd0ea0fa8878a1" />
-            <ComponentRef Id="I7c8fa03f01194003b88c3c6bc4331fd2" />
-            <ComponentRef Id="I1a23332715f3429b805f4e81df2e3766" />
-            <ComponentRef Id="I917b598a69ba48a8b8850ed88a253e09" />
-            <ComponentRef Id="I6ccfdcf2fa374e8ebf96e04fb62756ca" />
-            <ComponentRef Id="I1338517878794bc3a8fbe75698fad5bd" />
-            <ComponentRef Id="Ic334cf4d66544da68f51092977438169" />
-            <ComponentRef Id="If37aadff7fff4402b7727968fa3028aa" />
-            <ComponentRef Id="I12b31af5c50e4cfa97a2ce398ca72b3e" />
             <Feature Id="ShortcutsFeature" Title="Shortcuts" Level="1">
                 <ComponentRef Id="Path" />
                 <ComponentRef Id="CMP_UninstallShortcut" />
