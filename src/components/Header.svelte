@@ -209,10 +209,16 @@
     }, 500);
 
     document
-      .getElementById('titlebar-close')
+      .getElementById('titlebar-minimize')
       .addEventListener('click', () => {
         unregisterAllHotKeys();
         invoke("handle_short_key");
+      });
+
+    document
+      .getElementById('titlebar-close')
+      .addEventListener('click', () => {
+        invoke("handle_quit");
       });
   });
 
@@ -318,7 +324,14 @@
 </script>
 
 <div id="windowMenu" data-tauri-drag-region class="flex bg-black titlebar">
-  <div id="titlebar-close" class="items-end titlebar-button" >
+
+  <div id="titlebar-minimize" class="items-end titlebar-button" >
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+    </svg>
+  </div>
+
+  <div id="titlebar-close" class="items-end ml-4 titlebar-button" >
     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
     </svg>

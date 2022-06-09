@@ -17,7 +17,7 @@ struct Payload {
 fn main() {
 
   let quit = CustomMenuItem::new("quit".to_string(), "종료");
-  let menuitem_show_hide = CustomMenuItem::new("show_hide".to_string(), "보이기");
+  let menuitem_show_hide = CustomMenuItem::new("show_hide".to_string(), "숨기기");
   let tray_menu = SystemTrayMenu::new()
     .add_item(menuitem_show_hide)
     .add_native_item(SystemTrayMenuItem::Separator)
@@ -40,11 +40,11 @@ fn main() {
 
         // After it's done, close the splashscreen and display the main window
         splashscreen_window.close().unwrap();
-        main_window.hide().unwrap();
+        main_window.show().unwrap();
       });
       Ok(())
     })
-    .invoke_handler(tauri::generate_handler![handle_short_key])
+    .invoke_handler(tauri::generate_handler![handle_short_key, handle_quit])
     .system_tray(SystemTray::new().with_menu(tray_menu))
     .on_system_tray_event( move |app, event| match event {
       SystemTrayEvent::LeftClick {
@@ -136,4 +136,9 @@ fn handle_short_key(window: tauri::Window) {
       window.eval("window['detectState']('show')");
     }
   });
+}
+
+#[tauri::command]
+fn handle_quit() {
+  std::process::exit(0);
 }

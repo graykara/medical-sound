@@ -121,7 +121,7 @@
     {#if _lists[index].published}
       <div class="relative">
         <span class="absolute z-20 text-red-900 left-4 top-2">{_lists[index].key}</span>
-        <div id="tooltip_{_lists[index].id}" class="tooltip tooltip-bottom" data-tip="{_lists[index]["message_ko"]}">
+        <div id="tooltip_{_lists[index].id}" class="text-xl text-white tooltip tooltip-bottom" data-tip="{_lists[index]["message_ko"]}">
           <div id="btn_{_lists[index].id}" class="z-10 btn-info main_btn" on:click={() => handleClick(_lists[index].id)}>
             <img id="img_{_lists[index].id}" class="object-cover shadow-xl rounded-2xl" src="" alt="{_lists[index].id}" />
           </div>
@@ -136,5 +136,8 @@
 <style lang="postcss">
   .main_btn {
     @apply btn btn-outline w-32 h-32 mx-1 p-1 rounded-2xl bg-white;
+  }
+  .tooltip::before {
+    @apply text-white;
   }
 </style>
