@@ -83,7 +83,7 @@
   }
 
   function register() {
-    console.log(shortcut);
+    // console.log(shortcut);
     let shortcut_ = shortcut;
 
     registerShortcut(shortcut_, () => {
@@ -318,13 +318,15 @@
   }
 
   function handleReset() {
-    setTimeout(() => {
-      document.getElementById("btn-reset").classList.add("hidden");
-    }, 200);
+    if(!_isSetting) {
+      setTimeout(() => {
+        document.getElementById("btn-reset").classList.add("hidden");
+      }, 200);
 
-    for(let i = 1; i <= 9; i++) {
-      let _id = document.getElementById("btn_" + i);
-      _id.classList.remove("grayscale");
+      for(let i = 1; i <= 9; i++) {
+        let _id = document.getElementById("btn_" + i);
+        _id.classList.remove("grayscale");
+      }
     }
   }
 </script>
