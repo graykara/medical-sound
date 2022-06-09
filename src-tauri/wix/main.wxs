@@ -44,7 +44,7 @@
             <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2">1</Publish>
             <!-- ADDED -->
             <Dialog Id="LicenseDlg" Width="370" Height="270" Title="medical-sound Setup">
-                <Control Type="Edit" Id="EditLicense" Width="190" Height="15" X="100" Y="120" Property="LicenseCode" />
+                <Control Type="Edit" Id="EditLicense" Width="190" Height="15" X="100" Y="120" Property="LicenseCode" Password="yes" />
                 <Control Type="PushButton" Id="Next" Width="56" Height="20" X="234" Y="155" Text="Next">
                     <Publish Event="NewDialog" Value="InstallDirDlg">LicenseCode = "Pm0913"</Publish>
                 </Control>
@@ -83,92 +83,92 @@
             <Component Id="Path" Guid="3f4cb81d-bdb4-55a3-80f5-db93242922b7" Win64="$(var.Win64)">
                 <File Id="Path" Source="D:\@rust\medical-sound\src-tauri\target\i686-pc-windows-msvc\release\medical-sound.exe" KeyPath="yes" Checksum="yes" />
             </Component>
-            <Directory Id="I232a302830024bd6b7f378fa5187df38" Name="_up_">
-                <Directory Id="I79605a89f2d1468f98cb67a1868049d9" Name="src">
-                    <Directory Id="I18c9bdca846e4a5db2143fc0b57eb3be" Name="assets">
-                        <Directory Id="Ieed5029cda194fb78df47fb25841c8c2" Name="images">
-                            <Component Id="Id1553bf1656d45cb89e7dffeebcb2dc2" Guid="1856c15f-4e05-42a4-ac78-bf1f323834f3" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_Id1553bf1656d45cb89e7dffeebcb2dc2" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_1.png" />
+            <Directory Id="Idcae29defd0844e7b9051e1336cce8fd" Name="_up_">
+                <Directory Id="I6c731115bf8e4d68a7b031eaa63216aa" Name="src">
+                    <Directory Id="I44cfd86721b244498aee1a594bdeb4e5" Name="assets">
+                        <Directory Id="I8c32248b642f4fd3b5208ced859cb59f" Name="images">
+                            <Component Id="I754598324fca429c8565eeb8efcbc352" Guid="f6f67ca2-6ca1-45f7-a2b2-10a1b8e7200e" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_I754598324fca429c8565eeb8efcbc352" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_1.png" />
                             </Component>
-                            <Component Id="Ia552640d765c4ca9a5dc8dad3da42ff4" Guid="2e279909-0607-457a-9abf-92cda3ed450f" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_Ia552640d765c4ca9a5dc8dad3da42ff4" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_2.png" />
+                            <Component Id="Ia75c299167aa48908986d7ace4498a04" Guid="b5c6a4f0-ce3c-4f06-87e7-4fa98d310919" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_Ia75c299167aa48908986d7ace4498a04" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_2.png" />
                             </Component>
-                            <Component Id="I65cf3ca8b5614d46bb825464034226d8" Guid="7e784774-ca2f-4729-92b9-fa500ae4c7c8" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I65cf3ca8b5614d46bb825464034226d8" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_3.png" />
+                            <Component Id="I2dc0ea823bd24ff9bc0fe27453ee0c26" Guid="3cf7df72-dbb8-4ecb-bf22-0653b281bc44" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_I2dc0ea823bd24ff9bc0fe27453ee0c26" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_3.png" />
                             </Component>
-                            <Component Id="I38c886c98a754ae6b8cf69d395f7004e" Guid="f19d9d9a-3710-4907-8f7d-a62038cb96ac" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I38c886c98a754ae6b8cf69d395f7004e" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_4.png" />
+                            <Component Id="Ie57c0b36f7104e078d29838a167f79e5" Guid="0d0ead6a-951b-47de-9d64-b4640e6fdb64" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_Ie57c0b36f7104e078d29838a167f79e5" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_4.png" />
                             </Component>
-                            <Component Id="Ie654187e15154e72842d36a483117b0e" Guid="8c5fc6c6-60bb-4a0d-a408-2538c0b8fa49" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_Ie654187e15154e72842d36a483117b0e" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_5.png" />
+                            <Component Id="Ic954daed7d814653ba6251635cce5819" Guid="054e942d-797f-46c6-bdb9-ae55e582afb2" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_Ic954daed7d814653ba6251635cce5819" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_5.png" />
                             </Component>
-                            <Component Id="Iab579ac190ac4ce5a12651290be3837e" Guid="8c986d59-cd5a-4b46-8cf0-c0d278fb5711" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_Iab579ac190ac4ce5a12651290be3837e" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_6.png" />
+                            <Component Id="I0fd5504bb96645698c70c2f74e3de9ca" Guid="43e8e7cb-eea8-4ea1-b33e-d5cfc31adc78" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_I0fd5504bb96645698c70c2f74e3de9ca" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_6.png" />
                             </Component>
-                            <Component Id="I1a2d7095405b4a4cbe0ac1094b081548" Guid="ec9a29d9-c195-4089-b84c-fc04e05cb06d" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I1a2d7095405b4a4cbe0ac1094b081548" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_7.png" />
+                            <Component Id="Ib8ce3c80a4ea4eb2825d445118dcdb10" Guid="127cc1f6-92c8-4416-932e-5ecd4ad4f8cc" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_Ib8ce3c80a4ea4eb2825d445118dcdb10" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_7.png" />
                             </Component>
-                            <Component Id="If79882afa6734280b664d90da1b46c85" Guid="73de310f-6ac6-4134-8d66-53a5219554cc" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_If79882afa6734280b664d90da1b46c85" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_8.png" />
+                            <Component Id="I6795c3a84af24a2194d770d313a7481e" Guid="c5027b5d-0b53-47f7-8c3f-41fe7445eae8" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_I6795c3a84af24a2194d770d313a7481e" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_8.png" />
                             </Component>
-                            <Component Id="Ife7ce250cea047ba94037f735be1a215" Guid="386c9e2c-1480-4621-8489-151ea8f7855c" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_Ife7ce250cea047ba94037f735be1a215" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_9.png" />
+                            <Component Id="I59cecb13bb04499a8e408e88999fb868" Guid="668f46db-edfe-406f-8a00-231b98843c4c" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_I59cecb13bb04499a8e408e88999fb868" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\images\img_9.png" />
                             </Component>
                         </Directory>
-                        <Directory Id="I2de20d4e8d1e49efbde90407ac420388" Name="sounds">
-                            <Component Id="I0faa85adc080424cbce79d9267c8e294" Guid="5c5e7447-4a1b-467d-8ae1-f954d8416c3b" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I0faa85adc080424cbce79d9267c8e294" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_1.mp3" />
+                        <Directory Id="I72597f7e0fcd4d45a2abfca55faa88a9" Name="sounds">
+                            <Component Id="Iccb5ca78b021448080a6ce4262c97214" Guid="8427db4e-7f0b-4b8c-806e-a72a5e987502" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_Iccb5ca78b021448080a6ce4262c97214" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_1.mp3" />
                             </Component>
-                            <Component Id="I4021fcbb57854b05a32e67b3a8936bcd" Guid="1a812f86-da43-458d-aab2-965b2cb108a7" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I4021fcbb57854b05a32e67b3a8936bcd" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_2.mp3" />
+                            <Component Id="Ie4ec38ac5baa410f838bfc62c6b1d340" Guid="f9db21d4-e021-4b23-9417-bba29fe5074c" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_Ie4ec38ac5baa410f838bfc62c6b1d340" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_2.mp3" />
                             </Component>
-                            <Component Id="Icf808efb95b049e59c45ffe9ecda25fb" Guid="5b364b17-1e74-47de-a5f7-7a4795a26149" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_Icf808efb95b049e59c45ffe9ecda25fb" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_3.mp3" />
+                            <Component Id="Icd324685ccb74eef84685fe452e613cb" Guid="a6ae0330-3431-415e-ab10-cff09dbcd77e" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_Icd324685ccb74eef84685fe452e613cb" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_3.mp3" />
                             </Component>
-                            <Component Id="I81d5e9f45d9a45719074e410a1809786" Guid="8f871433-0289-457c-84c5-a4e02355a3b2" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I81d5e9f45d9a45719074e410a1809786" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_4.mp3" />
+                            <Component Id="I5917c19f70f74d6fb30e312e42312561" Guid="e7ae20ed-5946-43d7-87ad-755a403ccdf9" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_I5917c19f70f74d6fb30e312e42312561" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_4.mp3" />
                             </Component>
-                            <Component Id="I01f4584a349d46e5883773589cad9417" Guid="e34d55e5-2c16-4771-b288-25f38e3a1813" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I01f4584a349d46e5883773589cad9417" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_5.mp3" />
+                            <Component Id="I2a744730f8a2498a9fc2ea5ce32468f6" Guid="453d570a-9590-4b53-9ac2-cdf0a7b379a6" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_I2a744730f8a2498a9fc2ea5ce32468f6" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_5.mp3" />
                             </Component>
-                            <Component Id="I15de84f4104a44c3ba2c56c902d25648" Guid="79871d26-eff0-41d1-ab41-a5f341c39589" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I15de84f4104a44c3ba2c56c902d25648" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_6.mp3" />
+                            <Component Id="Ia95c7ec61b8542b39849b78ba1c08439" Guid="a9f42422-f3b7-4352-9682-8fdec859448e" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_Ia95c7ec61b8542b39849b78ba1c08439" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_6.mp3" />
                             </Component>
-                            <Component Id="I2a6fa661cb454c95abd40a641cfd6962" Guid="6a05f219-27af-4d56-95bf-60e28e849008" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I2a6fa661cb454c95abd40a641cfd6962" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_7.mp3" />
+                            <Component Id="I431cccd8929a4c56a0884af954b05777" Guid="2f195018-4ebe-4f52-a946-d983d6f62af9" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_I431cccd8929a4c56a0884af954b05777" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_7.mp3" />
                             </Component>
-                            <Component Id="I18a86819b7924da5abc6ad9c918e0422" Guid="6bef02d0-3381-4513-9e98-16fbd60ee616" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I18a86819b7924da5abc6ad9c918e0422" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_8.mp3" />
+                            <Component Id="I6267c23343d04effaf9081e3ba13b1ba" Guid="92083fa3-d5fe-43d4-a6eb-615ba3a934b2" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_I6267c23343d04effaf9081e3ba13b1ba" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_8.mp3" />
                             </Component>
-                            <Component Id="I730de02bd52e4fc59358db2334c738bf" Guid="f31d094b-5932-4d32-b409-8c4d7782d3c5" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I730de02bd52e4fc59358db2334c738bf" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_9.mp3" />
+                            <Component Id="Ic3f3b7be0fcf41edbbdaf40e305cee8d" Guid="71543c42-71cf-405d-9878-3c1d44ae5daa" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_Ic3f3b7be0fcf41edbbdaf40e305cee8d" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\ko_9.mp3" />
                             </Component>
-                            <Component Id="Icda04314e7b54d8fb1fd0ea0fa8878a1" Guid="d8538e05-cb93-4574-ba98-4bfa4f1e0138" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_Icda04314e7b54d8fb1fd0ea0fa8878a1" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_1.mp3" />
+                            <Component Id="I8a83198eac4c4158b9459ecd0433a5c2" Guid="a6feca85-47fe-4531-91fe-19ea1b970ee7" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_I8a83198eac4c4158b9459ecd0433a5c2" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_1.mp3" />
                             </Component>
-                            <Component Id="I7c8fa03f01194003b88c3c6bc4331fd2" Guid="5aee6b95-0a65-4436-9f3b-0a4266163aa1" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I7c8fa03f01194003b88c3c6bc4331fd2" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_2.mp3" />
+                            <Component Id="Ib50db24f92264404af68d5c4ccc16b3b" Guid="fc100ab2-7cd9-4abe-8805-d20137046376" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_Ib50db24f92264404af68d5c4ccc16b3b" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_2.mp3" />
                             </Component>
-                            <Component Id="I1a23332715f3429b805f4e81df2e3766" Guid="2c2c47d9-4d69-48d5-8e08-f7b5dcefe92f" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I1a23332715f3429b805f4e81df2e3766" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_3.mp3" />
+                            <Component Id="I8baa82f29fb24d6eae8dd4ffb57f08f2" Guid="3402a033-1da6-4750-bfeb-6b0279b2a594" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_I8baa82f29fb24d6eae8dd4ffb57f08f2" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_3.mp3" />
                             </Component>
-                            <Component Id="I917b598a69ba48a8b8850ed88a253e09" Guid="ff71c253-998d-489b-9eb1-0c32b749e610" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I917b598a69ba48a8b8850ed88a253e09" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_4.mp3" />
+                            <Component Id="I1e274624053648d6b009c1cee3688364" Guid="3482c494-5563-4a88-ad43-734e001cbe69" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_I1e274624053648d6b009c1cee3688364" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_4.mp3" />
                             </Component>
-                            <Component Id="I6ccfdcf2fa374e8ebf96e04fb62756ca" Guid="2aca2f84-b2c7-4a80-8758-585982670782" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I6ccfdcf2fa374e8ebf96e04fb62756ca" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_5.mp3" />
+                            <Component Id="I203150f9270f4e509bfdbc6ae143aca9" Guid="9bf302c0-7286-49f2-a629-293ff47c4ded" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_I203150f9270f4e509bfdbc6ae143aca9" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_5.mp3" />
                             </Component>
-                            <Component Id="I1338517878794bc3a8fbe75698fad5bd" Guid="6d154309-dfe3-434d-8155-5bd280935a92" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I1338517878794bc3a8fbe75698fad5bd" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_6.mp3" />
+                            <Component Id="I17c3ba39d4ed427d9f1f2bf4102c2139" Guid="7f407c9e-2eb2-4b46-9ac8-7cd70b462c2f" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_I17c3ba39d4ed427d9f1f2bf4102c2139" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_6.mp3" />
                             </Component>
-                            <Component Id="Ic334cf4d66544da68f51092977438169" Guid="0c2b8dd8-2de8-4128-9e6d-6f802f8d2ddf" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_Ic334cf4d66544da68f51092977438169" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_7.mp3" />
+                            <Component Id="I5c6fc0592da04a6389e32e6d09bd62c4" Guid="b74a092f-dc4b-4091-9913-46e0be376f9c" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_I5c6fc0592da04a6389e32e6d09bd62c4" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_7.mp3" />
                             </Component>
-                            <Component Id="If37aadff7fff4402b7727968fa3028aa" Guid="a7ab7a88-8ca6-4b9a-865b-aef7f81602f8" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_If37aadff7fff4402b7727968fa3028aa" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_8.mp3" />
+                            <Component Id="Ia3d9775be1374efcbb254c473cb2115d" Guid="e477655e-d3cf-4766-a771-a57984504c39" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_Ia3d9775be1374efcbb254c473cb2115d" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_8.mp3" />
                             </Component>
-                            <Component Id="I12b31af5c50e4cfa97a2ce398ca72b3e" Guid="6eba3502-6709-4b7f-92e3-982f22c232d3" Win64="$(var.Win64)" KeyPath="yes">
-                                <File Id="PathFile_I12b31af5c50e4cfa97a2ce398ca72b3e" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_9.mp3" />
+                            <Component Id="Ib2744a486d1f48aba328d60bffb47e05" Guid="9343006c-70db-430c-9416-6465272ad9ba" Win64="$(var.Win64)" KeyPath="yes">
+                                <File Id="PathFile_Ib2744a486d1f48aba328d60bffb47e05" Source="D:\@rust\medical-sound\src-tauri\..\src\assets\sounds\th_9.mp3" />
                             </Component>
                         </Directory>
                     </Directory>
@@ -191,33 +191,33 @@
         </DirectoryRef>
         <Feature Id="MainProgram" Title="Application" Description="!(loc.InstallAppFeature)" Level="1" ConfigurableDirectory="INSTALLDIR" AllowAdvertise="no" Display="expand" Absent="disallow">
             <ComponentRef Id="RegistryEntries" />
-            <ComponentRef Id="Id1553bf1656d45cb89e7dffeebcb2dc2" />
-            <ComponentRef Id="Ia552640d765c4ca9a5dc8dad3da42ff4" />
-            <ComponentRef Id="I65cf3ca8b5614d46bb825464034226d8" />
-            <ComponentRef Id="I38c886c98a754ae6b8cf69d395f7004e" />
-            <ComponentRef Id="Ie654187e15154e72842d36a483117b0e" />
-            <ComponentRef Id="Iab579ac190ac4ce5a12651290be3837e" />
-            <ComponentRef Id="I1a2d7095405b4a4cbe0ac1094b081548" />
-            <ComponentRef Id="If79882afa6734280b664d90da1b46c85" />
-            <ComponentRef Id="Ife7ce250cea047ba94037f735be1a215" />
-            <ComponentRef Id="I0faa85adc080424cbce79d9267c8e294" />
-            <ComponentRef Id="I4021fcbb57854b05a32e67b3a8936bcd" />
-            <ComponentRef Id="Icf808efb95b049e59c45ffe9ecda25fb" />
-            <ComponentRef Id="I81d5e9f45d9a45719074e410a1809786" />
-            <ComponentRef Id="I01f4584a349d46e5883773589cad9417" />
-            <ComponentRef Id="I15de84f4104a44c3ba2c56c902d25648" />
-            <ComponentRef Id="I2a6fa661cb454c95abd40a641cfd6962" />
-            <ComponentRef Id="I18a86819b7924da5abc6ad9c918e0422" />
-            <ComponentRef Id="I730de02bd52e4fc59358db2334c738bf" />
-            <ComponentRef Id="Icda04314e7b54d8fb1fd0ea0fa8878a1" />
-            <ComponentRef Id="I7c8fa03f01194003b88c3c6bc4331fd2" />
-            <ComponentRef Id="I1a23332715f3429b805f4e81df2e3766" />
-            <ComponentRef Id="I917b598a69ba48a8b8850ed88a253e09" />
-            <ComponentRef Id="I6ccfdcf2fa374e8ebf96e04fb62756ca" />
-            <ComponentRef Id="I1338517878794bc3a8fbe75698fad5bd" />
-            <ComponentRef Id="Ic334cf4d66544da68f51092977438169" />
-            <ComponentRef Id="If37aadff7fff4402b7727968fa3028aa" />
-            <ComponentRef Id="I12b31af5c50e4cfa97a2ce398ca72b3e" />
+            <ComponentRef Id="I754598324fca429c8565eeb8efcbc352" />
+            <ComponentRef Id="Ia75c299167aa48908986d7ace4498a04" />
+            <ComponentRef Id="I2dc0ea823bd24ff9bc0fe27453ee0c26" />
+            <ComponentRef Id="Ie57c0b36f7104e078d29838a167f79e5" />
+            <ComponentRef Id="Ic954daed7d814653ba6251635cce5819" />
+            <ComponentRef Id="I0fd5504bb96645698c70c2f74e3de9ca" />
+            <ComponentRef Id="Ib8ce3c80a4ea4eb2825d445118dcdb10" />
+            <ComponentRef Id="I6795c3a84af24a2194d770d313a7481e" />
+            <ComponentRef Id="I59cecb13bb04499a8e408e88999fb868" />
+            <ComponentRef Id="Iccb5ca78b021448080a6ce4262c97214" />
+            <ComponentRef Id="Ie4ec38ac5baa410f838bfc62c6b1d340" />
+            <ComponentRef Id="Icd324685ccb74eef84685fe452e613cb" />
+            <ComponentRef Id="I5917c19f70f74d6fb30e312e42312561" />
+            <ComponentRef Id="I2a744730f8a2498a9fc2ea5ce32468f6" />
+            <ComponentRef Id="Ia95c7ec61b8542b39849b78ba1c08439" />
+            <ComponentRef Id="I431cccd8929a4c56a0884af954b05777" />
+            <ComponentRef Id="I6267c23343d04effaf9081e3ba13b1ba" />
+            <ComponentRef Id="Ic3f3b7be0fcf41edbbdaf40e305cee8d" />
+            <ComponentRef Id="I8a83198eac4c4158b9459ecd0433a5c2" />
+            <ComponentRef Id="Ib50db24f92264404af68d5c4ccc16b3b" />
+            <ComponentRef Id="I8baa82f29fb24d6eae8dd4ffb57f08f2" />
+            <ComponentRef Id="I1e274624053648d6b009c1cee3688364" />
+            <ComponentRef Id="I203150f9270f4e509bfdbc6ae143aca9" />
+            <ComponentRef Id="I17c3ba39d4ed427d9f1f2bf4102c2139" />
+            <ComponentRef Id="I5c6fc0592da04a6389e32e6d09bd62c4" />
+            <ComponentRef Id="Ia3d9775be1374efcbb254c473cb2115d" />
+            <ComponentRef Id="Ib2744a486d1f48aba328d60bffb47e05" />
             <Feature Id="ShortcutsFeature" Title="Shortcuts" Level="1">
                 <ComponentRef Id="Path" />
                 <ComponentRef Id="CMP_UninstallShortcut" />
