@@ -368,33 +368,21 @@
               on:click={(e) => openDialog('img', e)}>변경</button>
           </td>
 
-          {#if langValue == "1"}
-            <td class="text-center text-white">
-              {list.sound_ko}
-              <button
-              class="h-4 text-white btn btn-xs btn-outline"
-              id="sound_list_{list.id}"
-              on:click={(e) => openDialog('sound', e)}>변경</button>
-            </td>
-          {/if}
-
-          {#if langValue == "2"}
-            <td class="text-center text-white">
-              {list.sound_th}
-              <button
-              class="h-4 text-white btn btn-xs btn-outline"
-              id="sound_list_{list.id}"
-              on:click={(e) => openDialog('sound', e)}>변경</button>
-            </td>
-          {/if}
+          <td class="text-center text-white">
+            {langValue}_{list["sound"]}
+            <button
+            class="h-4 text-white btn btn-xs btn-outline"
+            id="sound_list_{list.id}"
+            on:click={(e) => openDialog('sound', e)}>변경</button>
+          </td>
 
           <td class="text-center">
             <input
-              type="text" name="message_ko" id="message_{index + 1}"
+              type="text" name="message" id="message_{index + 1}"
               class="flex items-center w-full h-8 px-2 text-left text-gray-700 bg-white outline-none fon2-semibold focus:outline-none text-md hover:text-black focus:text-black md:text-basecursor-default"
-              value={list.message_ko}
+              value={list.message}
               on:blur={onChangeMessage}
-              placeholder={list.message_ko}>
+              placeholder={list.message}>
           </td>
 
         </tr>
