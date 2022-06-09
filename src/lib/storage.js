@@ -46,8 +46,8 @@ const initData = {
       published: true,
       key: "1",
       image: "1.png",
-      sound_ko: "ko_1.mp4",
-      sound_th: "th_1.mp4",
+      sound_ko: "1_1.mp4",
+      sound_th: "2_1.mp4",
       message_ko: "메시지를 읽어주세요. - 1",
     },
     {
@@ -55,8 +55,8 @@ const initData = {
       published: true,
       key: "2",
       image: "2.png",
-      sound_ko: "ko_2.mp4",
-      sound_th: "th_2.mp4",
+      sound_ko: "1_2.mp4",
+      sound_th: "2_2.mp4",
       message_ko: "메시지를 읽어주세요. - 2",
     },
     {
@@ -64,8 +64,8 @@ const initData = {
       published: true,
       key: "3",
       image: "3.png",
-      sound_ko: "ko_3.mp4",
-      sound_th: "th_3.mp4",
+      sound_ko: "1_3.mp4",
+      sound_th: "2_3.mp4",
       message_ko: "메시지를 읽어주세요. - 3",
     },
     {
@@ -73,8 +73,8 @@ const initData = {
       published: true,
       key: "4",
       image: "4.png",
-      sound_ko: "ko_4.mp4",
-      sound_th: "th_4.mp4",
+      sound_ko: "1_4.mp4",
+      sound_th: "2_4.mp4",
       message_ko: "메시지를 읽어주세요. - 4",
     },
     {
@@ -82,8 +82,8 @@ const initData = {
       published: true,
       key: "5",
       image: "5.png",
-      sound_ko: "ko_5.mp4",
-      sound_th: "th_5.mp4",
+      sound_ko: "1_5.mp4",
+      sound_th: "2_5.mp4",
       message_ko: "메시지를 읽어주세요. - 5",
     },
     {
@@ -91,8 +91,8 @@ const initData = {
       published: true,
       key: "6",
       image: "6.png",
-      sound_ko: "ko_6.mp4",
-      sound_th: "th_6.mp4",
+      sound_ko: "1_6.mp4",
+      sound_th: "2_6.mp4",
       message_ko: "메시지를 읽어주세요. - 6",
     },
     {
@@ -100,8 +100,8 @@ const initData = {
       published: true,
       key: "7",
       image: "7.png",
-      sound_ko: "ko_7.mp4",
-      sound_th: "th_7.mp4",
+      sound_ko: "1_7.mp4",
+      sound_th: "2_7.mp4",
       message_ko: "메시지를 읽어주세요. - 7",
     },
     {
@@ -109,8 +109,8 @@ const initData = {
       published: true,
       key: "8",
       image: "8.png",
-      sound_ko: "ko_8.mp4",
-      sound_th: "th_8.mp4",
+      sound_ko: "1_8.mp4",
+      sound_th: "2_8.mp4",
       message_ko: "메시지를 읽어주세요. - 8",
     },
     {
@@ -118,8 +118,8 @@ const initData = {
       published: true,
       key: "9",
       image: "9.png",
-      sound_ko: "ko_9.mp4",
-      sound_th: "th_9.mp4",
+      sound_ko: "1_9.mp4",
+      sound_th: "2_9.mp4",
       message_ko: "메시지를 읽어주세요. - 9",
     }
   ],
@@ -171,15 +171,15 @@ const _createDatabase = async () => {
     for(var i = 1; i <= 9; i++) {
       console.log(dir);
       await copyFile(
-        srcPath + "/assets/sounds/ko_"+i+".mp3",
-        "medical-sound-data/sounds/ko_"+i+".mp3",
+        srcPath + "/assets/sounds/1_"+i+".mp3",
+        "medical-sound-data/sounds/1_"+i+".mp3",
         {
           dir: dir
         }
       );
       await copyFile(
-        srcPath + "/assets/sounds/th_"+i+".mp3",
-        "medical-sound-data/sounds/th_"+i+".mp3",
+        srcPath + "/assets/sounds/2_"+i+".mp3",
+        "medical-sound-data/sounds/2_"+i+".mp3",
         {
           dir: dir
         }
