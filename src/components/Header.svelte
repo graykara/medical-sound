@@ -284,6 +284,7 @@
     }
     _language = humanLanguage;
     _show = !_show;
+    handleReset();
     console.log("VIEW", _show);
   }
 
@@ -311,7 +312,7 @@
     }
   }
 
-  function handleReest() {
+  function handleReset() {
     setTimeout(() => {
       document.getElementById("btn-reset").classList.add("hidden");
     }, 200);
@@ -374,7 +375,7 @@
 
       <label id="btn-reset" class="hidden mr-4 swap swap-rotate">
 
-        <input type="checkbox" class="outline-disable" on:click={() => handleReest()} />
+        <input type="checkbox" class="outline-disable" on:click={() => handleReset()} />
 
         <!-- reset on icon -->
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 -3.2 28 28" stroke="white" width="32" height="32" stroke-width="2" class="transition-transform duration-200 ease-in-out transform swap-on">

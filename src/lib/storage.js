@@ -178,6 +178,13 @@ const _createDatabase = async () => {
         }
       );
       await copyFile(
+        srcPath + "/assets/sounds/th_"+i+".mp3",
+        "medical-sound-data/sounds/th_"+i+".mp3",
+        {
+          dir: dir
+        }
+      );
+      await copyFile(
         srcPath + "/assets/images/img_"+i+".png",
         "medical-sound-data/images/img_"+i+".png",
         {
