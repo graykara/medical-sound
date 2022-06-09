@@ -99,12 +99,20 @@
   function registerLangKLey() {
     registerShortcut(LANG_TOGGLE_HOTKEY, () => {
       let _target;
-      if(_langCode == "1") {
-        _target = "2";
+      let _current = Number(_langCode);
+
+      let langObj = $lists["languages"];
+
+      let _langLists = Object.keys(langObj).map((key) => [Number(key), langObj[key]][1]);
+
+      let _availableLangs = _langLists.filter(v => v.published);
+
+      if((_current) >= _availableLangs.length) {
+        _target = _availableLangs[0].id;
       } else {
-        _target = "1";
+        _target = $lists["languages"][_current].id;
       }
-      console.log("TARGET", _target, _language);
+
       changeLanguage(_target);
     });
   }
@@ -254,7 +262,7 @@
         break;
       case 2:
         _isSetting = true;
-        windowMap[selectedWindow].setSize(new LogicalSize(1280, 880));
+        windowMap[selectedWindow].setSize(new LogicalSize(1280, 1080));
         push("/config");
         // unregister(shortcut);
         unregister(shortcut);
@@ -278,15 +286,11 @@
 
     langCode.set(lang);
 
-    if (_langCode == "1") {
-      humanLanguage = "한국어";
-    } else if (_langCode == "2") {
-      humanLanguage = "태국어";
-    }
+    humanLanguage = $lists["languages"][Number(_langCode) - 1].name;
     _language = humanLanguage;
-    _show = !_show;
+    _show = false;
     handleReset();
-    console.log("VIEW", _show);
+    // console.log("VIEW", _show);
   }
 
   // 볼륨 조절
@@ -360,11 +364,18 @@
         </div>
 
         {#if _show}
-          <div class="absolute mt-2 rounded-md shadow-lg" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-            <div class="py-1" role="none">
-              <ul tabindex="0" class="w-32 p-2 bg-white rounded-sm shadow dropdown-content menu">
-                <li><button id="menu-item-0" role="menuitem" class="justify-center font-bold text-gray-900 bg-transparent hover:bg-slate-200" on:click={() => changeLanguage("1") }>한국어</button></li>
-                <li><button id="menu-item-1" role="menuitem" class="justify-center font-bold text-gray-900 bg-transparent hover:bg-slate-200" on:click={() => changeLanguage("2") }>태국어</button></li>
+          <div class="absolute -mt-12 rounded-md shadow-lg" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+            <div class="py-0" role="none">
+              <ul tabindex="0" class="ml-24 w-44 p-1 bg-white rounded-sm shadow dropdown-content menu">
+                {#each $lists["languages"] as language }
+                  {#if language.published}
+                    <li>
+                      <button id="menu-item-0" role="menuitem" class="py-1 justify-center text-bold text-gray-900 bg-transparent hover:bg-slate-200" on:click={() => changeLanguage(language.id) }>{language.name}</button>
+                    </li>
+                  {/if}
+                {/each}
+                <!-- <li><button id="menu-item-0" role="menuitem" class="justify-center font-bold text-gray-900 bg-transparent hover:bg-slate-200" on:click={() => changeLanguage("1") }>한국어</button></li>
+                <li><button id="menu-item-1" role="menuitem" class="justify-center font-bold text-gray-900 bg-transparent hover:bg-slate-200" on:click={() => changeLanguage("2") }>태국어</button></li> -->
               </ul>
             </div>
           </div>

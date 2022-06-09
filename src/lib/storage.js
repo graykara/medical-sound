@@ -114,6 +114,58 @@ const initData = {
       message: "메시지를 읽어주세요. - 9",
     }
   ],
+  languages: [
+    {
+      id: "1",
+      name: "한국어",
+      published: true
+    },
+    {
+      id: "2",
+      name: "태국어",
+      published: true
+    },
+    {
+      id: "3",
+      name: "",
+      published: false
+    },
+    {
+      id: "4",
+      name: "",
+      published: false
+    },
+    {
+      id: "5",
+      name: "",
+      published: false
+    },
+    {
+      id: "6",
+      name: "",
+      published: false
+    },
+    {
+      id: "7",
+      name: "",
+      published: false
+    },
+    {
+      id: "8",
+      name: "",
+      published: false
+    },
+    {
+      id: "9",
+      name: "",
+      published: false
+    },
+    {
+      id: "10",
+      name: "",
+      published: false
+    }
+  ],
   invoke_key: "Shift+1",
   lang_change_key: "Shift+L"
 };

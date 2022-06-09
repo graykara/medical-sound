@@ -38,9 +38,15 @@
   });
 
   let obj = $lists["buttons"];
+  let langObj = $lists["languages"];
 
   let _lists;
   _lists = Object.keys(obj).map((key) => [Number(key), obj[key]][1]);
+
+  let _langLists;
+  _langLists = Object.keys(langObj).map((key) => [Number(key), langObj[key]][1]);
+
+  console.log("##LANG##", _langLists);
 
   let oldValue;
 
@@ -86,6 +92,19 @@
     let val = e.target.checked;
     let idx = Number(e.target.id.split("_")[1]);
     $lists["buttons"][idx - 1].published = val;
+  }
+
+  const onChangeLangPublished = e => {
+    let val = e.target.checked;
+    let idx = Number(e.target.id.split("_")[1]);
+    console.log(idx);
+    $lists["languages"][idx - 1].published = val;
+  }
+
+  const onChangeLangName = e => {
+    let val = e.target.value;
+    let idx = Number(e.target.id.split("_")[1]);
+    $lists["languages"][idx - 1].name = val;
   }
 
   let invokeUp = false;
@@ -325,6 +344,41 @@
       </tbody>
     </table>
 
+    <table class="table w-full table-zebra table-compact mb-8">
+      <thead>
+        <tr>
+          <th colspan="10" class="text-white text-center">언어 설정</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+        {#each _langLists as lang }
+          <td class="w-3 text-center">
+            <input
+              type="checkbox"
+              checked={lang.published}
+              on:click={onChangeLangPublished}
+              id="langPublished_{lang.id}"
+              class="checkbox" />
+          </td>
+        {/each}
+        </tr>
+        <tr>
+        {#each _langLists as lang }
+          <td class="w-3">
+            <input
+              type="text" name="number" id="langName_{lang.id}"
+              class="flex items-center w-full h-8 font-semibold text-center text-gray-700 bg-white outline-none focus:outline-none text-md hover:text-black focus:text-black md:text-basecursor-default"
+              maxlength="8"
+              value={lang.name}
+              on:blur={onChangeLangName}
+              placeholder={lang.name}>
+          </td>
+        {/each}
+        </tr>
+      </tbody>
+    </table>
+
     <table class="table w-full table-zebra table-compact">
       <!-- head -->
       <thead>
@@ -369,11 +423,23 @@
           </td>
 
           <td class="text-center text-white">
-            {langValue}_{list["sound"]}
-            <button
-            class="h-4 text-white btn btn-xs btn-outline"
-            id="sound_list_{list.id}"
-            on:click={(e) => openDialog('sound', e)}>변경</button>
+            <span class="inline-flex align-middle">
+              <button>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </button>
+            </span>
+            <span class="inline-flex">
+              {langValue}_{list["sound"]}
+            </span>
+            <span class="inline-flex">
+              <button
+              class="h-4 text-white btn btn-xs btn-outline"
+              id="sound_list_{list.id}"
+              on:click={(e) => openDialog('sound', e)}>변경</button>
+            </span>
           </td>
 
           <td class="text-center">
