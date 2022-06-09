@@ -129,11 +129,21 @@ fn handle_short_key(window: tauri::Window) {
     if window.is_visible().unwrap() {
       window.hide().unwrap();
       app_handle.tray_handle().get_item("show_hide").set_title("보이기").unwrap();
-      window.eval("window['detectState']('hide')");
+      match window.eval("window['detectState']('hide')") {
+          Ok(_) => {},
+          Err(e) => {
+            println!("{:?}", e);
+          },
+      };
     } else {
       window.show().unwrap();
       app_handle.tray_handle().get_item("show_hide").set_title("숨기기").unwrap();
-      window.eval("window['detectState']('show')");
+      match window.eval("window['detectState']('show')") {
+          Ok(_) => {},
+          Err(e) => {
+            println!("{:?}", e);
+          },
+      };
     }
   });
 }

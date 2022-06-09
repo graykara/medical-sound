@@ -48,8 +48,7 @@ const initData = {
       image: "1.png",
       sound_ko: "ko_1.mp4",
       sound_th: "th_1.mp4",
-      message_ko: "메시지를 읽으세요 - 1",
-      message_th: "메시지를 읽으세요 태국어 - 1"
+      message_ko: "메시지를 읽어주세요. - 1",
     },
     {
       id: "2",
@@ -58,8 +57,7 @@ const initData = {
       image: "2.png",
       sound_ko: "ko_2.mp4",
       sound_th: "th_2.mp4",
-      message_ko: "메시지를 읽으세요 - 2",
-      message_th: "메시지를 읽으세요 태국어 - 2"
+      message_ko: "메시지를 읽어주세요. - 2",
     },
     {
       id: "3",
@@ -68,8 +66,7 @@ const initData = {
       image: "3.png",
       sound_ko: "ko_3.mp4",
       sound_th: "th_3.mp4",
-      message_ko: "메시지를 읽으세요 - 3",
-      message_th: "메시지를 읽으세요 태국어 - 3"
+      message_ko: "메시지를 읽어주세요. - 3",
     },
     {
       id: "4",
@@ -78,8 +75,7 @@ const initData = {
       image: "4.png",
       sound_ko: "ko_4.mp4",
       sound_th: "th_4.mp4",
-      message_ko: "메시지를 읽으세요 - 4",
-      message_th: "메시지를 읽으세요 태국어 - 4"
+      message_ko: "메시지를 읽어주세요. - 4",
     },
     {
       id: "5",
@@ -88,8 +84,7 @@ const initData = {
       image: "5.png",
       sound_ko: "ko_5.mp4",
       sound_th: "th_5.mp4",
-      message_ko: "메시지를 읽으세요 - 5",
-      message_th: "메시지를 읽으세요 태국어 - 5"
+      message_ko: "메시지를 읽어주세요. - 5",
     },
     {
       id: "6",
@@ -98,8 +93,7 @@ const initData = {
       image: "6.png",
       sound_ko: "ko_6.mp4",
       sound_th: "th_6.mp4",
-      message_ko: "메시지를 읽으세요 - 6",
-      message_th: "메시지를 읽으세요 태국어 - 6"
+      message_ko: "메시지를 읽어주세요. - 6",
     },
     {
       id: "7",
@@ -108,8 +102,7 @@ const initData = {
       image: "7.png",
       sound_ko: "ko_7.mp4",
       sound_th: "th_7.mp4",
-      message_ko: "메시지를 읽으세요 - 7",
-      message_th: "메시지를 읽으세요 태국어 - 7"
+      message_ko: "메시지를 읽어주세요. - 7",
     },
     {
       id: "8",
@@ -118,8 +111,7 @@ const initData = {
       image: "8.png",
       sound_ko: "ko_8.mp4",
       sound_th: "th_8.mp4",
-      message_ko: "메시지를 읽으세요 - 8",
-      message_th: "메시지를 읽으세요 태국어 - 8"
+      message_ko: "메시지를 읽어주세요. - 8",
     },
     {
       id: "9",
@@ -128,8 +120,7 @@ const initData = {
       image: "9.png",
       sound_ko: "ko_9.mp4",
       sound_th: "th_9.mp4",
-      message_ko: "메시지를 읽으세요 - 9",
-      message_th: "메시지를 읽으세요 태국어 - 9"
+      message_ko: "메시지를 읽어주세요. - 9",
     }
   ],
   invoke_key: "Shift+1",
@@ -182,13 +173,6 @@ const _createDatabase = async () => {
       await copyFile(
         srcPath + "/assets/sounds/ko_"+i+".mp3",
         "medical-sound-data/sounds/ko_"+i+".mp3",
-        {
-          dir: dir
-        }
-      );
-      await copyFile(
-        srcPath + "/assets/sounds/th_"+i+".mp3",
-        "medical-sound-data/sounds/th_"+i+".mp3",
         {
           dir: dir
         }

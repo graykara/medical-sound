@@ -294,7 +294,7 @@
 
               copyFile(
                 res,
-                "medical-sound-data/sounds/" + langValue + "_" + seq + "." + ext,
+                "medical-sound-data/sounds/ko_" + seq + "." + ext,
                 {
                   dir: dir
                 }
