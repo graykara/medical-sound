@@ -45,7 +45,7 @@
 
   // 언어설정
   let _language = "한국어";
-  let _langCode = "ko";
+  let _langCode = "1";
   let _init = false;
 
   // 언어 드랍메뉴 보기
@@ -99,10 +99,10 @@
   function registerLangKLey() {
     registerShortcut(LANG_TOGGLE_HOTKEY, () => {
       let _target;
-      if(_langCode == "ko") {
-        _target = "th";
+      if(_langCode == "1") {
+        _target = "2";
       } else {
-        _target = "ko";
+        _target = "1";
       }
       console.log("TARGET", _target, _language);
       changeLanguage(_target);
@@ -176,6 +176,7 @@
       }, 1000);
 
       let file = langValue + "_" + id + ".mp3";
+      console.log(langValue);
 
       getSoundFile(file).then(res => {
         let _src = convertFileSrc(res.toString());
@@ -277,9 +278,9 @@
 
     langCode.set(lang);
 
-    if (_langCode == "ko") {
+    if (_langCode == "1") {
       humanLanguage = "한국어";
-    } else if (_langCode == "th") {
+    } else if (_langCode == "2") {
       humanLanguage = "태국어";
     }
     _language = humanLanguage;
@@ -362,8 +363,8 @@
           <div class="absolute mt-2 rounded-md shadow-lg" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
             <div class="py-1" role="none">
               <ul tabindex="0" class="w-32 p-2 bg-white rounded-sm shadow dropdown-content menu">
-                <li><button id="menu-item-0" role="menuitem" class="justify-center font-bold text-gray-900 bg-transparent hover:bg-slate-200" on:click={() => changeLanguage("ko") }>한국어</button></li>
-                <li><button id="menu-item-1" role="menuitem" class="justify-center font-bold text-gray-900 bg-transparent hover:bg-slate-200" on:click={() => changeLanguage("th") }>태국어</button></li>
+                <li><button id="menu-item-0" role="menuitem" class="justify-center font-bold text-gray-900 bg-transparent hover:bg-slate-200" on:click={() => changeLanguage("1") }>한국어</button></li>
+                <li><button id="menu-item-1" role="menuitem" class="justify-center font-bold text-gray-900 bg-transparent hover:bg-slate-200" on:click={() => changeLanguage("2") }>태국어</button></li>
               </ul>
             </div>
           </div>

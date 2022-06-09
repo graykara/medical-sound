@@ -51,7 +51,7 @@
 
   // 언어설정
   let _language = "한국어";
-  let _langCode = "ko";
+  let _langCode = "1";
   let _show = false;
 
   function changeLanguage(lang) {
@@ -60,9 +60,9 @@
 
     langCode.set(lang);
 
-    if (_langCode == "ko") {
+    if (_langCode == "1") {
       humanLanguage = "한국어";
-    } else if (_langCode == "th") {
+    } else if (_langCode == "2") {
       humanLanguage = "태국어";
     }
     _language = humanLanguage;
@@ -158,17 +158,6 @@
       console.log("CHANGE", key_of_lang);
       event.target.value = key_of_lang;
       $lists["lang_change_key"] = key_of_lang;
-      // unregister(key_of_lang);
-      // registerShortcut(key_of_lang, () => {
-      //   let _target;
-      //   if(_langCode == "ko") {
-      //     _target = "th";
-      //   } else {
-      //     _target = "ko";
-      //   }
-      //   console.log("TARGET", _target);
-      //   changeLanguage(_target);
-      // });
     }
   }
 
@@ -379,7 +368,7 @@
               on:click={(e) => openDialog('img', e)}>변경</button>
           </td>
 
-          {#if langValue == "ko"}
+          {#if langValue == "1"}
             <td class="text-center text-white">
               {list.sound_ko}
               <button
@@ -389,7 +378,7 @@
             </td>
           {/if}
 
-          {#if langValue == "th"}
+          {#if langValue == "2"}
             <td class="text-center text-white">
               {list.sound_th}
               <button

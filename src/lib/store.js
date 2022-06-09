@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export let langCode = writable('ko');
+export let langCode = writable('1');
 export let volumeEnable = writable(true);
 export let audio = new Audio();
 
