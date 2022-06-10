@@ -16,10 +16,11 @@
     unregister
   } from "@tauri-apps/api/globalShortcut";
 
-  import { langCode, volumeEnable, audio } from '../lib/store';
+  import { langCode, langText, volumeEnable, audio } from '../lib/store';
   import { lists } from '../lib/Lists';
 
   let langValue;
+  let langTValue;
   let volumeValue;
 
   let isVisible = true;
@@ -27,14 +28,17 @@
   appWindow.listen('tauri://focus', ({ event }) => {
     if(!isVisible) {
       registerLangKLey();
+      console.log("##FOCUS##")
       if(!_isSetting) registerAllHotKeys();
     }
   });
 
-  // console.log("## HEADER");
-
   langCode.subscribe(value => {
     langValue = value;
+  });
+
+  langText.subscribe(value => {
+    langTValue = value;
   });
 
   volumeEnable.subscribe(value => {
@@ -76,17 +80,34 @@
   let TOGGLE_HOTKEY_8;
   let TOGGLE_HOTKEY_9;
 
+  let shortcut;
+
   globalThis.detectState = function(arg) {
     if(arg == 'show') {
       unregisterAllHotKeys();
+      reloadHotkeys();
       if(!_isSetting) {
         registerLangKLey();
         registerAllHotKeys();
+      } else {
+        registerLangKLey();
       }
     } else {
       unregister(LANG_TOGGLE_HOTKEY);
       unregisterAllHotKeys();
     }
+  }
+
+  function registerInvoke() {
+    let shortcut_ = shortcut;
+    registerShortcut(shortcut_, () => {
+      invoke("handle_short_key");
+    })
+      .then(() => {
+        unregisterAllHotKeys();
+        if(!_isSetting) registerAllHotKeys();
+      })
+      .catch();
   }
 
   function registerLangKLey() {
@@ -172,12 +193,11 @@
 
       _tooltip.classList.add("tooltip-open");
       setTimeout(() => {
-        _id.classList.add("grayscale");
+        // _id.classList.add("grayscale");
         _tooltip.classList.remove("tooltip-open");
-      }, 1000);
+      }, 2000);
 
       let file = langValue + "_" + id + ".mp3";
-      console.log(langValue);
 
       getSoundFile(file).then(res => {
         let _src = convertFileSrc(res.toString());
@@ -192,9 +212,9 @@
       });
     }
 
-    if(document.getElementById("btn-reset").classList.contains("hidden")) {
-      document.getElementById("btn-reset").classList.remove("hidden");
-    }
+    // if(document.getElementById("btn-reset").classList.contains("hidden")) {
+    //   document.getElementById("btn-reset").classList.remove("hidden");
+    // }
   }
 
   onMount(() => {
@@ -203,8 +223,10 @@
 
     setTimeout(() => {
       console.log("MAIN MOUNTED");
+      shortcut = $lists["invoke_key"];
       reloadHotkeys();
       unregisterAllHotKeys();
+      registerInvoke();
       registerLangKLey();
       registerAllHotKeys();
     }, 500);
@@ -214,6 +236,7 @@
       .addEventListener('click', () => {
         unregisterAllHotKeys();
         unregister(LANG_TOGGLE_HOTKEY);
+        invoke("handle_short_key");
         appWindow.minimize();
         isVisible = false;
       });
@@ -241,13 +264,16 @@
         _isSetting = false;
         windowMap[selectedWindow].setSize(new LogicalSize(1280, 278));
         push("/main");
+        shortcut = $lists["invoke_key"];
+        LANG_TOGGLE_HOTKEY = $lists["lang_change_key"];
+        unregister(shortcut);
         unregister(LANG_TOGGLE_HOTKEY);
         unregisterAllHotKeys();
         reloadHotkeys();
         setTimeout(() => {
-          console.log("REGISTER")
+          console.log("REGISTER");
+          registerInvoke();
           registerLangKLey();
-          registerAllHotKeys();
         }, 100);
         windowMap[selectedWindow].center();
         windowMap[selectedWindow].setAlwaysOnTop(true);
@@ -256,10 +282,14 @@
         _isSetting = true;
         windowMap[selectedWindow].setSize(new LogicalSize(1280, 960));
         push("/config");
+        shortcut = $lists["invoke_key"];
+        LANG_TOGGLE_HOTKEY = $lists["lang_change_key"];
+        unregister(shortcut);
         unregister(LANG_TOGGLE_HOTKEY);
         unregisterAllHotKeys();
         reloadHotkeys();
         setTimeout(() => {
+          registerInvoke();
           registerLangKLey();
         }, 100);
         windowMap[selectedWindow].center();
@@ -277,9 +307,11 @@
 
     humanLanguage = $lists["languages"][Number(_langCode) - 1].name;
     _language = humanLanguage;
+
+    langText.set(_language);
+
     _show = false;
     handleReset();
-    // console.log("VIEW", _show);
   }
 
   // 볼륨 조절
@@ -351,7 +383,7 @@
             class="m-0 text-xl font-bold text-white normal-case bg-transparent justify-items-center btn btn-ghost outline-disable "
             tabindex="0"
             on:click={() => (_show = !_show) }
-            aria-expanded="false" aria-haspopup="false">{_language}</label>
+            aria-expanded="false" aria-haspopup="false">{langTValue}</label>
         </div>
 
         {#if _show}

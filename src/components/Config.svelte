@@ -1,6 +1,6 @@
 <script>
   import { dataDir, join } from '@tauri-apps/api/path';
-  import { langCode, audio } from '../lib/store';
+  import { langCode, langText, audio } from '../lib/store';
   import { convertFileSrc } from '@tauri-apps/api/tauri';
 
   import { lists } from '../lib/Lists';
@@ -10,6 +10,13 @@
   import { BaseDirectory, copyFile, readBinaryFile } from "@tauri-apps/api/fs";
   import { sep } from '@tauri-apps/api/path';
   import { fs } from '@tauri-apps/api';
+
+  import { invoke } from '@tauri-apps/api/tauri';
+  import {
+    register as registerShortcut,
+    unregister,
+    unregisterAll
+  } from "@tauri-apps/api/globalShortcut";
 
   let langValue;
 
@@ -46,7 +53,56 @@
 
   let oldValue;
 
+  let key_of_invoke;
   let key_of_lang;
+
+  let shortcut = $lists["invoke_key"];
+  let langcut = $lists["lang_change_key"];
+
+  let _langCode = langValue;
+
+  function registerInvoke() {
+    let shortcut_ = shortcut;
+    registerShortcut(shortcut_, () => {
+      console.log(`Shortcut ${shortcut_} triggered`);
+      invoke("handle_short_key");
+    })
+      .then(() => {
+        console.log(`Shortcut ${shortcut_} registered successfully`);
+      })
+      .catch();
+  }
+
+  function registerLangKey() {
+    registerShortcut(langcut, () => {
+      let _target;
+      let _current = Number(_langCode);
+
+      let langObj = $lists["languages"];
+
+      let _langLists = Object.keys(langObj).map((key) => [Number(key), langObj[key]][1]);
+
+      let _availableLangs = _langLists.filter(v => v.published);
+
+      if((_current) >= _availableLangs.length) {
+        _target = _availableLangs[0].id;
+      } else {
+        _target = $lists["languages"][_current].id;
+      }
+
+      changeLanguage(_target);
+    });
+  }
+
+  function changeLanguage(lang) {
+    _langCode = lang;
+    langCode.set(lang);
+
+    let humanLanguage = $lists["languages"][Number(_langCode) - 1].name;
+    let _language = humanLanguage;
+
+    langText.set(_language);
+  }
 
   const onChangePublished = e => {
     let val = e.target.checked;
@@ -57,7 +113,6 @@
   const onChangeLangPublished = e => {
     let val = e.target.checked;
     let idx = Number(e.target.id.split("_")[1]);
-    // console.log(idx);
     $lists["languages"][idx - 1].published = val;
   }
 
@@ -67,24 +122,70 @@
     $lists["languages"][idx - 1].name = val;
   }
 
+  let invokeUp = false;
+  let oldInvokeVal = $lists["invoke_key"];
+
+  const onInvokeKeyUp = event => {
+    if(key_of_invoke.indexOf("undefined") > -1 || key_of_invoke.indexOf("+") == -1 || key_of_invoke == langKey) {
+      event.target.value = oldInvokeVal;
+      return false;
+    } else {
+      if(invokeUp == false) {
+        invokeUp = true;
+        return false;
+      } else {
+        unregister(shortcut);
+        shortcut = key_of_invoke;
+        $lists["invoke_key"] = shortcut;
+        event.target.value = shortcut;
+        registerInvoke();
+        invokeUp = false;
+      }
+    }
+  }
+  const onIKnvokeKey = event => {
+    let metaKey;
+    let codeKey;
+    if(event.alt) metaKey = "Alt";
+    if(event.shiftKey) metaKey = "Shift";
+    if(event.ctrlKey) metaKey = "Ctrl";
+    if(event.altKey) metaKey = "Alt";
+    if(event.metaKey) metaKey = "Meta";
+    if(event.tabKeu) metaKey = "Tab";
+    // console.log(event.code);
+    if(event.code.length > 0) {
+      if(event.code.split('Digit')[1] != undefined) {
+        codeKey = event.code.split('Digit')[1];
+      } else if(event.code.split('Key')[1] != undefined) {
+        codeKey = event.code.split('Key')[1];
+      } else {
+        codeKey = event.code;
+      }
+    }
+    key_of_invoke = metaKey + "+" + String(codeKey);
+    event.target.value = "";
+  }
+
   let langUp = false;
   let oldLangVal = $lists["lang_change_key"];
 
   const onLangKeyUp = event => {
     console.log(key_of_lang);
-    if((key_of_lang == undefined || key_of_lang == invokeKey) && langUp == false) {
-      document.getElementById("modal-open-btn").click();
-      langUp = true;
-      setTimeout(function() {
-        langUp = false;
-        event.target.value = oldLangVal;
-        key_of_lang = oldLangVal;
-        $lists["lang_change_key"] = key_of_lang;
-      }, 1000);
+    if(key_of_lang.indexOf("undefined") > -1 || key_of_lang.indexOf("+") == -1 || key_of_lang == invokeKey) {
+      event.target.value = oldLangVal;
+      return false;
     } else {
-      console.log("CHANGE", key_of_lang);
-      event.target.value = key_of_lang;
-      $lists["lang_change_key"] = key_of_lang;
+      if(langUp == false) {
+        langUp = true;
+        return false;
+      } else {
+        unregister(langcut);
+        langcut = key_of_lang;
+        $lists["lang_change_key"] = langcut;
+        event.target.value = langcut;
+        registerLangKey();
+        langUp = false;
+      }
     }
   }
 
@@ -274,6 +375,13 @@
         </tr>
       </thead>
       <tbody>
+        <tr class="h-14">
+          <td class="text-center text-white">앱 활성화키</td>
+          <td>
+            <input class="w-auto text-center text-gray-900 bg-white kbd kbd-md" on:keyup={onInvokeKeyUp} on:keypress={onIKnvokeKey} value={invokeKey} />
+            <span class="ml-4 text-white"><kbd class="kbd">Shift</kbd> 또는 <kbd class="kbd">Ctrl</kbd> 키 <kbd class="kbd">+</kbd> 숫자(<kbd class="kbd">0</kbd>~<kbd class="kbd">9</kbd>) 또는 영문(<kbd class="kbd">a</kbd>~<kbd class="kbd">z</kbd>) 조합으로 사용 가능합니다.</span>
+          </td>
+        </tr>
         <tr class="h-14">
           <td class="text-center text-white select-none">언어 변경키</td>
           <td>

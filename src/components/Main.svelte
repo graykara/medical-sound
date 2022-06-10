@@ -90,9 +90,9 @@
 
       _tooltip.classList.add("tooltip-open");
       setTimeout(() => {
-        _id.classList.add("grayscale");
+        // _id.classList.add("grayscale");
         _tooltip.classList.remove("tooltip-open");
-      }, 1000);1
+      }, 2000);
 
       let file = langValue + "_" + id + ".mp3";
 
@@ -109,9 +109,9 @@
       });
     }
 
-    if(document.getElementById("btn-reset").classList.contains("hidden")) {
-      document.getElementById("btn-reset").classList.remove("hidden");
-    }
+    // if(document.getElementById("btn-reset").classList.contains("hidden")) {
+    //   document.getElementById("btn-reset").classList.remove("hidden");
+    // }
   }
 </script>
 
