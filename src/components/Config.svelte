@@ -7,14 +7,6 @@
   import { BaseDirectory, copyFile, readBinaryFile } from "@tauri-apps/api/fs";
   import { sep } from '@tauri-apps/api/path';
 
-  import { invoke } from '@tauri-apps/api/tauri';
-
-  import {
-    register as registerShortcut,
-    unregister,
-    unregisterAll as unregisterAllShortcuts,
-  } from "@tauri-apps/api/globalShortcut";
-
   let langValue;
 
   // console.log("## HEADER");
@@ -50,10 +42,7 @@
 
   let oldValue;
 
-  let key_of_invoke;
   let key_of_lang;
-
-  let shortcut = $lists["invoke_key"];
 
   // 언어설정
   let _language = "한국어";
@@ -76,18 +65,6 @@
     console.log(_show);
   }
 
-  function register() {
-    const shortcut_ = shortcut;
-    registerShortcut(shortcut_, () => {
-      console.log(`Shortcut ${shortcut_} triggered`);
-      invoke("handle_short_key");
-    })
-      .then(() => {
-        console.log(`Shortcut ${shortcut_} registered successfully`);
-      })
-      .catch();
-  }
-
   const onChangePublished = e => {
     let val = e.target.checked;
     let idx = Number(e.target.id.split("_")[1]);
@@ -105,58 +82,6 @@
     let val = e.target.value;
     let idx = Number(e.target.id.split("_")[1]);
     $lists["languages"][idx - 1].name = val;
-  }
-
-  let invokeUp = false;
-  let oldInvokeVal = $lists["invoke_key"];
-
-  const onInvokeKeyUp = event => {
-    unregister(shortcut);
-    if((key_of_invoke == undefined || key_of_invoke == langKey) && invokeUp == false) {
-      document.getElementById("modal-open-btn").click();
-      invokeUp = true;
-      setTimeout(function() {
-        langUp = false;
-        event.target.value = oldInvokeVal;
-        key_of_invoke = oldInvokeVal;
-        $lists["invoke_key"] = key_of_invoke;
-      }, 1000);
-    } else {
-      // unregisterAllShortcuts();
-      console.log("#####", shortcut);
-      shortcut = key_of_invoke;
-      console.log("#####", shortcut);
-
-      event.target.value = shortcut;
-      $lists["invoke_key"] = shortcut;
-      register();
-    }
-  }
-
-  const onIKnvokeKey = event => {
-    let metaKey;
-    let codeKey;
-
-    if(event.alt) metaKey = "Alt";
-    if(event.shiftKey) metaKey = "Shift";
-    if(event.ctrlKey) metaKey = "Ctrl";
-    if(event.altKey) metaKey = "Alt";
-    if(event.metaKey) metaKey = "Meta";
-    if(event.tabKeu) metaKey = "Tab";
-
-    // console.log(event.code);
-
-    if(event.code.length > 0) {
-      if(event.code.split('Digit')[1] != undefined) {
-        codeKey = event.code.split('Digit')[1];
-      } else if(event.code.split('Key')[1] != undefined) {
-        codeKey = event.code.split('Key')[1];
-      } else {
-        codeKey = event.code;
-      }
-    }
-    key_of_invoke = metaKey + "+"+String(codeKey);
-    event.target.value = "";
   }
 
   let langUp = false;
@@ -327,13 +252,6 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="h-14">
-          <td class="text-center text-white">앱 활성화키</td>
-          <td>
-            <input class="w-auto text-center text-gray-900 bg-white kbd kbd-md" on:keyup={onInvokeKeyUp} on:keypress={onIKnvokeKey} value={invokeKey} />
-            <span class="ml-4 text-white"><kbd class="kbd">Shift</kbd> 또는 <kbd class="kbd">Ctrl</kbd> 키 <kbd class="kbd">+</kbd> 숫자(<kbd class="kbd">0</kbd>~<kbd class="kbd">9</kbd>) 또는 영문(<kbd class="kbd">a</kbd>~<kbd class="kbd">z</kbd>) 조합으로 사용 가능합니다.</span>
-          </td>
-        </tr>
         <tr class="h-14">
           <td class="text-center text-white">언어 변경키</td>
           <td>

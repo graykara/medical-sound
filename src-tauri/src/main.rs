@@ -3,8 +3,6 @@
   windows_subsystem = "windows"
 )]
 
-use tauri::{CustomMenuItem, SystemTray, SystemTrayMenu, SystemTrayMenuItem, SystemTrayEvent};
-// use tauri::{GlobalShortcutManager, RunEvent, WindowEvent};
 use tauri::{RunEvent, WindowEvent};
 use tauri::Manager;
 
@@ -15,14 +13,6 @@ struct Payload {
 }
 
 fn main() {
-
-  let quit = CustomMenuItem::new("quit".to_string(), "종료");
-  let menuitem_show_hide = CustomMenuItem::new("show_hide".to_string(), "숨기기");
-  let tray_menu = SystemTrayMenu::new()
-    .add_item(menuitem_show_hide)
-    .add_native_item(SystemTrayMenuItem::Separator)
-    .add_item(quit);
-
   #[allow(unused_mut)]
   let mut app = tauri::Builder::default()
     .setup(|app| {
@@ -31,6 +21,13 @@ fn main() {
 
       let splashscreen_window = app.get_window("splashscreen").unwrap();
       let main_window = app.get_window("main").unwrap();
+
+      let id = main_window.listen("event-name", |event| {
+        println!("got window event-name with payload {:?}", event.payload());
+      });
+
+      main_window.unlisten(id);
+
       // we perform the initialization code on a new task so the app doesn't freeze
       tauri::async_runtime::spawn(async move {
         // initialize your app here instead of sleeping :)
@@ -44,52 +41,7 @@ fn main() {
       });
       Ok(())
     })
-    .invoke_handler(tauri::generate_handler![handle_short_key, handle_quit])
-    .system_tray(SystemTray::new().with_menu(tray_menu))
-    .on_system_tray_event( move |app, event| match event {
-      SystemTrayEvent::LeftClick {
-        position: _,
-        size: _,
-        ..
-      } => {
-        println!("system tray received a left click");
-      }
-      SystemTrayEvent::RightClick {
-        position: _,
-        size: _,
-        ..
-      } => {
-        println!("system tray received a right click");
-      }
-      SystemTrayEvent::DoubleClick {
-        position: _,
-        size: _,
-        ..
-      } => {
-        println!("system tray received a double click");
-      }
-      SystemTrayEvent::MenuItemClick { id,  .. } => {
-          let item_handle = app.tray_handle().get_item(&id);
-          match id.as_str() {
-            "quit" => {
-              std::process::exit(0);
-            }
-            "show_hide" => {
-              let window = app.get_window("main").unwrap();
-
-              if window.is_visible().unwrap() {
-                window.hide().unwrap();
-                let _h = item_handle.set_title("보이기").unwrap();
-              } else {
-                window.show().unwrap();
-                let _h = item_handle.set_title("숨기기").unwrap();
-              }
-            }
-            _ => {}
-          }
-      }
-      _ => {}
-    })
+    .invoke_handler(tauri::generate_handler![handle_quit])
     .build(tauri::generate_context!())
     .expect("failed to run app");
 
@@ -108,7 +60,6 @@ fn main() {
         api.prevent_close();
 
         std::thread::spawn(move || {
-          app_handle.tray_handle().get_item("show_hide").set_title("보이기").unwrap();
           app_handle.get_window(&label).unwrap().hide().unwrap();
         });
       }
@@ -120,32 +71,6 @@ fn main() {
       }
       _ => {}
     });
-}
-
-#[tauri::command]
-fn handle_short_key(window: tauri::Window) {
-  let app_handle = window.app_handle();
-  std::thread::spawn(move || {
-    if window.is_visible().unwrap() {
-      window.hide().unwrap();
-      app_handle.tray_handle().get_item("show_hide").set_title("보이기").unwrap();
-      match window.eval("window['detectState']('hide')") {
-          Ok(_) => {},
-          Err(e) => {
-            println!("{:?}", e);
-          },
-      };
-    } else {
-      window.show().unwrap();
-      app_handle.tray_handle().get_item("show_hide").set_title("숨기기").unwrap();
-      match window.eval("window['detectState']('show')") {
-          Ok(_) => {},
-          Err(e) => {
-            println!("{:?}", e);
-          },
-      };
-    }
-  });
 }
 
 #[tauri::command]

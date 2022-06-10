@@ -6,7 +6,7 @@
 
   import {
     appWindow,
-    LogicalSize,
+    LogicalSize
   } from '@tauri-apps/api/window';
 
   import { convertFileSrc, invoke } from '@tauri-apps/api/tauri';
@@ -21,6 +21,15 @@
 
   let langValue;
   let volumeValue;
+
+  let isVisible = true;
+
+  appWindow.listen('tauri://focus', ({ event }) => {
+    if(!isVisible) {
+      registerAllHotKeys();
+      registerLangKLey();
+    }
+  })
 
   // console.log("## HEADER");
 
@@ -80,20 +89,6 @@
       unregister(LANG_TOGGLE_HOTKEY);
       unregisterAllHotKeys();
     }
-  }
-
-  function register() {
-    // console.log(shortcut);
-    let shortcut_ = shortcut;
-
-    registerShortcut(shortcut_, () => {
-      invoke("handle_short_key");
-    })
-      .then(() => {
-        unregisterAllHotKeys();
-        if(!_isSetting) registerAllHotKeys();
-      })
-      .catch();
   }
 
   function registerLangKLey() {
@@ -210,10 +205,9 @@
 
     setTimeout(() => {
       console.log("MAIN MOUNTED");
-      shortcut = $lists["invoke_key"];
       reloadHotkeys();
       unregisterAllHotKeys();
-      register();
+      registerLangKLey();
       registerAllHotKeys();
     }, 500);
 
@@ -221,7 +215,9 @@
       .getElementById('titlebar-minimize')
       .addEventListener('click', () => {
         unregisterAllHotKeys();
-        invoke("handle_short_key");
+        unregister(LANG_TOGGLE_HOTKEY);
+        appWindow.minimize();
+        isVisible = false;
       });
 
     document
@@ -246,14 +242,12 @@
         _isSetting = false;
         windowMap[selectedWindow].setSize(new LogicalSize(1280, 278));
         push("/main");
-        unregister(shortcut);
         unregister(LANG_TOGGLE_HOTKEY);
         unregisterAllHotKeys();
         shortcut = $lists["invoke_key"];
         reloadHotkeys();
         setTimeout(() => {
           console.log("REGISTER")
-          register();
           registerLangKLey();
           registerAllHotKeys();
         }, 100);
@@ -264,13 +258,10 @@
         _isSetting = true;
         windowMap[selectedWindow].setSize(new LogicalSize(1280, 1080));
         push("/config");
-        // unregister(shortcut);
-        unregister(shortcut);
         unregister(LANG_TOGGLE_HOTKEY);
         unregisterAllHotKeys();
         reloadHotkeys();
         setTimeout(() => {
-          register();
           registerLangKLey();
         }, 100);
         windowMap[selectedWindow].center();

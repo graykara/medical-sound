@@ -45,16 +45,12 @@
         "create": true,
         "center": true,
         "requestUserAttention": true,
-        "setResizable": true,
         "setTitle": true,
-        "maximize": false,
-        "unmaximize": false,
         "minimize": false,
         "unminimize": false,
         "show": true,
         "hide": true,
         "close": true,
-        "setDecorations": true,
         "setAlwaysOnTop": true,
         "setSize": true,
         "setMinSize": true,
@@ -62,10 +58,7 @@
         "setPosition": true,
         "setFullscreen": true,
         "setFocus": true,
-        "setIcon": true,
-        "setSkipTaskbar": true,
-        "startDragging": true,
-        "print": true
+        "setIcon": true
       }
     },
     "bundle": {
