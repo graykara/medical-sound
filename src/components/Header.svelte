@@ -23,13 +23,15 @@
   let langTValue;
   let volumeValue;
 
+  let isFromHide = false;
+
   let isVisible = true;
 
   appWindow.listen('tauri://focus', ({ event }) => {
     if(!isVisible) {
-      registerLangKLey();
-      console.log("##FOCUS##")
-      if(!_isSetting) registerAllHotKeys();
+      if(isFromHide) registerLangKLey();
+      console.log("##FOCUS##", isFromHide);
+      if(!_isSetting && isFromHide) registerAllHotKeys();
     }
   });
 
@@ -84,6 +86,10 @@
 
   globalThis.detectState = function(arg) {
     if(arg == 'show') {
+      isFromHide = true;
+      setTimeout(() => {
+        isFromHide = false;
+      }, 10);
       unregisterAllHotKeys();
       reloadHotkeys();
       if(!_isSetting) {
@@ -93,6 +99,7 @@
         registerLangKLey();
       }
     } else {
+      isFromHide = false;
       unregister(LANG_TOGGLE_HOTKEY);
       unregisterAllHotKeys();
     }
@@ -237,7 +244,7 @@
         unregisterAllHotKeys();
         unregister(LANG_TOGGLE_HOTKEY);
         invoke("handle_short_key");
-        appWindow.minimize();
+        appWindow.hide();
         isVisible = false;
       });
 
@@ -280,7 +287,7 @@
         break;
       case 2:
         _isSetting = true;
-        windowMap[selectedWindow].setSize(new LogicalSize(1280, 960));
+        windowMap[selectedWindow].setSize(new LogicalSize(1280, 1000));
         push("/config");
         shortcut = $lists["invoke_key"];
         LANG_TOGGLE_HOTKEY = $lists["lang_change_key"];
