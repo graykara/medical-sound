@@ -1,11 +1,15 @@
 <script>
-  import { langCode } from '../lib/store';
+  import { dataDir, join } from '@tauri-apps/api/path';
+  import { langCode, audio } from '../lib/store';
+  import { convertFileSrc } from '@tauri-apps/api/tauri';
+
   import { lists } from '../lib/Lists';
 
   import { open } from "@tauri-apps/api/dialog";
 
   import { BaseDirectory, copyFile, readBinaryFile } from "@tauri-apps/api/fs";
   import { sep } from '@tauri-apps/api/path';
+  import { fs } from '@tauri-apps/api';
 
   let langValue;
 
@@ -38,32 +42,11 @@
   let _langLists;
   _langLists = Object.keys(langObj).map((key) => [Number(key), langObj[key]][1]);
 
-  console.log("##LANG##", _langLists);
+  // console.log("##LANG##", _langLists);
 
   let oldValue;
 
   let key_of_lang;
-
-  // 언어설정
-  let _language = "한국어";
-  let _langCode = "1";
-  let _show = false;
-
-  function changeLanguage(lang) {
-    let humanLanguage;
-    _langCode = lang;
-
-    langCode.set(lang);
-
-    if (_langCode == "1") {
-      humanLanguage = "한국어";
-    } else if (_langCode == "2") {
-      humanLanguage = "태국어";
-    }
-    _language = humanLanguage;
-    _show = !_show;
-    console.log(_show);
-  }
 
   const onChangePublished = e => {
     let val = e.target.checked;
@@ -74,7 +57,7 @@
   const onChangeLangPublished = e => {
     let val = e.target.checked;
     let idx = Number(e.target.id.split("_")[1]);
-    console.log(idx);
+    // console.log(idx);
     $lists["languages"][idx - 1].published = val;
   }
 
@@ -174,7 +157,46 @@
   const onChangeMessage = e => {
     let val = e.target.value;
     let idx = Number(e.target.id.split("_")[1]);
-    $lists["buttons"][idx - 1]["message_" + langValue] = val;
+    $lists["buttons"][idx - 1].message = val;
+  }
+
+  const getSoundFile = async (fileName) => {
+    try {
+      const dataPath = await dataDir();
+      let res = join(dataPath, 'medical-sound-data', 'sounds', fileName);
+      return res;
+    } catch(e) {
+      console.log(e);
+      return false;
+    }
+  }
+
+  const onSoundPlay = e => {
+    audio.volume = 1;
+
+    let _current = e.currentTarget.id.split("_")[1]
+
+    let file = langValue + "_" + _current + ".mp3";
+
+    getSoundFile(file).then(res => {
+      let _src = convertFileSrc(res.toString());
+
+      const readFile = readBinaryFile("medical-sound-data/sounds/" + file, { dir: fs.Dir.Data });
+      let _exists = false;
+      readFile.then( res => {
+        _exists = true;
+        if(audio.canPlayType('audio/mpeg') && _exists) {
+          audio.getElementsByTagName("source")[0].src = _src;
+          audio.load();
+          audio.pause();
+          audio.currentTime = 0;
+          audio.play();
+        }
+      }).catch( err => {
+        _exists = false;
+        document.getElementById("modal-sound-btn").click();
+      });
+    });
   }
 
   function openDialog(type, e) {
@@ -242,30 +264,30 @@
 
 <div>
   <div class="px-4 py-4 overflow-x-auto">
-    <h3 class="px-2 mb-4 text-lg font-medium leading-6 text-white">설정</h3>
+    <h3 class="px-2 mb-4 text-lg font-medium leading-6 text-white select-none">설정</h3>
 
-    <table class="table w-full mb-8 table-compact">
+    <table class="table w-full mb-4 table-compact">
       <thead>
         <tr>
-          <th class="w-40 text-center text-white">기능</th>
-          <th class="text-center text-white">단축키</th>
+          <th class="w-40 text-center text-white select-none">기능</th>
+          <th class="text-center text-white select-none">단축키</th>
         </tr>
       </thead>
       <tbody>
         <tr class="h-14">
-          <td class="text-center text-white">언어 변경키</td>
+          <td class="text-center text-white select-none">언어 변경키</td>
           <td>
             <input class="w-auto text-center text-gray-900 bg-white kbd kbd-md" on:keyup={onLangKeyUp} on:keypress={onLangKey} value={langKey} />
-            <span class="ml-4 text-white"><kbd class="kbd">Shift</kbd> 또는 <kbd class="kbd">Ctrl</kbd> 키 <kbd class="kbd">+</kbd> 숫자(<kbd class="kbd">0</kbd>~<kbd class="kbd">9</kbd>) 또는 영문(<kbd class="kbd">a</kbd>~<kbd class="kbd">z</kbd>) 조합으로 사용 가능합니다.</span>
+            <span class="ml-4 text-white select-none"><kbd class="kbd">Shift</kbd> 또는 <kbd class="kbd">Ctrl</kbd> 키 <kbd class="kbd">+</kbd> 숫자(<kbd class="kbd">0</kbd>~<kbd class="kbd">9</kbd>) 또는 영문(<kbd class="kbd">a</kbd>~<kbd class="kbd">z</kbd>) 조합으로 사용 가능합니다.</span>
           </td>
         </tr>
       </tbody>
     </table>
 
-    <table class="table w-full table-zebra table-compact mb-8">
+    <table class="table w-full mb-4 table-zebra table-compact">
       <thead>
         <tr>
-          <th colspan="10" class="text-white text-center">언어 설정</th>
+          <th colspan="10" class="text-center text-white select-none">언어 설정</th>
         </tr>
       </thead>
       <tbody>
@@ -274,6 +296,7 @@
           <td class="w-3 text-center">
             <input
               type="checkbox"
+              disabled={lang.id == 1}
               checked={lang.published}
               on:click={onChangeLangPublished}
               id="langPublished_{lang.id}"
@@ -289,6 +312,7 @@
               class="flex items-center w-full h-8 font-semibold text-center text-gray-700 bg-white outline-none focus:outline-none text-md hover:text-black focus:text-black md:text-basecursor-default"
               maxlength="8"
               value={lang.name}
+              disabled={lang.id == 1}
               on:blur={onChangeLangName}
               placeholder={lang.name}>
           </td>
@@ -301,18 +325,18 @@
       <!-- head -->
       <thead>
         <tr>
-          <th class="w-20 text-center text-white ">순서</th>
-          <th class="w-20 text-center text-white ">사용</th>
-          <th class="w-20 text-center text-white ">키</th>
-          <th class="text-center text-white w-36">이미지</th>
-          <th class="text-center text-white w-36">음성</th>
-          <th class="text-center text-white ">메시지</th>
+          <th class="w-20 text-center text-white select-none">순서</th>
+          <th class="w-20 text-center text-white select-none">사용</th>
+          <th class="w-20 text-center text-white select-none">키</th>
+          <th class="text-center text-white select-none w-36">이미지</th>
+          <th id="langTitle" class="text-center text-white select-none w-44">{$lists["languages"][Number(langValue) - 1].name} 음성</th>
+          <th class="text-center text-white select-none">메시지</th>
         </tr>
       </thead>
       <tbody>
         {#each _lists as list, index }
         <tr class="h-14">
-          <td class="text-center text-white">{list.id}</td>
+          <td class="text-center text-white select-none">{list.id}</td>
           <td class="text-center">
             <input
               type="checkbox"
@@ -333,7 +357,7 @@
               placeholder={list.key}>
           </td>
           <td class="text-center">
-            <span id="imgname_{index + 1}" class="text-white ">{list.image}</span>
+            <span id="imgname_{index + 1}" class="text-white select-none">{list.image}</span>
             <button
               class="h-4 text-white btn btn-xs btn-outline"
               id="img_list_{list.id}"
@@ -342,14 +366,16 @@
 
           <td class="text-center text-white">
             <span class="inline-flex align-middle">
-              <button>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <button
+                id="play_{index + 1}"
+                on:click={onSoundPlay}>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 stroke-slate-400 hover:stroke-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                   <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </button>
             </span>
-            <span class="inline-flex">
+            <span class="inline-flex select-none">
               {langValue}_{list["sound"]}
             </span>
             <span class="inline-flex">
@@ -387,6 +413,21 @@
       <p id="modal-message" class="py-4">이미 존재하는 단축키를 제외하고 설정해주시기 바랍니다.</p>
       <div class="modal-action">
         <label for="my-modal" class="btn">닫기</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- The button to sound modal -->
+  <label id="modal-sound-btn" for="sound-modal" class="hidden btn modal-button">open modal</label>
+
+  <!-- Put this part before </body> tag -->
+  <input type="checkbox" id="sound-modal" class="modal-toggle" />
+  <div class="modal">
+    <div class="modal-box">
+      <h3 class="text-lg font-bold">사운드 파일 에러</h3>
+      <p id="modal-message" class="py-4">사운드 파일이 존재하지 않습니다.</p>
+      <div class="modal-action">
+        <label for="sound-modal" class="btn">닫기</label>
       </div>
     </div>
   </div>

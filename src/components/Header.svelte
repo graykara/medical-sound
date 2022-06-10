@@ -26,10 +26,10 @@
 
   appWindow.listen('tauri://focus', ({ event }) => {
     if(!isVisible) {
-      registerAllHotKeys();
       registerLangKLey();
+      if(!_isSetting) registerAllHotKeys();
     }
-  })
+  });
 
   // console.log("## HEADER");
 
@@ -75,8 +75,6 @@
   let TOGGLE_HOTKEY_7;
   let TOGGLE_HOTKEY_8;
   let TOGGLE_HOTKEY_9;
-
-  let shortcut;
 
   globalThis.detectState = function(arg) {
     if(arg == 'show') {
@@ -232,6 +230,7 @@
   });
 
   function select(arg) {
+    _show = false;
     switch (arg) {
       case 0:
         _isSetting = false;
@@ -244,7 +243,6 @@
         push("/main");
         unregister(LANG_TOGGLE_HOTKEY);
         unregisterAllHotKeys();
-        shortcut = $lists["invoke_key"];
         reloadHotkeys();
         setTimeout(() => {
           console.log("REGISTER")
@@ -256,7 +254,7 @@
         break;
       case 2:
         _isSetting = true;
-        windowMap[selectedWindow].setSize(new LogicalSize(1280, 1080));
+        windowMap[selectedWindow].setSize(new LogicalSize(1280, 960));
         push("/config");
         unregister(LANG_TOGGLE_HOTKEY);
         unregisterAllHotKeys();
@@ -341,7 +339,7 @@
   {#if !_init}
   <div id="nav" class="flex min-h-0 px-10 py-1 m-0 navbar bg-gradient-to-b from-sky-700 to-sky-400">
     <div class="flex items-start justify-start flex-none w-40 cursor-default">
-      <p class="text-xl font-bold text-white normal-case">Medical Sound</p>
+      <p class="text-xl font-bold text-white normal-case select-none">Medical Sound</p>
     </div>
 
     <div class="flex items-center justify-center grow">
@@ -357,13 +355,13 @@
         </div>
 
         {#if _show}
-          <div class="absolute -mt-12 rounded-md shadow-lg" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+          <div class="absolute mt-2 rounded-md shadow-lg" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
             <div class="py-0" role="none">
-              <ul tabindex="0" class="ml-24 w-44 p-1 bg-white rounded-sm shadow dropdown-content menu">
+              <ul tabindex="0" class="p-1 -ml-12 overflow-y-auto bg-white rounded-sm shadow w-44 dropdown-content menu {!_isSetting ? 'max-h-44' : ''}">
                 {#each $lists["languages"] as language }
                   {#if language.published}
                     <li>
-                      <button id="menu-item-0" role="menuitem" class="py-1 justify-center text-bold text-gray-900 bg-transparent hover:bg-slate-200" on:click={() => changeLanguage(language.id) }>{language.name}</button>
+                      <button id="menu-item-0" role="menuitem" class="justify-center py-1 text-gray-900 bg-transparent text-bold hover:bg-slate-200" on:click={() => changeLanguage(language.id) }>{language.name}</button>
                     </li>
                   {/if}
                 {/each}

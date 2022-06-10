@@ -119,7 +119,7 @@
 {#if possible == true }
   {#each {length: 9} as _, index}
     {#if _lists[index].published}
-      <div class="relative">
+      <div class="relative select-none">
         <span class="absolute z-20 text-red-900 left-4 top-2">{_lists[index].key}</span>
         <div id="tooltip_{_lists[index].id}" class="text-xl text-white tooltip tooltip-bottom" data-tip="{_lists[index]["message"]}">
           <div id="btn_{_lists[index].id}" class="z-10 btn-info main_btn" on:click={() => handleClick(_lists[index].id)}>
