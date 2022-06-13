@@ -47,7 +47,7 @@ const initData = {
       key: "1",
       image: "1.png",
       sound: "1.mp4",
-      message: "메시지를 읽어주세요. - 1",
+      message: "바닥에 발 모양 위에 서시고, 턱을 대고 양팔을 벌려 기계를 안으세요.",
     },
     {
       id: "2",
@@ -55,7 +55,7 @@ const initData = {
       key: "2",
       image: "2.png",
       sound: "2.mp4",
-      message: "메시지를 읽어주세요. - 2",
+      message: "숨을 깊게 들어마시고, 숨 참으세요.",
     },
     {
       id: "3",
@@ -63,7 +63,7 @@ const initData = {
       key: "3",
       image: "3.png",
       sound: "3.mp4",
-      message: "메시지를 읽어주세요. - 3",
+      message: "촬영이 끝났습니다. 옷 갈아입으시면 됩니다.",
     },
     {
       id: "4",
