@@ -29,7 +29,7 @@
 
   appWindow.listen('tauri://focus', ({ event }) => {
     if(!isVisible) {
-      if(isFromHide) registerLangKLey();
+      if(isFromHide) registerLangLey();
       console.log("##FOCUS##", isFromHide);
       if(!_isSetting && isFromHide) registerAllHotKeys();
     }
@@ -93,10 +93,10 @@
       unregisterAllHotKeys();
       reloadHotkeys();
       if(!_isSetting) {
-        registerLangKLey();
+        registerLangLey();
         registerAllHotKeys();
       } else {
-        registerLangKLey();
+        registerLangLey();
       }
     } else {
       isFromHide = false;
@@ -117,7 +117,7 @@
       .catch();
   }
 
-  function registerLangKLey() {
+  function registerLangLey() {
     registerShortcut(LANG_TOGGLE_HOTKEY, () => {
       let _target;
       let _current = Number(_langCode);
@@ -231,7 +231,7 @@
       reloadHotkeys();
       unregisterAllHotKeys();
       registerInvoke();
-      registerLangKLey();
+      registerLangLey();
       // registerAllHotKeys();
       let obj = $lists["buttons"];
       let _lists;
@@ -307,7 +307,7 @@
         setTimeout(() => {
           console.log("REGISTER");
           registerInvoke();
-          registerLangKLey();
+          registerLangLey();
         }, 100);
         break;
       case 2:
@@ -326,7 +326,7 @@
         }, 10);
         setTimeout(() => {
           registerInvoke();
-          registerLangKLey();
+          registerLangLey();
         }, 100);
         break;
     }
