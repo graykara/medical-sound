@@ -45,7 +45,7 @@
         setImageFile("img_" + i + "." + ext).then(res => {
           let _src = convertFileSrc(res.toString());
           _images.push(_src);
-          document.getElementById('img_' + i).setAttribute('src', _src);
+          if($lists["buttons"][i - 1].published) document.getElementById('img_' + i).setAttribute('src', _src);
         });
       }
     }, 20);
