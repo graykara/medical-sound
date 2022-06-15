@@ -225,9 +225,6 @@
   }
 
   onMount(() => {
-    windowMap[selectedWindow].center();
-    windowMap[selectedWindow].setAlwaysOnTop(true);
-
     setTimeout(() => {
       console.log("MAIN MOUNTED");
       shortcut = $lists["invoke_key"];
@@ -236,6 +233,21 @@
       registerInvoke();
       registerLangKLey();
       registerAllHotKeys();
+      let obj = $lists["buttons"];
+      let _lists;
+      _lists = Object.keys(obj).map((key) => [Number(key), obj[key]][1]);
+      let _published = _lists.filter(button => button.published);
+      let _windowWidth = 1280;
+
+      if($lists["flexible"]) {
+        _windowWidth = 1280 - ((9 - _published.length) * 90);
+        if(_windowWidth < 800) _windowWidth = 800;
+      }
+
+      windowMap[selectedWindow].setSize(new LogicalSize(_windowWidth, 278));
+
+      windowMap[selectedWindow].center();
+      windowMap[selectedWindow].setAlwaysOnTop(true);
     }, 500);
 
     document
@@ -269,7 +281,18 @@
         break;
       case 1:
         _isSetting = false;
-        windowMap[selectedWindow].setSize(new LogicalSize(1280, 278));
+        let obj = $lists["buttons"];
+        let _lists;
+        _lists = Object.keys(obj).map((key) => [Number(key), obj[key]][1]);
+        let _published = _lists.filter(button => button.published);
+        let _windowWidth = 1280;
+
+        if($lists["flexible"]) {
+          _windowWidth = 1280 - ((9 - _published.length) * 90);
+          if(_windowWidth < 800) _windowWidth = 800;
+        }
+
+        windowMap[selectedWindow].setSize(new LogicalSize(_windowWidth, 278));
         push("/main");
         shortcut = $lists["invoke_key"];
         LANG_TOGGLE_HOTKEY = $lists["lang_change_key"];
@@ -287,7 +310,7 @@
         break;
       case 2:
         _isSetting = true;
-        windowMap[selectedWindow].setSize(new LogicalSize(1280, 1000));
+        windowMap[selectedWindow].setSize(new LogicalSize(1280, 1060));
         push("/config");
         shortcut = $lists["invoke_key"];
         LANG_TOGGLE_HOTKEY = $lists["lang_change_key"];

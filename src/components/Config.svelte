@@ -110,6 +110,11 @@
     $lists["buttons"][idx - 1].published = val;
   }
 
+  const onChangeFlexible = e => {
+    let val = e.target.checked;
+    $lists["flexible"] = val;
+  }
+
   const onChangeLangPublished = e => {
     let val = e.target.checked;
     let idx = Number(e.target.id.split("_")[1]);
@@ -367,7 +372,7 @@
   <div class="px-4 py-4 overflow-x-auto">
     <h3 class="px-2 mb-4 text-lg font-medium leading-6 text-white select-none">설정</h3>
 
-    <table class="table w-full mb-4 table-compact">
+    <table class="table w-full mb-4 table-zebra table-compact">
       <thead>
         <tr>
           <th class="w-40 text-center text-white select-none">기능</th>
@@ -387,6 +392,18 @@
           <td>
             <input class="w-auto text-center text-gray-900 bg-white kbd kbd-md" on:keyup={onLangKeyUp} on:keypress={onLangKey} value={langKey} />
             <span class="ml-4 text-white select-none"><kbd class="kbd">Shift</kbd> 또는 <kbd class="kbd">Ctrl</kbd> 키 <kbd class="kbd">+</kbd> 숫자(<kbd class="kbd">0</kbd>~<kbd class="kbd">9</kbd>) 또는 영문(<kbd class="kbd">a</kbd>~<kbd class="kbd">z</kbd>) 조합으로 사용 가능합니다.</span>
+          </td>
+        </tr>
+        <tr class="h-14">
+          <td class="text-center text-white select-none">유동적 사이즈</td>
+          <td>
+            <input
+              type="checkbox"
+              checked={$lists["flexible"]}
+              on:click={onChangeFlexible}
+              id="sizeFlexable"
+              class="checkbox absolute mt-1 ml-24" />
+            <span class="ml-56 pl-3 text-white select-none">체크 시, 기능 갯수에 따라 메인 화면 사이즈가 유동적으로 설정됩니다.</span>
           </td>
         </tr>
       </tbody>
@@ -449,6 +466,7 @@
             <input
               type="checkbox"
               checked={list.published}
+              disabled={list.id == 1}
               on:click={onChangePublished}
               id="published_{list.id}"
               class="checkbox" />
