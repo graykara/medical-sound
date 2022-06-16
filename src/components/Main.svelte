@@ -120,8 +120,8 @@
   {#each {length: 9} as _, index}
     {#if _lists[index].published}
       <div class="relative text-center select-none">
-        <div id="tooltip_{_lists[index].id}" class="text-white tooltip tooltip-info tooltip-bottom" data-tip="{_lists[index]["message"]}">
-          <span class="absolute z-20 text-red-900 left-4 top-2">{_lists[index].key}</span>
+        <div id="tooltip_{_lists[index].id}" class="text-white tooltip tooltip-info tooltip-bottom shadowed-text" data-tip="{_lists[index]["message"]}">
+          <span class="absolute z-20 text-xl shadowed-text-bold text-white-900 left-4 top-2">{_lists[index].key}</span>
           <div id="btn_{_lists[index].id}" class="z-10 btn-info main_btn" on:click={() => handleClick(_lists[index].id)}>
             <img id="img_{_lists[index].id}" class="object-cover shadow-xl rounded-2xl" src="" alt="{_lists[index].id}" />
           </div>
@@ -144,5 +144,11 @@
     top: calc(50% + 4.25em);
     transform: unset;
     background-color: rgba(58,191,248, 1);
+  }
+  .shadowed-text-bold {
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.85);
+  }
+  .shadowed-text {
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
   }
 </style>
